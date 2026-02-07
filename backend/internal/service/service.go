@@ -16,15 +16,15 @@ import (
 
 // エラー定義
 var (
-	ErrInvalidCredentials = errors.New("メールアドレスまたはパスワードが正しくありません")
-	ErrUserNotFound       = errors.New("ユーザーが見つかりません")
-	ErrEmailAlreadyExists = errors.New("このメールアドレスは既に登録されています")
-	ErrAlreadyClockedIn   = errors.New("既に出勤打刻済みです")
-	ErrNotClockedIn       = errors.New("出勤打刻がありません")
-	ErrAlreadyClockedOut  = errors.New("既に退勤打刻済みです")
-	ErrLeaveNotFound      = errors.New("休暇申請が見つかりません")
+	ErrInvalidCredentials    = errors.New("メールアドレスまたはパスワードが正しくありません")
+	ErrUserNotFound          = errors.New("ユーザーが見つかりません")
+	ErrEmailAlreadyExists    = errors.New("このメールアドレスは既に登録されています")
+	ErrAlreadyClockedIn      = errors.New("既に出勤打刻済みです")
+	ErrNotClockedIn          = errors.New("出勤打刻がありません")
+	ErrAlreadyClockedOut     = errors.New("既に退勤打刻済みです")
+	ErrLeaveNotFound         = errors.New("休暇申請が見つかりません")
 	ErrLeaveAlreadyProcessed = errors.New("この休暇申請は既に処理済みです")
-	ErrUnauthorized       = errors.New("権限がありません")
+	ErrUnauthorized          = errors.New("権限がありません")
 )
 
 // Deps はサービスの依存関係
@@ -110,11 +110,11 @@ func (s *authService) Login(ctx context.Context, req *model.LoginRequest) (*mode
 
 func (s *authService) generateToken(user *model.User, expiry time.Duration) (string, error) {
 	claims := jwt.MapClaims{
-		"sub":  user.ID.String(),
+		"sub":   user.ID.String(),
 		"email": user.Email,
-		"role": string(user.Role),
-		"exp":  time.Now().Add(expiry).Unix(),
-		"iat":  time.Now().Unix(),
+		"role":  string(user.Role),
+		"exp":   time.Now().Add(expiry).Unix(),
+		"iat":   time.Now().Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(s.deps.Config.JWTSecretKey))

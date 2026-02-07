@@ -43,7 +43,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("ロガーの初期化に失敗: %v", err)
 	}
-	defer zapLogger.Sync()
+	defer func() { _ = zapLogger.Sync() }()
 
 	// データベース接続
 	db, err := gorm.Open(postgres.Open(cfg.DatabaseURL), &gorm.Config{})

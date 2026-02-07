@@ -52,12 +52,12 @@ type AttendanceListQuery struct {
 }
 
 type AttendanceSummary struct {
-	TotalWorkDays       int     `json:"total_work_days"`
-	TotalWorkMinutes    int     `json:"total_work_minutes"`
-	TotalOvertimeMinutes int    `json:"total_overtime_minutes"`
-	AverageWorkMinutes  float64 `json:"average_work_minutes"`
-	AbsentDays          int     `json:"absent_days"`
-	LeaveDays           int     `json:"leave_days"`
+	TotalWorkDays        int     `json:"total_work_days"`
+	TotalWorkMinutes     int     `json:"total_work_minutes"`
+	TotalOvertimeMinutes int     `json:"total_overtime_minutes"`
+	AverageWorkMinutes   float64 `json:"average_work_minutes"`
+	AbsentDays           int     `json:"absent_days"`
+	LeaveDays            int     `json:"leave_days"`
 }
 
 // ===== 休暇申請 =====
@@ -130,11 +130,11 @@ type ErrorResponse struct {
 // ===== ダッシュボード =====
 
 type DashboardStats struct {
-	TodayPresentCount  int              `json:"today_present_count"`
-	TodayAbsentCount   int              `json:"today_absent_count"`
-	PendingLeaves      int              `json:"pending_leaves"`
-	MonthlyOvertime    int              `json:"monthly_overtime"`
-	DepartmentStats    []DepartmentStat `json:"department_stats"`
+	TodayPresentCount int              `json:"today_present_count"`
+	TodayAbsentCount  int              `json:"today_absent_count"`
+	PendingLeaves     int              `json:"pending_leaves"`
+	MonthlyOvertime   int              `json:"monthly_overtime"`
+	DepartmentStats   []DepartmentStat `json:"department_stats"`
 }
 
 type DepartmentStat struct {
