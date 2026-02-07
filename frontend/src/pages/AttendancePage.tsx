@@ -161,12 +161,11 @@ export function AttendancePage() {
                     {(record.overtime_minutes as number) > 0 ? `${Math.floor(record.overtime_minutes as number / 60)}h ${(record.overtime_minutes as number) % 60}m` : '-'}
                   </td>
                   <td className="py-2 px-4">
-                    <span className={`px-2 py-1 rounded-full text-xs ${
-                      record.status === 'present' ? 'bg-green-100 text-green-800' :
-                      record.status === 'absent' ? 'bg-red-100 text-red-800' :
-                      record.status === 'leave' ? 'bg-blue-100 text-blue-800' :
-                      'bg-gray-100 text-gray-800'
-                    }`}>
+                    <span className={`px-2 py-1 rounded-full text-xs ${record.status === 'present' ? 'bg-green-100 text-green-800' :
+                        record.status === 'absent' ? 'bg-red-100 text-red-800' :
+                          record.status === 'leave' ? 'bg-blue-100 text-blue-800' :
+                            'bg-gray-100 text-gray-800'
+                      }`}>
                       {record.status as string}
                     </span>
                   </td>

@@ -41,9 +41,8 @@ export function Layout() {
     <div className="flex h-screen bg-background">
       {/* サイドバー */}
       <aside
-        className={`${
-          sidebarOpen ? 'w-64' : 'w-16'
-        } bg-card border-r border-border transition-all duration-300 flex flex-col`}
+        className={`${sidebarOpen ? 'w-64' : 'w-16'
+          } bg-card border-r border-border transition-all duration-300 flex flex-col`}
       >
         {/* ロゴ */}
         <div className="h-16 flex items-center justify-between px-4 border-b border-border">
