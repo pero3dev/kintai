@@ -11,7 +11,7 @@ describe('Input', () => {
   it('handles text input', () => {
     const handleChange = vi.fn();
     render(<Input onChange={handleChange} />);
-    
+
     const input = screen.getByRole('textbox');
     fireEvent.change(input, { target: { value: 'test value' } });
     expect(handleChange).toHaveBeenCalled();

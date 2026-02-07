@@ -32,14 +32,14 @@ describe('Select', () => {
         <option value="2">Option 2</option>
       </Select>
     );
-    
+
     fireEvent.change(screen.getByRole('combobox'), { target: { value: '2' } });
     expect(handleChange).toHaveBeenCalled();
   });
 
   it('accepts value prop', () => {
     render(
-      <Select value="2" onChange={() => {}}>
+      <Select value="2" onChange={() => { }}>
         <option value="1">Option 1</option>
         <option value="2">Option 2</option>
       </Select>

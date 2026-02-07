@@ -615,10 +615,10 @@ func TestAttendanceHandler_GetSummary_Success(t *testing.T) {
 	mockService := &mocks.MockAttendanceService{
 		GetSummaryFunc: func(ctx context.Context, userID uuid.UUID, start, end time.Time) (*model.AttendanceSummary, error) {
 			return &model.AttendanceSummary{
-				TotalWorkDays:      20,
-				TotalWorkMinutes:   9600,
-				AbsentDays:         0,
-				LeaveDays:          2,
+				TotalWorkDays:    20,
+				TotalWorkMinutes: 9600,
+				AbsentDays:       0,
+				LeaveDays:        2,
 			}, nil
 		},
 	}

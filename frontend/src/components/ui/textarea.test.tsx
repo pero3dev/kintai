@@ -11,7 +11,7 @@ describe('Textarea', () => {
   it('handles text input', () => {
     const handleChange = vi.fn();
     render(<Textarea onChange={handleChange} />);
-    
+
     const textarea = screen.getByRole('textbox');
     fireEvent.change(textarea, { target: { value: 'test value' } });
     expect(handleChange).toHaveBeenCalled();

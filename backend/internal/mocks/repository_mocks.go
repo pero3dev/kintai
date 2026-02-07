@@ -11,14 +11,14 @@ import (
 
 // MockUserRepository はUserRepositoryのモック
 type MockUserRepository struct {
-	Users         map[uuid.UUID]*model.User
-	UsersByEmail  map[string]*model.User
-	CreateErr     error
-	FindByIDErr   error
+	Users          map[uuid.UUID]*model.User
+	UsersByEmail   map[string]*model.User
+	CreateErr      error
+	FindByIDErr    error
 	FindByEmailErr error
-	FindAllErr    error
-	UpdateErr     error
-	DeleteErr     error
+	FindAllErr     error
+	UpdateErr      error
+	DeleteErr      error
 }
 
 func NewMockUserRepository() *MockUserRepository {
@@ -453,10 +453,10 @@ func (m *MockDepartmentRepository) Delete(ctx context.Context, id uuid.UUID) err
 
 // MockRefreshTokenRepository はRefreshTokenRepositoryのモック
 type MockRefreshTokenRepository struct {
-	Tokens    map[string]*model.RefreshToken
+	Tokens     map[string]*model.RefreshToken
 	UserTokens map[uuid.UUID][]string
-	RevokeErr error
-	CreateErr error
+	RevokeErr  error
+	CreateErr  error
 }
 
 func NewMockRefreshTokenRepository() *MockRefreshTokenRepository {

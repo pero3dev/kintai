@@ -48,11 +48,11 @@ func (m *MockAuthService) Logout(ctx context.Context, userID uuid.UUID) error {
 // ===== MockAttendanceService =====
 
 type MockAttendanceService struct {
-	ClockInFunc             func(ctx context.Context, userID uuid.UUID, req *model.ClockInRequest) (*model.Attendance, error)
-	ClockOutFunc            func(ctx context.Context, userID uuid.UUID, req *model.ClockOutRequest) (*model.Attendance, error)
+	ClockInFunc               func(ctx context.Context, userID uuid.UUID, req *model.ClockInRequest) (*model.Attendance, error)
+	ClockOutFunc              func(ctx context.Context, userID uuid.UUID, req *model.ClockOutRequest) (*model.Attendance, error)
 	GetByUserAndDateRangeFunc func(ctx context.Context, userID uuid.UUID, start, end time.Time, page, pageSize int) ([]model.Attendance, int64, error)
-	GetSummaryFunc          func(ctx context.Context, userID uuid.UUID, start, end time.Time) (*model.AttendanceSummary, error)
-	GetTodayStatusFunc      func(ctx context.Context, userID uuid.UUID) (*model.Attendance, error)
+	GetSummaryFunc            func(ctx context.Context, userID uuid.UUID, start, end time.Time) (*model.AttendanceSummary, error)
+	GetTodayStatusFunc        func(ctx context.Context, userID uuid.UUID) (*model.Attendance, error)
 }
 
 func (m *MockAttendanceService) ClockIn(ctx context.Context, userID uuid.UUID, req *model.ClockInRequest) (*model.Attendance, error) {

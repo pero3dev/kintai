@@ -36,7 +36,7 @@ func setupTestDeps(t *testing.T) Deps {
 		JWTRefreshTokenExpiry: 168,
 	}
 	log, _ := logger.NewLogger("debug", "test")
-	
+
 	return Deps{
 		Config: cfg,
 		Logger: log,
@@ -356,7 +356,7 @@ func TestAttendanceService_ClockIn_AlreadyClockedIn(t *testing.T) {
 	ctx := context.Background()
 
 	userID := uuid.New()
-	
+
 	// 最初の出勤打刻
 	_, err := attService.ClockIn(ctx, userID, &model.ClockInRequest{})
 	if err != nil {
@@ -376,7 +376,7 @@ func TestAttendanceService_ClockOut_Success(t *testing.T) {
 	ctx := context.Background()
 
 	userID := uuid.New()
-	
+
 	// 出勤打刻
 	_, err := attService.ClockIn(ctx, userID, &model.ClockInRequest{})
 	if err != nil {
@@ -411,7 +411,7 @@ func TestAttendanceService_ClockOut_AlreadyClockedOut(t *testing.T) {
 	ctx := context.Background()
 
 	userID := uuid.New()
-	
+
 	// 出勤・退勤打刻
 	_, _ = attService.ClockIn(ctx, userID, &model.ClockInRequest{})
 	_, _ = attService.ClockOut(ctx, userID, &model.ClockOutRequest{})

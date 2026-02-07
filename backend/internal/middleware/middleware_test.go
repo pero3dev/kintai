@@ -485,8 +485,8 @@ func TestRateLimit_ExceedsLimit(t *testing.T) {
 	// Use a very low rate limit for testing
 	cfg := &config.Config{
 		JWTSecretKey:   "test-secret",
-		RateLimitRPS:   1,     // 1 request per second
-		RateLimitBurst: 1,     // burst of 1
+		RateLimitRPS:   1, // 1 request per second
+		RateLimitBurst: 1, // burst of 1
 		AllowedOrigins: []string{"*"},
 	}
 	log, _ := logger.NewLogger("debug", "test")
@@ -500,7 +500,7 @@ func TestRateLimit_ExceedsLimit(t *testing.T) {
 
 	// First request from unique IP should pass
 	unique := "192.168.99.99:9999"
-	
+
 	// Make multiple quick requests to exceed burst
 	var lastCode int
 	for i := 0; i < 10; i++ {
