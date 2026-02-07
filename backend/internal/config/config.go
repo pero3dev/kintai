@@ -26,8 +26,8 @@ type Config struct {
 	RateLimitBurst int
 
 	// AWS SES
-	AWSRegion       string
-	SESFromEmail    string
+	AWSRegion    string
+	SESFromEmail string
 
 	// Sentry
 	SentryDSN string

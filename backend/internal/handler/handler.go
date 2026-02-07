@@ -257,7 +257,7 @@ func (h *AttendanceHandler) ClockIn(c *gin.Context) {
 	}
 
 	var req model.ClockInRequest
-	c.ShouldBindJSON(&req)
+	_ = c.ShouldBindJSON(&req)
 
 	attendance, err := h.service.ClockIn(c.Request.Context(), userID, &req)
 	if err != nil {
@@ -285,7 +285,7 @@ func (h *AttendanceHandler) ClockOut(c *gin.Context) {
 	}
 
 	var req model.ClockOutRequest
-	c.ShouldBindJSON(&req)
+	_ = c.ShouldBindJSON(&req)
 
 	attendance, err := h.service.ClockOut(c.Request.Context(), userID, &req)
 	if err != nil {

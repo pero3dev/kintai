@@ -23,26 +23,26 @@ type BaseModel struct {
 type Role string
 
 const (
-	RoleAdmin   Role = "admin"
-	RoleManager Role = "manager"
+	RoleAdmin    Role = "admin"
+	RoleManager  Role = "manager"
 	RoleEmployee Role = "employee"
 )
 
 // User はユーザーモデル
 type User struct {
 	BaseModel
-	Email        string `gorm:"uniqueIndex;size:255;not null" json:"email" validate:"required,email"`
-	PasswordHash string `gorm:"size:255;not null" json:"-"`
-	FirstName    string `gorm:"size:100;not null" json:"first_name" validate:"required"`
-	LastName     string `gorm:"size:100;not null" json:"last_name" validate:"required"`
-	Role         Role   `gorm:"size:20;not null;default:'employee'" json:"role"`
+	Email        string     `gorm:"uniqueIndex;size:255;not null" json:"email" validate:"required,email"`
+	PasswordHash string     `gorm:"size:255;not null" json:"-"`
+	FirstName    string     `gorm:"size:100;not null" json:"first_name" validate:"required"`
+	LastName     string     `gorm:"size:100;not null" json:"last_name" validate:"required"`
+	Role         Role       `gorm:"size:20;not null;default:'employee'" json:"role"`
 	DepartmentID *uuid.UUID `gorm:"type:uuid" json:"department_id"`
-	IsActive     bool   `gorm:"default:true" json:"is_active"`
+	IsActive     bool       `gorm:"default:true" json:"is_active"`
 
 	// リレーション
-	Department     *Department     `gorm:"foreignKey:DepartmentID" json:"department,omitempty"`
-	Attendances    []Attendance    `gorm:"foreignKey:UserID" json:"attendances,omitempty"`
-	LeaveRequests  []LeaveRequest  `gorm:"foreignKey:UserID" json:"leave_requests,omitempty"`
+	Department    *Department    `gorm:"foreignKey:DepartmentID" json:"department,omitempty"`
+	Attendances   []Attendance   `gorm:"foreignKey:UserID" json:"attendances,omitempty"`
+	LeaveRequests []LeaveRequest `gorm:"foreignKey:UserID" json:"leave_requests,omitempty"`
 }
 
 // ===== 部署 =====
@@ -50,7 +50,7 @@ type User struct {
 // Department は部署モデル
 type Department struct {
 	BaseModel
-	Name      string `gorm:"size:100;not null;uniqueIndex" json:"name" validate:"required"`
+	Name      string     `gorm:"size:100;not null;uniqueIndex" json:"name" validate:"required"`
 	ManagerID *uuid.UUID `gorm:"type:uuid" json:"manager_id"`
 
 	Manager *User  `gorm:"foreignKey:ManagerID" json:"manager,omitempty"`
@@ -63,10 +63,10 @@ type Department struct {
 type AttendanceStatus string
 
 const (
-	AttendanceStatusPresent  AttendanceStatus = "present"
-	AttendanceStatusAbsent   AttendanceStatus = "absent"
-	AttendanceStatusLeave    AttendanceStatus = "leave"
-	AttendanceStatusHoliday  AttendanceStatus = "holiday"
+	AttendanceStatusPresent AttendanceStatus = "present"
+	AttendanceStatusAbsent  AttendanceStatus = "absent"
+	AttendanceStatusLeave   AttendanceStatus = "leave"
+	AttendanceStatusHoliday AttendanceStatus = "holiday"
 )
 
 // Attendance は勤怠レコード
@@ -93,10 +93,10 @@ type Attendance struct {
 type LeaveType string
 
 const (
-	LeaveTypePaid     LeaveType = "paid"       // 有給休暇
-	LeaveTypeSick     LeaveType = "sick"       // 病気休暇
-	LeaveTypeSpecial  LeaveType = "special"    // 特別休暇
-	LeaveTypeHalf     LeaveType = "half"       // 半休
+	LeaveTypePaid    LeaveType = "paid"    // 有給休暇
+	LeaveTypeSick    LeaveType = "sick"    // 病気休暇
+	LeaveTypeSpecial LeaveType = "special" // 特別休暇
+	LeaveTypeHalf    LeaveType = "half"    // 半休
 )
 
 // ApprovalStatus は承認ステータス
@@ -111,15 +111,15 @@ const (
 // LeaveRequest は休暇申請モデル
 type LeaveRequest struct {
 	BaseModel
-	UserID      uuid.UUID      `gorm:"type:uuid;not null;index" json:"user_id"`
-	LeaveType   LeaveType      `gorm:"size:20;not null" json:"leave_type" validate:"required"`
-	StartDate   time.Time      `gorm:"type:date;not null" json:"start_date" validate:"required"`
-	EndDate     time.Time      `gorm:"type:date;not null" json:"end_date" validate:"required"`
-	Reason      string         `gorm:"size:500" json:"reason"`
-	Status      ApprovalStatus `gorm:"size:20;not null;default:'pending'" json:"status"`
-	ApprovedBy  *uuid.UUID     `gorm:"type:uuid" json:"approved_by"`
-	ApprovedAt  *time.Time     `json:"approved_at"`
-	RejectedReason string      `gorm:"size:500" json:"rejected_reason"`
+	UserID         uuid.UUID      `gorm:"type:uuid;not null;index" json:"user_id"`
+	LeaveType      LeaveType      `gorm:"size:20;not null" json:"leave_type" validate:"required"`
+	StartDate      time.Time      `gorm:"type:date;not null" json:"start_date" validate:"required"`
+	EndDate        time.Time      `gorm:"type:date;not null" json:"end_date" validate:"required"`
+	Reason         string         `gorm:"size:500" json:"reason"`
+	Status         ApprovalStatus `gorm:"size:20;not null;default:'pending'" json:"status"`
+	ApprovedBy     *uuid.UUID     `gorm:"type:uuid" json:"approved_by"`
+	ApprovedAt     *time.Time     `json:"approved_at"`
+	RejectedReason string         `gorm:"size:500" json:"rejected_reason"`
 
 	User     *User `gorm:"foreignKey:UserID" json:"user,omitempty"`
 	Approver *User `gorm:"foreignKey:ApprovedBy" json:"approver,omitempty"`
@@ -131,22 +131,22 @@ type LeaveRequest struct {
 type ShiftType string
 
 const (
-	ShiftTypeMorning   ShiftType = "morning"   // 早番
-	ShiftTypeDay       ShiftType = "day"       // 日勤
-	ShiftTypeEvening   ShiftType = "evening"   // 遅番
-	ShiftTypeNight     ShiftType = "night"     // 夜勤
-	ShiftTypeOff       ShiftType = "off"       // 休み
+	ShiftTypeMorning ShiftType = "morning" // 早番
+	ShiftTypeDay     ShiftType = "day"     // 日勤
+	ShiftTypeEvening ShiftType = "evening" // 遅番
+	ShiftTypeNight   ShiftType = "night"   // 夜勤
+	ShiftTypeOff     ShiftType = "off"     // 休み
 )
 
 // Shift はシフトモデル
 type Shift struct {
 	BaseModel
-	UserID    uuid.UUID `gorm:"type:uuid;not null;index" json:"user_id"`
-	Date      time.Time `gorm:"type:date;not null;index" json:"date" validate:"required"`
-	ShiftType ShiftType `gorm:"size:20;not null" json:"shift_type" validate:"required"`
+	UserID    uuid.UUID  `gorm:"type:uuid;not null;index" json:"user_id"`
+	Date      time.Time  `gorm:"type:date;not null;index" json:"date" validate:"required"`
+	ShiftType ShiftType  `gorm:"size:20;not null" json:"shift_type" validate:"required"`
 	StartTime *time.Time `gorm:"type:time" json:"start_time"`
 	EndTime   *time.Time `gorm:"type:time" json:"end_time"`
-	Note      string    `gorm:"size:500" json:"note"`
+	Note      string     `gorm:"size:500" json:"note"`
 
 	User *User `gorm:"foreignKey:UserID" json:"user,omitempty"`
 }

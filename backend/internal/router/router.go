@@ -2,10 +2,10 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/your-org/kintai/backend/internal/handler"
 	"github.com/your-org/kintai/backend/internal/middleware"
 	"github.com/your-org/kintai/backend/internal/model"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 // Setup はルーターを設定する
