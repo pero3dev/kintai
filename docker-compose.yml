@@ -47,7 +47,7 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U kintai"]
+      test: [ "CMD-SHELL", "pg_isready -U kintai" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -61,7 +61,7 @@ services:
     volumes:
       - redis-data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: [ "CMD", "redis-cli", "ping" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -73,7 +73,7 @@ services:
     image: migrate/migrate
     volumes:
       - ./backend/migrations:/migrations
-    command: ["-path", "/migrations", "-database", "postgres://kintai:kintai@postgres:5432/kintai?sslmode=disable", "up"]
+    command: [ "-path", "/migrations", "-database", "postgres://kintai:kintai@postgres:5432/kintai?sslmode=disable", "up" ]
     depends_on:
       postgres:
         condition: service_healthy
@@ -159,9 +159,9 @@ services:
     volumes:
       - ./monitoring/otel/otel-collector-config.yml:/etc/otelcol-contrib/config.yaml
     ports:
-      - "4317:4317"   # OTLP gRPC
-      - "4318:4318"   # OTLP HTTP
-      - "8888:8888"   # Prometheus metrics
+      - "4317:4317" # OTLP gRPC
+      - "4318:4318" # OTLP HTTP
+      - "8888:8888" # Prometheus metrics
     networks:
       - kintai-network
     profiles:
@@ -173,6 +173,7 @@ volumes:
   elasticsearch-data:
   prometheus-data:
   grafana-data:
+
 
 networks:
   kintai-network:

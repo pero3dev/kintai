@@ -176,13 +176,13 @@ export function UsersPage() {
                   </td>
                   <td className="text-right py-2 px-4">
                     <div className="flex items-center justify-end gap-2">
-                      <button 
+                      <button
                         onClick={() => handleEdit(user)}
                         className="text-sm text-primary hover:text-primary/80"
                       >
                         {t('common.edit')}
                       </button>
-                      <button 
+                      <button
                         onClick={() => handleDelete(user)}
                         className="text-sm text-red-600 hover:text-red-800"
                         title="削除"

@@ -54,14 +54,14 @@ export function ShiftsPage() {
     start.setDate(start.getDate() - start.getDay()); // 日曜日開始
     const end = new Date(start);
     end.setDate(end.getDate() + 6);
-    
+
     const days: Date[] = [];
     for (let i = 0; i < 7; i++) {
       const d = new Date(start);
       d.setDate(d.getDate() + i);
       days.push(d);
     }
-    
+
     return {
       startDate: start.toISOString().split('T')[0],
       endDate: end.toISOString().split('T')[0],
@@ -221,7 +221,7 @@ export function ShiftsPage() {
                     const shift = getShiftForCell(u.id, dateStr);
                     const isToday = date.toDateString() === new Date().toDateString();
                     const style = shift ? getShiftStyle(shift.shift_type) : null;
-                    
+
                     return (
                       <td
                         key={i}
@@ -260,13 +260,13 @@ export function ShiftsPage() {
                 <X className="h-5 w-5" />
               </button>
             </div>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-1">日付</label>
                 <div className="text-muted-foreground">{selectedCell.date}</div>
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium mb-2">シフト種別</label>
                 <div className="grid grid-cols-5 gap-2">
@@ -274,18 +274,17 @@ export function ShiftsPage() {
                     <button
                       key={type.value}
                       onClick={() => setSelectedShiftType(type.value)}
-                      className={`px-3 py-2 rounded text-sm font-medium transition-all ${
-                        selectedShiftType === type.value
+                      className={`px-3 py-2 rounded text-sm font-medium transition-all ${selectedShiftType === type.value
                           ? `${type.bgColor} ${type.color} ring-2 ring-primary`
                           : 'bg-muted hover:bg-accent'
-                      }`}
+                        }`}
                     >
                       {type.label}
                     </button>
                   ))}
                 </div>
               </div>
-              
+
               <div className="flex gap-2 pt-4">
                 <button
                   onClick={() => setSelectedCell(null)}
