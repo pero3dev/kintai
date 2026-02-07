@@ -1,0 +1,102 @@
+{
+  "common": {
+    "appName": "Attendance Management System",
+    "login": "Login",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "confirm": "Confirm",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "noData": "No data available"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "attendance": "Attendance",
+    "leaves": "Leave Requests",
+    "shifts": "Shift Management",
+    "users": "User Management",
+    "settings": "Settings"
+  },
+  "auth": {
+    "loginTitle": "Login",
+    "loginDescription": "Enter your email and password",
+    "registerTitle": "Register",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "loginButton": "Login",
+    "registerButton": "Register",
+    "forgotPassword": "Forgot Password?"
+  },
+  "attendance": {
+    "clockIn": "Clock In",
+    "clockOut": "Clock Out",
+    "clockedIn": "Clocked In",
+    "clockedOut": "Clocked Out",
+    "notClockedIn": "Not Clocked In",
+    "workTime": "Work Time",
+    "overtime": "Overtime",
+    "breakTime": "Break Time",
+    "todayStatus": "Today's Status",
+    "history": "Attendance History",
+    "summary": "Summary",
+    "totalWorkDays": "Total Work Days",
+    "totalWorkHours": "Total Work Hours",
+    "totalOvertime": "Total Overtime",
+    "averageWorkHours": "Average Work Hours",
+    "note": "Note"
+  },
+  "leaves": {
+    "title": "Leave Requests",
+    "newRequest": "New Request",
+    "type": "Leave Type",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "reason": "Reason",
+    "status": "Status",
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "approve": "Approve",
+    "reject": "Reject",
+    "types": {
+      "paid": "Paid Leave",
+      "sick": "Sick Leave",
+      "special": "Special Leave",
+      "half": "Half Day"
+    }
+  },
+  "shifts": {
+    "title": "Shift Management",
+    "create": "Create Shift",
+    "bulkCreate": "Bulk Create",
+    "types": {
+      "morning": "Morning",
+      "day": "Day",
+      "evening": "Evening",
+      "night": "Night",
+      "off": "Day Off"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "todayPresent": "Present Today",
+    "todayAbsent": "Absent Today",
+    "pendingLeaves": "Pending Leaves",
+    "monthlyOvertime": "Monthly Overtime"
+  },
+  "users": {
+    "title": "User Management",
+    "roles": {
+      "admin": "Admin",
+      "manager": "Manager",
+      "employee": "Employee"
+    }
+  }
+}

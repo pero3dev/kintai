@@ -1,0 +1,102 @@
+{
+  "common": {
+    "appName": "勤怠管理システム",
+    "login": "ログイン",
+    "logout": "ログアウト",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "submit": "送信",
+    "cancel": "キャンセル",
+    "save": "保存",
+    "delete": "削除",
+    "edit": "編集",
+    "confirm": "確認",
+    "loading": "読み込み中...",
+    "error": "エラーが発生しました",
+    "success": "成功しました",
+    "noData": "データがありません"
+  },
+  "nav": {
+    "dashboard": "ダッシュボード",
+    "attendance": "勤怠管理",
+    "leaves": "休暇申請",
+    "shifts": "シフト管理",
+    "users": "ユーザー管理",
+    "settings": "設定"
+  },
+  "auth": {
+    "loginTitle": "ログイン",
+    "loginDescription": "メールアドレスとパスワードを入力してください",
+    "registerTitle": "ユーザー登録",
+    "firstName": "名",
+    "lastName": "姓",
+    "loginButton": "ログイン",
+    "registerButton": "登録",
+    "forgotPassword": "パスワードを忘れた方"
+  },
+  "attendance": {
+    "clockIn": "出勤",
+    "clockOut": "退勤",
+    "clockedIn": "出勤済み",
+    "clockedOut": "退勤済み",
+    "notClockedIn": "未出勤",
+    "workTime": "勤務時間",
+    "overtime": "残業時間",
+    "breakTime": "休憩時間",
+    "todayStatus": "本日の勤怠",
+    "history": "勤怠履歴",
+    "summary": "勤怠サマリー",
+    "totalWorkDays": "総出勤日数",
+    "totalWorkHours": "総勤務時間",
+    "totalOvertime": "総残業時間",
+    "averageWorkHours": "平均勤務時間",
+    "note": "メモ"
+  },
+  "leaves": {
+    "title": "休暇申請",
+    "newRequest": "新規申請",
+    "type": "休暇種別",
+    "startDate": "開始日",
+    "endDate": "終了日",
+    "reason": "理由",
+    "status": "ステータス",
+    "pending": "承認待ち",
+    "approved": "承認済み",
+    "rejected": "却下",
+    "approve": "承認",
+    "reject": "却下",
+    "types": {
+      "paid": "有給休暇",
+      "sick": "病気休暇",
+      "special": "特別休暇",
+      "half": "半休"
+    }
+  },
+  "shifts": {
+    "title": "シフト管理",
+    "create": "シフト作成",
+    "bulkCreate": "一括作成",
+    "types": {
+      "morning": "早番",
+      "day": "日勤",
+      "evening": "遅番",
+      "night": "夜勤",
+      "off": "休み"
+    }
+  },
+  "dashboard": {
+    "title": "ダッシュボード",
+    "todayPresent": "本日出勤",
+    "todayAbsent": "本日欠勤",
+    "pendingLeaves": "承認待ち休暇",
+    "monthlyOvertime": "今月の残業"
+  },
+  "users": {
+    "title": "ユーザー管理",
+    "roles": {
+      "admin": "管理者",
+      "manager": "マネージャー",
+      "employee": "一般社員"
+    }
+  }
+}

@@ -1,0 +1,51 @@
+# ==== General ====
+.DS_Store
+*.log
+*.swp
+*.swo
+.env
+.env.local
+.env.*.local
+
+# ==== Go ====
+backend/tmp/
+backend/vendor/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+coverage.out
+coverage.html
+
+# ==== Node.js ====
+frontend/node_modules/
+frontend/dist/
+frontend/.cache/
+frontend/coverage/
+frontend/storybook-static/
+frontend/playwright-report/
+frontend/test-results/
+
+# ==== IDE ====
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ==== Terraform ====
+infrastructure/**/.terraform/
+infrastructure/**/*.tfstate
+infrastructure/**/*.tfstate.*
+infrastructure/**/*.tfvars
+infrastructure/**/crash.log
+infrastructure/**/.terraform.lock.hcl
+*.tfplan
+
+# ==== Docker ====
+docker-data/

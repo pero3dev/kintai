@@ -1,0 +1,181 @@
+import { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
+import { api } from '@/api/client';
+import { format } from 'date-fns';
+import { ja } from 'date-fns/locale';
+import { Clock, LogIn, LogOut } from 'lucide-react';
+
+export function AttendancePage() {
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  const [note, setNote] = useState('');
+
+  const { data: todayStatus } = useQuery({
+    queryKey: ['attendance', 'today'],
+    queryFn: () => api.attendance.getToday(),
+    refetchInterval: 30000,
+  });
+
+  const { data: attendanceList } = useQuery({
+    queryKey: ['attendance', 'list'],
+    queryFn: () => api.attendance.getList({ page: 1, page_size: 31 }),
+  });
+
+  const { data: summary } = useQuery({
+    queryKey: ['attendance', 'summary'],
+    queryFn: () => api.attendance.getSummary(),
+  });
+
+  const clockInMutation = useMutation({
+    mutationFn: () => api.attendance.clockIn({ note }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['attendance'] });
+      setNote('');
+    },
+  });
+
+  const clockOutMutation = useMutation({
+    mutationFn: () => api.attendance.clockOut({ note }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['attendance'] });
+      setNote('');
+    },
+  });
+
+  const isClockedIn = todayStatus?.clock_in && !todayStatus?.clock_out;
+  const isClockedOut = todayStatus?.clock_in && todayStatus?.clock_out;
+
+  return (
+    <div className="space-y-6">
+      <h1 className="text-2xl font-bold">{t('nav.attendance')}</h1>
+
+      {/* 打刻セクション */}
+      <div className="bg-card border border-border rounded-lg p-6">
+        <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+          <Clock className="h-5 w-5" />
+          {t('attendance.todayStatus')}
+        </h2>
+
+        <div className="text-center py-6">
+          <p className="text-4xl font-mono font-bold text-primary mb-2">
+            {format(new Date(), 'HH:mm:ss')}
+          </p>
+          <p className="text-muted-foreground">
+            {format(new Date(), 'yyyy年MM月dd日 (EEEE)', { locale: ja })}
+          </p>
+        </div>
+
+        {/* 打刻ボタン */}
+        <div className="flex flex-col items-center gap-4">
+          <input
+            type="text"
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            placeholder={t('attendance.note')}
+            className="w-full max-w-md px-3 py-2 border border-input rounded-md bg-background"
+          />
+          <div className="flex gap-4">
+            <button
+              onClick={() => clockInMutation.mutate()}
+              disabled={!!isClockedIn || !!isClockedOut || clockInMutation.isPending}
+              className="flex items-center gap-2 px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-lg"
+            >
+              <LogIn className="h-5 w-5" />
+              {t('attendance.clockIn')}
+            </button>
+            <button
+              onClick={() => clockOutMutation.mutate()}
+              disabled={!isClockedIn || clockOutMutation.isPending}
+              className="flex items-center gap-2 px-8 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-lg"
+            >
+              <LogOut className="h-5 w-5" />
+              {t('attendance.clockOut')}
+            </button>
+          </div>
+
+          {todayStatus?.clock_in && (
+            <div className="text-sm text-muted-foreground">
+              {t('attendance.clockIn')}: {new Date(todayStatus.clock_in).toLocaleTimeString('ja-JP')}
+              {todayStatus.clock_out && (
+                <> | {t('attendance.clockOut')}: {new Date(todayStatus.clock_out).toLocaleTimeString('ja-JP')}</>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* サマリー */}
+      {summary && (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="bg-card border border-border rounded-lg p-4">
+            <p className="text-sm text-muted-foreground">{t('attendance.totalWorkDays')}</p>
+            <p className="text-2xl font-bold">{summary.total_work_days}日</p>
+          </div>
+          <div className="bg-card border border-border rounded-lg p-4">
+            <p className="text-sm text-muted-foreground">{t('attendance.totalWorkHours')}</p>
+            <p className="text-2xl font-bold">{Math.round(summary.total_work_minutes / 60)}h</p>
+          </div>
+          <div className="bg-card border border-border rounded-lg p-4">
+            <p className="text-sm text-muted-foreground">{t('attendance.totalOvertime')}</p>
+            <p className="text-2xl font-bold">{Math.round(summary.total_overtime_minutes / 60)}h</p>
+          </div>
+          <div className="bg-card border border-border rounded-lg p-4">
+            <p className="text-sm text-muted-foreground">{t('attendance.averageWorkHours')}</p>
+            <p className="text-2xl font-bold">{(summary.average_work_minutes / 60).toFixed(1)}h</p>
+          </div>
+        </div>
+      )}
+
+      {/* 勤怠履歴 */}
+      <div className="bg-card border border-border rounded-lg p-6">
+        <h2 className="text-lg font-semibold mb-4">{t('attendance.history')}</h2>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border">
+                <th className="text-left py-2 px-4">日付</th>
+                <th className="text-left py-2 px-4">{t('attendance.clockIn')}</th>
+                <th className="text-left py-2 px-4">{t('attendance.clockOut')}</th>
+                <th className="text-right py-2 px-4">{t('attendance.workTime')}</th>
+                <th className="text-right py-2 px-4">{t('attendance.overtime')}</th>
+                <th className="text-left py-2 px-4">ステータス</th>
+              </tr>
+            </thead>
+            <tbody>
+              {attendanceList?.data?.map((record: Record<string, unknown>) => (
+                <tr key={record.id as string} className="border-b border-border/50 hover:bg-accent/50">
+                  <td className="py-2 px-4">
+                    {format(new Date(record.date as string), 'MM/dd (EEE)', { locale: ja })}
+                  </td>
+                  <td className="py-2 px-4">
+                    {record.clock_in ? new Date(record.clock_in as string).toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' }) : '-'}
+                  </td>
+                  <td className="py-2 px-4">
+                    {record.clock_out ? new Date(record.clock_out as string).toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' }) : '-'}
+                  </td>
+                  <td className="text-right py-2 px-4">
+                    {record.work_minutes ? `${Math.floor(record.work_minutes as number / 60)}h ${(record.work_minutes as number) % 60}m` : '-'}
+                  </td>
+                  <td className="text-right py-2 px-4">
+                    {(record.overtime_minutes as number) > 0 ? `${Math.floor(record.overtime_minutes as number / 60)}h ${(record.overtime_minutes as number) % 60}m` : '-'}
+                  </td>
+                  <td className="py-2 px-4">
+                    <span className={`px-2 py-1 rounded-full text-xs ${
+                      record.status === 'present' ? 'bg-green-100 text-green-800' :
+                      record.status === 'absent' ? 'bg-red-100 text-red-800' :
+                      record.status === 'leave' ? 'bg-blue-100 text-blue-800' :
+                      'bg-gray-100 text-gray-800'
+                    }`}>
+                      {record.status as string}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
