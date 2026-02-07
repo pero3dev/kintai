@@ -123,8 +123,12 @@ export const api = {
       const query = new URLSearchParams(params as Record<string, string>).toString();
       return fetchWithAuth(`/users?${query}`);
     },
+    create: (data: { email: string; password: string; first_name: string; last_name: string; role: string; department_id?: string }) =>
+      fetchWithAuth('/users', { method: 'POST', body: JSON.stringify(data) }),
     update: (id: string, data: Record<string, unknown>) =>
       fetchWithAuth(`/users/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+    delete: (id: string) =>
+      fetchWithAuth(`/users/${id}`, { method: 'DELETE' }),
   },
 
   // 部署

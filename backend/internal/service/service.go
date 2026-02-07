@@ -5,6 +5,7 @@ import (
 	"errors"
 	"time"
 
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	"github.com/your-org/kintai/backend/internal/config"
 	"github.com/your-org/kintai/backend/internal/model"
@@ -84,12 +85,39 @@ func (s *authService) Login(ctx context.Context, req *model.LoginRequest) (*mode
 		return nil, ErrInvalidCredentials
 	}
 
-	// TODO: JWT トークン生成の実装
+	// JWTアクセストークン生成
+	accessToken, err := s.generateToken(user, time.Duration(s.deps.Config.JWTAccessTokenExpiry)*time.Minute)
+	if err != nil {
+		return nil, err
+	}
+
+	// リフレッシュトークン生成
+	refreshToken, err := s.generateToken(user, time.Duration(s.deps.Config.JWTRefreshTokenExpiry)*time.Hour)
+	if err != nil {
+		return nil, err
+	}
+
+	// パスワードハッシュをクリアしてから返す
+	user.PasswordHash = ""
+
 	return &model.TokenResponse{
-		AccessToken:  "access-token-placeholder",
-		RefreshToken: "refresh-token-placeholder",
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
 		ExpiresIn:    s.deps.Config.JWTAccessTokenExpiry * 60,
+		User:         user,
 	}, nil
+}
+
+func (s *authService) generateToken(user *model.User, expiry time.Duration) (string, error) {
+	claims := jwt.MapClaims{
+		"sub":  user.ID.String(),
+		"email": user.Email,
+		"role": string(user.Role),
+		"exp":  time.Now().Add(expiry).Unix(),
+		"iat":  time.Now().Unix(),
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString([]byte(s.deps.Config.JWTSecretKey))
 }
 
 func (s *authService) Register(ctx context.Context, req *model.RegisterRequest) (*model.User, error) {
@@ -120,8 +148,53 @@ func (s *authService) Register(ctx context.Context, req *model.RegisterRequest) 
 }
 
 func (s *authService) RefreshToken(ctx context.Context, refreshToken string) (*model.TokenResponse, error) {
-	// TODO: リフレッシュトークンの検証と新トークン発行
-	return nil, errors.New("未実装")
+	// リフレッシュトークンの検証
+	token, err := jwt.Parse(refreshToken, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New("unexpected signing method")
+		}
+		return []byte(s.deps.Config.JWTSecretKey), nil
+	})
+	if err != nil || !token.Valid {
+		return nil, ErrInvalidCredentials
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return nil, ErrInvalidCredentials
+	}
+
+	userIDStr, ok := claims["sub"].(string)
+	if !ok {
+		return nil, ErrInvalidCredentials
+	}
+
+	userID, err := uuid.Parse(userIDStr)
+	if err != nil {
+		return nil, ErrInvalidCredentials
+	}
+
+	user, err := s.deps.Repos.User.FindByID(ctx, userID)
+	if err != nil {
+		return nil, ErrUserNotFound
+	}
+
+	// 新しいトークンを生成
+	accessToken, err := s.generateToken(user, time.Duration(s.deps.Config.JWTAccessTokenExpiry)*time.Minute)
+	if err != nil {
+		return nil, err
+	}
+
+	newRefreshToken, err := s.generateToken(user, time.Duration(s.deps.Config.JWTRefreshTokenExpiry)*time.Hour)
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.TokenResponse{
+		AccessToken:  accessToken,
+		RefreshToken: newRefreshToken,
+		ExpiresIn:    s.deps.Config.JWTAccessTokenExpiry * 60,
+	}, nil
 }
 
 func (s *authService) Logout(ctx context.Context, userID uuid.UUID) error {
@@ -367,6 +440,7 @@ func (s *shiftService) Delete(ctx context.Context, id uuid.UUID) error {
 // ===== UserService =====
 
 type UserService interface {
+	Create(ctx context.Context, req *model.UserCreateRequest) (*model.User, error)
 	GetByID(ctx context.Context, id uuid.UUID) (*model.User, error)
 	GetAll(ctx context.Context, page, pageSize int) ([]model.User, int64, error)
 	Update(ctx context.Context, id uuid.UUID, req *model.UserUpdateRequest) (*model.User, error)
@@ -379,6 +453,36 @@ type userService struct {
 
 func NewUserService(deps Deps) UserService {
 	return &userService{deps: deps}
+}
+
+func (s *userService) Create(ctx context.Context, req *model.UserCreateRequest) (*model.User, error) {
+	// 既存メールチェック
+	existing, _ := s.deps.Repos.User.FindByEmail(ctx, req.Email)
+	if existing != nil {
+		return nil, ErrEmailAlreadyExists
+	}
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return nil, err
+	}
+
+	user := &model.User{
+		Email:        req.Email,
+		PasswordHash: string(hashedPassword),
+		FirstName:    req.FirstName,
+		LastName:     req.LastName,
+		Role:         req.Role,
+		DepartmentID: req.DepartmentID,
+		IsActive:     true,
+	}
+
+	if err := s.deps.Repos.User.Create(ctx, user); err != nil {
+		return nil, err
+	}
+
+	user.PasswordHash = ""
+	return user, nil
 }
 
 func (s *userService) GetByID(ctx context.Context, id uuid.UUID) (*model.User, error) {
@@ -410,11 +514,19 @@ func (s *userService) Update(ctx context.Context, id uuid.UUID, req *model.UserU
 	if req.IsActive != nil {
 		user.IsActive = *req.IsActive
 	}
+	if req.Password != nil && *req.Password != "" {
+		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(*req.Password), bcrypt.DefaultCost)
+		if err != nil {
+			return nil, err
+		}
+		user.PasswordHash = string(hashedPassword)
+	}
 
 	if err := s.deps.Repos.User.Update(ctx, user); err != nil {
 		return nil, err
 	}
 
+	user.PasswordHash = ""
 	return user, nil
 }
 
@@ -481,10 +593,31 @@ func NewDashboardService(deps Deps) DashboardService {
 }
 
 func (s *dashboardService) GetStats(ctx context.Context) (*model.DashboardStats, error) {
-	// TODO: ダッシュボード統計の実装
+	// 今日の出勤者数
+	todayPresent, _ := s.deps.Repos.Attendance.CountTodayPresent(ctx)
+
+	// 総ユーザー数を取得
+	_, totalUsers, _ := s.deps.Repos.User.FindAll(ctx, 1, 1)
+
+	// 今日の欠勤者数（総ユーザー数 - 出勤者数）
+	todayAbsent := totalUsers - todayPresent
+	if todayAbsent < 0 {
+		todayAbsent = 0
+	}
+
+	// 承認待ちの休暇申請数
 	pendingLeaves, _ := s.deps.Repos.LeaveRequest.CountPending(ctx)
 
+	// 今月の残業時間
+	now := time.Now()
+	monthStart := time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, time.Local)
+	monthEnd := monthStart.AddDate(0, 1, 0).Add(-time.Second)
+	monthlyOvertime, _ := s.deps.Repos.Attendance.GetMonthlyOvertime(ctx, monthStart, monthEnd)
+
 	return &model.DashboardStats{
-		PendingLeaves: int(pendingLeaves),
+		TodayPresentCount: int(todayPresent),
+		TodayAbsentCount:  int(todayAbsent),
+		PendingLeaves:     int(pendingLeaves),
+		MonthlyOvertime:   int(monthlyOvertime),
 	}, nil
 }

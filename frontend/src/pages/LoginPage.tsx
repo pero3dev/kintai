@@ -32,8 +32,8 @@ export function LoginPage() {
     try {
       setError(null);
       const response = await api.auth.login(data);
-      const userInfo = await api.users.getMe();
-      setAuth(userInfo, response.access_token, response.refresh_token);
+      // ログインレスポンスからユーザー情報を取得
+      setAuth(response.user, response.access_token, response.refresh_token);
       navigate({ to: '/' });
     } catch (err) {
       setError(err instanceof Error ? err.message : t('common.error'));

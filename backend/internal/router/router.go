@@ -84,7 +84,9 @@ func Setup(r *gin.Engine, h *handler.Handlers, mw *middleware.Middleware) {
 
 				// ユーザー管理
 				admin.GET("/users", h.User.GetAll)
+				admin.POST("/users", h.User.Create)
 				admin.PUT("/users/:id", h.User.Update)
+				admin.DELETE("/users/:id", h.User.Delete)
 
 				// シフト管理
 				admin.POST("/shifts", h.Shift.Create)

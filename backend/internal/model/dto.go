@@ -24,6 +24,7 @@ type TokenResponse struct {
 	AccessToken  string `json:"access_token"`
 	RefreshToken string `json:"refresh_token"`
 	ExpiresIn    int    `json:"expires_in"`
+	User         *User  `json:"user,omitempty"`
 }
 
 type RefreshTokenRequest struct {
@@ -90,12 +91,22 @@ type ShiftBulkCreateRequest struct {
 
 // ===== ユーザー管理 =====
 
+type UserCreateRequest struct {
+	Email        string     `json:"email" validate:"required,email"`
+	Password     string     `json:"password" validate:"required,min=8"`
+	FirstName    string     `json:"first_name" validate:"required"`
+	LastName     string     `json:"last_name" validate:"required"`
+	Role         Role       `json:"role" validate:"required,oneof=admin manager employee"`
+	DepartmentID *uuid.UUID `json:"department_id"`
+}
+
 type UserUpdateRequest struct {
 	FirstName    *string    `json:"first_name"`
 	LastName     *string    `json:"last_name"`
 	Role         *Role      `json:"role"`
 	DepartmentID *uuid.UUID `json:"department_id"`
 	IsActive     *bool      `json:"is_active"`
+	Password     *string    `json:"password"`
 }
 
 // ===== ページネーション =====

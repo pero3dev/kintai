@@ -112,6 +112,9 @@ type AttendanceRepository interface {
 	FindByDateRange(ctx context.Context, start, end time.Time) ([]model.Attendance, error)
 	Update(ctx context.Context, attendance *model.Attendance) error
 	GetSummary(ctx context.Context, userID uuid.UUID, start, end time.Time) (*model.AttendanceSummary, error)
+	CountTodayPresent(ctx context.Context) (int64, error)
+	CountTodayAbsent(ctx context.Context, totalUsers int64) (int64, error)
+	GetMonthlyOvertime(ctx context.Context, start, end time.Time) (int64, error)
 }
 
 type attendanceRepository struct {
@@ -197,6 +200,32 @@ func (r *attendanceRepository) GetSummary(ctx context.Context, userID uuid.UUID,
 	summary.LeaveDays = int(leaveCount)
 
 	return &summary, nil
+}
+
+func (r *attendanceRepository) CountTodayPresent(ctx context.Context) (int64, error) {
+	var count int64
+	today := time.Now().Format("2006-01-02")
+	err := r.db.WithContext(ctx).Model(&model.Attendance{}).
+		Where("date = ? AND clock_in IS NOT NULL", today).
+		Count(&count).Error
+	return count, err
+}
+
+func (r *attendanceRepository) CountTodayAbsent(ctx context.Context, totalUsers int64) (int64, error) {
+	presentCount, err := r.CountTodayPresent(ctx)
+	if err != nil {
+		return 0, err
+	}
+	return totalUsers - presentCount, nil
+}
+
+func (r *attendanceRepository) GetMonthlyOvertime(ctx context.Context, start, end time.Time) (int64, error) {
+	var totalOvertime int64
+	err := r.db.WithContext(ctx).Model(&model.Attendance{}).
+		Where("date BETWEEN ? AND ?", start.Format("2006-01-02"), end.Format("2006-01-02")).
+		Select("COALESCE(SUM(overtime_minutes), 0)").
+		Scan(&totalOvertime).Error
+	return totalOvertime, err
 }
 
 // ===== LeaveRequestRepository =====

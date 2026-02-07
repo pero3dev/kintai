@@ -695,6 +695,52 @@ func (h *UserHandler) Update(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
+// CreateUser godoc
+// @Summary ユーザーを作成 (管理者用)
+// @Tags users
+// @Security BearerAuth
+// @Accept json
+// @Produce json
+// @Param body body model.UserCreateRequest true "ユーザー情報"
+// @Success 201 {object} model.User
+// @Router /users [post]
+func (h *UserHandler) Create(c *gin.Context) {
+	var req model.UserCreateRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: "リクエストが不正です", Details: err.Error()})
+		return
+	}
+
+	user, err := h.service.Create(c.Request.Context(), &req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusCreated, user)
+}
+
+// DeleteUser godoc
+// @Summary ユーザーを削除 (管理者用)
+// @Tags users
+// @Security BearerAuth
+// @Param id path string true "ユーザーID"
+// @Success 204
+// @Router /users/{id} [delete]
+func (h *UserHandler) Delete(c *gin.Context) {
+	id, err := parseUUID(c, "id")
+	if err != nil {
+		return
+	}
+
+	if err := h.service.Delete(c.Request.Context(), id); err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "削除に失敗しました"})
+		return
+	}
+
+	c.Status(http.StatusNoContent)
+}
+
 // ===== DepartmentHandler =====
 
 type DepartmentHandler struct {

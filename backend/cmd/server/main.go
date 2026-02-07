@@ -52,9 +52,17 @@ func main() {
 	}
 
 	// 開発環境のみAutoMigrate（本番はgolang-migrate使用）
+	// マイグレーションは手動で実行済みの場合はスキップ
 	if cfg.Env == "development" {
-		if err := model.AutoMigrate(db); err != nil {
-			zapLogger.Fatal("AutoMigrateに失敗", err)
+		// テーブルが存在するかチェック
+		var count int64
+		db.Raw("SELECT COUNT(*) FROM information_schema.tables WHERE table_name = 'users'").Scan(&count)
+		if count == 0 {
+			if err := model.AutoMigrate(db); err != nil {
+				zapLogger.Fatal("AutoMigrateに失敗", err)
+			}
+		} else {
+			zapLogger.Info("テーブルは既に存在するため、AutoMigrateをスキップします")
 		}
 	}
 
