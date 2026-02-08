@@ -172,25 +172,25 @@ type OvertimeRequestApproval struct {
 }
 
 type OvertimeAlert struct {
-	UserID              uuid.UUID `json:"user_id"`
-	UserName            string    `json:"user_name"`
-	MonthlyOvertimeHours float64  `json:"monthly_overtime_hours"`
-	YearlyOvertimeHours  float64  `json:"yearly_overtime_hours"`
-	MonthlyLimitHours   float64   `json:"monthly_limit_hours"`
-	YearlyLimitHours    float64   `json:"yearly_limit_hours"`
-	IsMonthlyExceeded   bool      `json:"is_monthly_exceeded"`
-	IsYearlyExceeded    bool      `json:"is_yearly_exceeded"`
+	UserID               uuid.UUID `json:"user_id"`
+	UserName             string    `json:"user_name"`
+	MonthlyOvertimeHours float64   `json:"monthly_overtime_hours"`
+	YearlyOvertimeHours  float64   `json:"yearly_overtime_hours"`
+	MonthlyLimitHours    float64   `json:"monthly_limit_hours"`
+	YearlyLimitHours     float64   `json:"yearly_limit_hours"`
+	IsMonthlyExceeded    bool      `json:"is_monthly_exceeded"`
+	IsYearlyExceeded     bool      `json:"is_yearly_exceeded"`
 }
 
 // ===== 有給休暇残日数 =====
 
 type LeaveBalanceResponse struct {
-	LeaveType   LeaveType `json:"leave_type"`
-	TotalDays   float64   `json:"total_days"`
-	UsedDays    float64   `json:"used_days"`
-	RemainingDays float64 `json:"remaining_days"`
-	CarriedOver float64   `json:"carried_over"`
-	FiscalYear  int       `json:"fiscal_year"`
+	LeaveType     LeaveType `json:"leave_type"`
+	TotalDays     float64   `json:"total_days"`
+	UsedDays      float64   `json:"used_days"`
+	RemainingDays float64   `json:"remaining_days"`
+	CarriedOver   float64   `json:"carried_over"`
+	FiscalYear    int       `json:"fiscal_year"`
 }
 
 type LeaveBalanceUpdate struct {
@@ -201,10 +201,10 @@ type LeaveBalanceUpdate struct {
 // ===== 勤怠修正申請 =====
 
 type AttendanceCorrectionCreate struct {
-	Date             string  `json:"date" validate:"required"`
+	Date              string  `json:"date" validate:"required"`
 	CorrectedClockIn  *string `json:"corrected_clock_in"`
 	CorrectedClockOut *string `json:"corrected_clock_out"`
-	Reason           string  `json:"reason" validate:"required"`
+	Reason            string  `json:"reason" validate:"required"`
 }
 
 type AttendanceCorrectionApproval struct {
@@ -289,17 +289,17 @@ type CalendarDay struct {
 }
 
 type WorkingDaysSummary struct {
-	TotalDays    int `json:"total_days"`
-	WorkingDays  int `json:"working_days"`
-	Holidays     int `json:"holidays"`
-	Weekends     int `json:"weekends"`
+	TotalDays   int `json:"total_days"`
+	WorkingDays int `json:"working_days"`
+	Holidays    int `json:"holidays"`
+	Weekends    int `json:"weekends"`
 }
 
 // ===== 承認フロー =====
 
 type ApprovalFlowCreateRequest struct {
-	Name     string           `json:"name" validate:"required"`
-	FlowType ApprovalFlowType `json:"flow_type" validate:"required,oneof=leave overtime correction"`
+	Name     string                `json:"name" validate:"required"`
+	FlowType ApprovalFlowType      `json:"flow_type" validate:"required,oneof=leave overtime correction"`
 	Steps    []ApprovalStepRequest `json:"steps" validate:"required,min=1"`
 }
 
@@ -319,29 +319,29 @@ type ApprovalFlowUpdateRequest struct {
 // ===== CSVエクスポート =====
 
 type ExportRequest struct {
-	Type      string `form:"type" validate:"required,oneof=attendance leaves overtime projects"`
-	StartDate string `form:"start_date" validate:"required"`
-	EndDate   string `form:"end_date" validate:"required"`
+	Type      string     `form:"type" validate:"required,oneof=attendance leaves overtime projects"`
+	StartDate string     `form:"start_date" validate:"required"`
+	EndDate   string     `form:"end_date" validate:"required"`
 	UserID    *uuid.UUID `form:"user_id"`
 }
 
 // ===== ダッシュボード拡張 =====
 
 type DashboardTrend struct {
-	Date             string  `json:"date"`
-	PresentCount     int     `json:"present_count"`
-	AbsentCount      int     `json:"absent_count"`
-	LeaveCount       int     `json:"leave_count"`
-	OvertimeMinutes  int     `json:"overtime_minutes"`
-	AttendanceRate   float64 `json:"attendance_rate"`
+	Date            string  `json:"date"`
+	PresentCount    int     `json:"present_count"`
+	AbsentCount     int     `json:"absent_count"`
+	LeaveCount      int     `json:"leave_count"`
+	OvertimeMinutes int     `json:"overtime_minutes"`
+	AttendanceRate  float64 `json:"attendance_rate"`
 }
 
 type DashboardStatsExtended struct {
 	DashboardStats
-	WeeklyTrend       []DashboardTrend `json:"weekly_trend"`
-	MonthlyTrend      []DashboardTrend `json:"monthly_trend"`
-	OvertimeAlerts    []OvertimeAlert  `json:"overtime_alerts"`
-	UpcomingHolidays  []Holiday        `json:"upcoming_holidays"`
-	PendingCorrections int             `json:"pending_corrections"`
-	PendingOvertimes   int             `json:"pending_overtimes"`
+	WeeklyTrend        []DashboardTrend `json:"weekly_trend"`
+	MonthlyTrend       []DashboardTrend `json:"monthly_trend"`
+	OvertimeAlerts     []OvertimeAlert  `json:"overtime_alerts"`
+	UpcomingHolidays   []Holiday        `json:"upcoming_holidays"`
+	PendingCorrections int              `json:"pending_corrections"`
+	PendingOvertimes   int              `json:"pending_overtimes"`
 }

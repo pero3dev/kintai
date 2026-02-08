@@ -184,15 +184,15 @@ const (
 // OvertimeRequest は残業申請モデル
 type OvertimeRequest struct {
 	BaseModel
-	UserID          uuid.UUID             `gorm:"type:uuid;not null;index" json:"user_id"`
-	Date            time.Time             `gorm:"type:date;not null" json:"date"`
-	PlannedMinutes  int                   `gorm:"not null" json:"planned_minutes"`
-	ActualMinutes   *int                  `json:"actual_minutes"`
-	Reason          string                `gorm:"size:500;not null" json:"reason"`
-	Status          OvertimeRequestStatus `gorm:"size:20;not null;default:'pending'" json:"status"`
-	ApprovedBy      *uuid.UUID            `gorm:"type:uuid" json:"approved_by"`
-	ApprovedAt      *time.Time            `json:"approved_at"`
-	RejectedReason  string                `gorm:"size:500" json:"rejected_reason"`
+	UserID         uuid.UUID             `gorm:"type:uuid;not null;index" json:"user_id"`
+	Date           time.Time             `gorm:"type:date;not null" json:"date"`
+	PlannedMinutes int                   `gorm:"not null" json:"planned_minutes"`
+	ActualMinutes  *int                  `json:"actual_minutes"`
+	Reason         string                `gorm:"size:500;not null" json:"reason"`
+	Status         OvertimeRequestStatus `gorm:"size:20;not null;default:'pending'" json:"status"`
+	ApprovedBy     *uuid.UUID            `gorm:"type:uuid" json:"approved_by"`
+	ApprovedAt     *time.Time            `json:"approved_at"`
+	RejectedReason string                `gorm:"size:500" json:"rejected_reason"`
 
 	User     *User `gorm:"foreignKey:UserID" json:"user,omitempty"`
 	Approver *User `gorm:"foreignKey:ApprovedBy" json:"approver,omitempty"`
@@ -203,12 +203,12 @@ type OvertimeRequest struct {
 // LeaveBalance は有給休暇残日数モデル
 type LeaveBalance struct {
 	BaseModel
-	UserID       uuid.UUID `gorm:"type:uuid;not null;index" json:"user_id"`
-	FiscalYear   int       `gorm:"not null" json:"fiscal_year"`
-	LeaveType    LeaveType `gorm:"size:20;not null" json:"leave_type"`
-	TotalDays    float64   `gorm:"not null;default:0" json:"total_days"`
-	UsedDays     float64   `gorm:"not null;default:0" json:"used_days"`
-	CarriedOver  float64   `gorm:"not null;default:0" json:"carried_over"`
+	UserID      uuid.UUID `gorm:"type:uuid;not null;index" json:"user_id"`
+	FiscalYear  int       `gorm:"not null" json:"fiscal_year"`
+	LeaveType   LeaveType `gorm:"size:20;not null" json:"leave_type"`
+	TotalDays   float64   `gorm:"not null;default:0" json:"total_days"`
+	UsedDays    float64   `gorm:"not null;default:0" json:"used_days"`
+	CarriedOver float64   `gorm:"not null;default:0" json:"carried_over"`
 
 	User *User `gorm:"foreignKey:UserID" json:"user,omitempty"`
 }
@@ -227,18 +227,18 @@ const (
 // AttendanceCorrection は勤怠修正申請モデル
 type AttendanceCorrection struct {
 	BaseModel
-	UserID         uuid.UUID        `gorm:"type:uuid;not null;index" json:"user_id"`
-	AttendanceID   *uuid.UUID       `gorm:"type:uuid" json:"attendance_id"`
-	Date           time.Time        `gorm:"type:date;not null" json:"date"`
-	OriginalClockIn  *time.Time     `json:"original_clock_in"`
-	OriginalClockOut *time.Time     `json:"original_clock_out"`
-	CorrectedClockIn  *time.Time    `json:"corrected_clock_in"`
-	CorrectedClockOut *time.Time    `json:"corrected_clock_out"`
-	Reason          string          `gorm:"size:500;not null" json:"reason"`
-	Status          CorrectionStatus `gorm:"size:20;not null;default:'pending'" json:"status"`
-	ApprovedBy      *uuid.UUID      `gorm:"type:uuid" json:"approved_by"`
-	ApprovedAt      *time.Time      `json:"approved_at"`
-	RejectedReason  string          `gorm:"size:500" json:"rejected_reason"`
+	UserID            uuid.UUID        `gorm:"type:uuid;not null;index" json:"user_id"`
+	AttendanceID      *uuid.UUID       `gorm:"type:uuid" json:"attendance_id"`
+	Date              time.Time        `gorm:"type:date;not null" json:"date"`
+	OriginalClockIn   *time.Time       `json:"original_clock_in"`
+	OriginalClockOut  *time.Time       `json:"original_clock_out"`
+	CorrectedClockIn  *time.Time       `json:"corrected_clock_in"`
+	CorrectedClockOut *time.Time       `json:"corrected_clock_out"`
+	Reason            string           `gorm:"size:500;not null" json:"reason"`
+	Status            CorrectionStatus `gorm:"size:20;not null;default:'pending'" json:"status"`
+	ApprovedBy        *uuid.UUID       `gorm:"type:uuid" json:"approved_by"`
+	ApprovedAt        *time.Time       `json:"approved_at"`
+	RejectedReason    string           `gorm:"size:500" json:"rejected_reason"`
 
 	User       *User       `gorm:"foreignKey:UserID" json:"user,omitempty"`
 	Attendance *Attendance `gorm:"foreignKey:AttendanceID" json:"attendance,omitempty"`
@@ -265,13 +265,13 @@ const (
 // Notification は通知モデル
 type Notification struct {
 	BaseModel
-	UserID   uuid.UUID        `gorm:"type:uuid;not null;index" json:"user_id"`
-	Type     NotificationType `gorm:"size:30;not null" json:"type"`
-	Title    string           `gorm:"size:200;not null" json:"title"`
-	Message  string           `gorm:"size:1000;not null" json:"message"`
-	IsRead   bool             `gorm:"default:false" json:"is_read"`
-	ReadAt   *time.Time       `json:"read_at"`
-	LinkURL  string           `gorm:"size:500" json:"link_url"`
+	UserID  uuid.UUID        `gorm:"type:uuid;not null;index" json:"user_id"`
+	Type    NotificationType `gorm:"size:30;not null" json:"type"`
+	Title   string           `gorm:"size:200;not null" json:"title"`
+	Message string           `gorm:"size:1000;not null" json:"message"`
+	IsRead  bool             `gorm:"default:false" json:"is_read"`
+	ReadAt  *time.Time       `json:"read_at"`
+	LinkURL string           `gorm:"size:500" json:"link_url"`
 
 	User *User `gorm:"foreignKey:UserID" json:"user,omitempty"`
 }
@@ -304,11 +304,11 @@ type Project struct {
 // TimeEntry は工数記録モデル
 type TimeEntry struct {
 	BaseModel
-	UserID      uuid.UUID  `gorm:"type:uuid;not null;index" json:"user_id"`
-	ProjectID   uuid.UUID  `gorm:"type:uuid;not null;index" json:"project_id"`
-	Date        time.Time  `gorm:"type:date;not null;index" json:"date"`
-	Minutes     int        `gorm:"not null" json:"minutes"`
-	Description string     `gorm:"size:500" json:"description"`
+	UserID      uuid.UUID `gorm:"type:uuid;not null;index" json:"user_id"`
+	ProjectID   uuid.UUID `gorm:"type:uuid;not null;index" json:"project_id"`
+	Date        time.Time `gorm:"type:date;not null;index" json:"date"`
+	Minutes     int       `gorm:"not null" json:"minutes"`
+	Description string    `gorm:"size:500" json:"description"`
 
 	User    *User    `gorm:"foreignKey:UserID" json:"user,omitempty"`
 	Project *Project `gorm:"foreignKey:ProjectID" json:"project,omitempty"`
@@ -359,9 +359,9 @@ type ApprovalFlow struct {
 type ApprovalStepType string
 
 const (
-	ApprovalStepManager  ApprovalStepType = "manager"   // 直属マネージャー
-	ApprovalStepRole     ApprovalStepType = "role"      // 特定ロール
-	ApprovalStepUser     ApprovalStepType = "user"      // 特定ユーザー
+	ApprovalStepManager ApprovalStepType = "manager" // 直属マネージャー
+	ApprovalStepRole    ApprovalStepType = "role"    // 特定ロール
+	ApprovalStepUser    ApprovalStepType = "user"    // 特定ユーザー
 )
 
 // ApprovalStep は承認ステップモデル

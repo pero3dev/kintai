@@ -764,7 +764,7 @@ func (s *leaveBalanceService) GetByUser(ctx context.Context, userID uuid.UUID, f
 		responses = append(responses, model.LeaveBalanceResponse{
 			LeaveType: b.LeaveType, TotalDays: b.TotalDays, UsedDays: b.UsedDays,
 			RemainingDays: b.TotalDays + b.CarriedOver - b.UsedDays,
-			CarriedOver: b.CarriedOver, FiscalYear: b.FiscalYear,
+			CarriedOver:   b.CarriedOver, FiscalYear: b.FiscalYear,
 		})
 	}
 	return responses, nil
