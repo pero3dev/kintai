@@ -74,11 +74,10 @@ export function DashboardPage() {
             <div>
               <p className="text-muted-foreground text-sm font-medium">{card.title}</p>
               <h3 className="text-3xl font-bold mt-1">{card.value}</h3>
-              <p className={`text-xs font-semibold flex items-center mt-2 ${
-                card.trend === 'up' ? 'text-emerald-500' : 
-                card.trend === 'warning' ? 'text-destructive' : 
-                'text-muted-foreground'
-              }`}>
+              <p className={`text-xs font-semibold flex items-center mt-2 ${card.trend === 'up' ? 'text-emerald-500' :
+                  card.trend === 'warning' ? 'text-destructive' :
+                    'text-muted-foreground'
+                }`}>
                 {card.trend === 'up' && <MaterialIcon name="trending_up" className="text-sm mr-1" />}
                 {card.trend === 'warning' && <MaterialIcon name="warning" className="text-sm mr-1" />}
                 {card.subtitle}
@@ -161,13 +160,12 @@ export function DashboardPage() {
                         <td className="px-6 py-4">{dept.total_employees}</td>
                         <td className="px-6 py-4">{dept.present_today}</td>
                         <td className="px-6 py-4 text-right">
-                          <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
-                            dept.attendance_rate >= 0.9 
-                              ? 'bg-emerald-500/20 text-emerald-400' 
-                              : dept.attendance_rate >= 0.7 
-                              ? 'bg-amber-500/20 text-amber-400' 
-                              : 'bg-destructive/20 text-destructive'
-                          }`}>
+                          <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${dept.attendance_rate >= 0.9
+                              ? 'bg-emerald-500/20 text-emerald-400'
+                              : dept.attendance_rate >= 0.7
+                                ? 'bg-amber-500/20 text-amber-400'
+                                : 'bg-destructive/20 text-destructive'
+                            }`}>
                             {(dept.attendance_rate * 100).toFixed(1)}%
                           </span>
                         </td>
@@ -191,30 +189,27 @@ export function DashboardPage() {
               </h2>
             </div>
             <div className="p-6 space-y-4">
-              <div className={`flex gap-4 p-4 rounded-lg ${
-                todayStatus?.clock_in
+              <div className={`flex gap-4 p-4 rounded-lg ${todayStatus?.clock_in
                   ? todayStatus?.clock_out
                     ? 'bg-muted/50 border border-border'
                     : 'bg-emerald-500/5 border border-emerald-500/20'
                   : 'bg-amber-500/5 border border-amber-500/20'
-              }`}>
-                <div className={`size-10 rounded-full flex items-center justify-center shrink-0 ${
-                  todayStatus?.clock_in
+                }`}>
+                <div className={`size-10 rounded-full flex items-center justify-center shrink-0 ${todayStatus?.clock_in
                     ? todayStatus?.clock_out
                       ? 'bg-muted text-muted-foreground'
                       : 'bg-emerald-500 text-white'
                     : 'bg-amber-500 text-white'
-                }`}>
+                  }`}>
                   <MaterialIcon name={todayStatus?.clock_in ? 'check_circle' : 'schedule'} className="text-xl" />
                 </div>
                 <div>
-                  <h4 className={`font-bold text-sm ${
-                    todayStatus?.clock_in
+                  <h4 className={`font-bold text-sm ${todayStatus?.clock_in
                       ? todayStatus?.clock_out
                         ? 'text-muted-foreground'
                         : 'text-emerald-400'
                       : 'text-amber-400'
-                  }`}>
+                    }`}>
                     {todayStatus?.clock_in
                       ? todayStatus?.clock_out
                         ? t('attendance.clockedOut')
@@ -246,7 +241,7 @@ export function DashboardPage() {
                 <span>{stats ? `${Math.round((stats.today_present_count / (stats.today_present_count + stats.today_absent_count)) * 100) || 0}%` : '-'} 達成</span>
               </div>
               <div className="w-full bg-white/30 h-3 rounded-full overflow-hidden">
-                <div 
+                <div
                   className="bg-background h-full rounded-full transition-all duration-500"
                   style={{ width: stats ? `${Math.round((stats.today_present_count / (stats.today_present_count + stats.today_absent_count)) * 100) || 0}%` : '0%' }}
                 ></div>

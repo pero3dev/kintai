@@ -60,11 +60,10 @@ export function Layout() {
             <Link
               key={item.to}
               to={item.to}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${
-                isActive(item.to)
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${isActive(item.to)
                   ? 'bg-primary text-primary-foreground font-semibold'
                   : 'text-muted-foreground hover:bg-primary/10'
-              }`}
+                }`}
             >
               <MaterialIcon name={item.icon} />
               <span>{item.label}</span>
