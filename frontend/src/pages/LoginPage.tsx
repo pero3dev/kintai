@@ -7,6 +7,11 @@ import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '@/stores/authStore';
 import { api } from '@/api/client';
 
+// Material Symbols icon component
+function MaterialIcon({ name, className = '' }: { name: string; className?: string }) {
+  return <span className={`material-symbols-outlined ${className}`}>{name}</span>;
+}
+
 const loginSchema = z.object({
   email: z.string().email('有効なメールアドレスを入力してください'),
   password: z.string().min(8, 'パスワードは8文字以上必要です'),
@@ -42,52 +47,87 @@ export function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="w-full max-w-md p-8 bg-card rounded-lg border border-border shadow-sm">
+      <div className="w-full max-w-md p-8 bg-card rounded-xl border border-border shadow-lg">
+        {/* ロゴ */}
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-primary">{t('common.appName')}</h1>
-          <p className="text-muted-foreground mt-2">{t('auth.loginDescription')}</p>
+          <div className="inline-flex items-center justify-center size-16 bg-primary rounded-xl mb-4">
+            <MaterialIcon name="schedule" className="text-4xl text-primary-foreground" />
+          </div>
+          <h1 className="text-2xl font-bold">{t('common.appName')}</h1>
+          <p className="text-muted-foreground mt-2 text-sm">{t('auth.loginDescription')}</p>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           {error && (
-            <div className="p-3 text-sm text-destructive bg-destructive/10 rounded-md">
-              {error}
+            <div className="flex items-center gap-3 p-4 text-sm text-destructive bg-destructive/10 rounded-lg border border-destructive/20">
+              <MaterialIcon name="error" className="text-xl" />
+              <span>{error}</span>
             </div>
           )}
 
           <div>
-            <label className="block text-sm font-medium mb-1">{t('common.email')}</label>
-            <input
-              type="email"
-              {...register('email')}
-              className="w-full px-3 py-2 border border-input rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-ring"
-              placeholder="user@example.com"
-            />
+            <label className="block text-sm font-medium mb-2">{t('common.email')}</label>
+            <div className="relative">
+              <MaterialIcon name="mail" className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <input
+                type="email"
+                {...register('email')}
+                className="w-full pl-10 pr-4 py-3 bg-black/20 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                placeholder="user@example.com"
+              />
+            </div>
             {errors.email && (
-              <p className="text-sm text-destructive mt-1">{errors.email.message}</p>
+              <p className="text-sm text-destructive mt-2 flex items-center gap-1">
+                <MaterialIcon name="warning" className="text-sm" />
+                {errors.email.message}
+              </p>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">{t('common.password')}</label>
-            <input
-              type="password"
-              {...register('password')}
-              className="w-full px-3 py-2 border border-input rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-ring"
-            />
+            <label className="block text-sm font-medium mb-2">{t('common.password')}</label>
+            <div className="relative">
+              <MaterialIcon name="lock" className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <input
+                type="password"
+                {...register('password')}
+                className="w-full pl-10 pr-4 py-3 bg-black/20 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                placeholder="••••••••"
+              />
+            </div>
             {errors.password && (
-              <p className="text-sm text-destructive mt-1">{errors.password.message}</p>
+              <p className="text-sm text-destructive mt-2 flex items-center gap-1">
+                <MaterialIcon name="warning" className="text-sm" />
+                {errors.password.message}
+              </p>
             )}
           </div>
 
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-2 px-4 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50 transition-colors"
+            className="w-full py-3 px-4 bg-primary text-primary-foreground font-bold rounded-lg hover:brightness-110 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
           >
-            {isSubmitting ? t('common.loading') : t('auth.loginButton')}
+            {isSubmitting ? (
+              <>
+                <MaterialIcon name="progress_activity" className="animate-spin" />
+                {t('common.loading')}
+              </>
+            ) : (
+              <>
+                <MaterialIcon name="login" />
+                {t('auth.loginButton')}
+              </>
+            )}
           </button>
         </form>
+
+        {/* 開発用ヒント */}
+        <div className="mt-6 p-4 bg-primary/5 rounded-lg border border-primary/20">
+          <p className="text-xs text-muted-foreground text-center">
+            開発環境: <code className="text-primary">admin@example.com</code> / <code className="text-primary">password123</code>
+          </p>
+        </div>
       </div>
     </div>
   );
