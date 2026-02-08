@@ -7,33 +7,38 @@ import { api } from '@/api/client';
 import { useAuthStore } from '@/stores/authStore';
 import { useState } from 'react';
 import { CalendarDays, Plus } from 'lucide-react';
+import { Pagination } from '@/components/ui/Pagination';
 
-const leaveSchema = z.object({
+const createLeaveSchema = (t: (key: string) => string) => z.object({
   leave_type: z.enum(['paid', 'sick', 'special', 'half']),
-  start_date: z.string().min(1, '開始日を入力してください'),
-  end_date: z.string().min(1, '終了日を入力してください'),
+  start_date: z.string().min(1, t('leaves.validation.startDateRequired')),
+  end_date: z.string().min(1, t('leaves.validation.endDateRequired')),
   reason: z.string().optional(),
 });
 
-type LeaveForm = z.infer<typeof leaveSchema>;
+type LeaveForm = z.infer<ReturnType<typeof createLeaveSchema>>;
 
 export function LeavesPage() {
   const { t } = useTranslation();
   const { user } = useAuthStore();
   const queryClient = useQueryClient();
   const [showForm, setShowForm] = useState(false);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
+  const [pendingPage, setPendingPage] = useState(1);
 
   const { data: myLeaves } = useQuery({
-    queryKey: ['leaves', 'my'],
-    queryFn: () => api.leaves.getList(),
+    queryKey: ['leaves', 'my', page, pageSize],
+    queryFn: () => api.leaves.getList({ page, page_size: pageSize }),
   });
 
   const { data: pendingLeaves } = useQuery({
-    queryKey: ['leaves', 'pending'],
-    queryFn: () => api.leaves.getPending(),
+    queryKey: ['leaves', 'pending', pendingPage],
+    queryFn: () => api.leaves.getPending({ page: pendingPage, page_size: 10 }),
     enabled: user?.role === 'admin' || user?.role === 'manager',
   });
 
+  const leaveSchema = createLeaveSchema(t);
   const { register, handleSubmit, reset, formState: { errors } } = useForm<LeaveForm>({
     resolver: zodResolver(leaveSchema),
   });
@@ -57,9 +62,9 @@ export function LeavesPage() {
 
   const statusBadge = (status: string) => {
     const styles: Record<string, string> = {
-      pending: 'bg-yellow-100 text-yellow-800',
-      approved: 'bg-green-100 text-green-800',
-      rejected: 'bg-red-100 text-red-800',
+      pending: 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30',
+      approved: 'bg-green-500/20 text-green-400 border border-green-500/30',
+      rejected: 'bg-red-500/20 text-red-400 border border-red-500/30',
     };
     const labels: Record<string, string> = {
       pending: t('leaves.pending'),
@@ -148,13 +153,13 @@ export function LeavesPage() {
                 <div className="flex gap-2">
                   <button
                     onClick={() => approveMutation.mutate({ id: leave.id as string, data: { status: 'approved' } })}
-                    className="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700"
+                    className="px-3 py-1 bg-green-600/80 text-white rounded text-sm hover:bg-green-600"
                   >
                     {t('leaves.approve')}
                   </button>
                   <button
                     onClick={() => approveMutation.mutate({ id: leave.id as string, data: { status: 'rejected' } })}
-                    className="px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700"
+                    className="px-3 py-1 bg-red-600/80 text-white rounded text-sm hover:bg-red-600"
                   >
                     {t('leaves.reject')}
                   </button>
@@ -162,12 +167,21 @@ export function LeavesPage() {
               </div>
             ))}
           </div>
+          {pendingLeaves?.total_pages > 1 && (
+            <Pagination
+              currentPage={pendingPage}
+              totalPages={pendingLeaves.total_pages}
+              totalItems={pendingLeaves.total}
+              pageSize={10}
+              onPageChange={setPendingPage}
+            />
+          )}
         </div>
       )}
 
       {/* 自分の申請一覧 */}
       <div className="bg-card border border-border rounded-lg p-6">
-        <h2 className="text-lg font-semibold mb-4">申請履歴</h2>
+        <h2 className="text-lg font-semibold mb-4">{t('leaves.history')}</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -195,6 +209,16 @@ export function LeavesPage() {
             </tbody>
           </table>
         </div>
+        {myLeaves?.total_pages > 0 && (
+          <Pagination
+            currentPage={page}
+            totalPages={myLeaves.total_pages}
+            totalItems={myLeaves.total}
+            pageSize={pageSize}
+            onPageChange={(p) => setPage(p)}
+            onPageSizeChange={(s) => { setPageSize(s); setPage(1); }}
+          />
+        )}
       </div>
     </div>
   );

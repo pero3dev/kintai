@@ -12,18 +12,19 @@ function MaterialIcon({ name, className = '' }: { name: string; className?: stri
   return <span className={`material-symbols-outlined ${className}`}>{name}</span>;
 }
 
-const loginSchema = z.object({
-  email: z.string().email('有効なメールアドレスを入力してください'),
-  password: z.string().min(8, 'パスワードは8文字以上必要です'),
+const createLoginSchema = (t: (key: string) => string) => z.object({
+  email: z.string().email(t('auth.validation.invalidEmail')),
+  password: z.string().min(8, t('auth.validation.passwordMin')),
 });
 
-type LoginForm = z.infer<typeof loginSchema>;
+type LoginForm = z.infer<ReturnType<typeof createLoginSchema>>;
 
 export function LoginPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { setAuth } = useAuthStore();
   const [error, setError] = useState<string | null>(null);
+  const loginSchema = createLoginSchema(t);
 
   const {
     register,
@@ -122,10 +123,10 @@ export function LoginPage() {
           </button>
         </form>
 
-        {/* 開発用ヒント */}
+        {/* Dev hint */}
         <div className="mt-6 p-4 bg-primary/5 rounded-lg border border-primary/20">
           <p className="text-xs text-muted-foreground text-center">
-            開発環境: <code className="text-primary">admin@example.com</code> / <code className="text-primary">password123</code>
+            {t('auth.devEnvironment')}: <code className="text-primary">admin@example.com</code> / <code className="text-primary">password123</code>
           </p>
         </div>
       </div>

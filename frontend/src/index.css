@@ -54,10 +54,6 @@
     @apply border-border;
   }
 
-  html {
-    @apply dark;
-  }
-
   body {
     @apply bg-background text-foreground;
     font-family: 'Inter', sans-serif;
@@ -68,4 +64,39 @@
   .text-balance {
     text-wrap: balance;
   }
+
+  /* カスタムスクロールバー */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 9999px;
+  }
+}
+
+/* ダークモードでのフォーム要素 */
+.dark input[type="date"],
+.dark input[type="time"],
+.dark select {
+  color-scheme: dark;
+}
+
+input[type="date"],
+input[type="time"],
+select {
+  color-scheme: light;
+}
+
+.dark input[type="date"],
+.dark input[type="time"],
+.dark select {
+  color-scheme: dark;
 }

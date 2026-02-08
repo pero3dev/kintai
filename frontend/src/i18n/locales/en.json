@@ -1,6 +1,7 @@
 {
   "common": {
     "appName": "Attendance Management System",
+    "subtitle": "Attendance Management",
     "login": "Login",
     "logout": "Logout",
     "email": "Email",
@@ -10,11 +11,57 @@
     "save": "Save",
     "delete": "Delete",
     "edit": "Edit",
+    "create": "Create",
     "confirm": "Confirm",
     "loading": "Loading...",
+    "downloading": "Downloading...",
     "error": "An error occurred",
     "success": "Success",
-    "noData": "No data available"
+    "noData": "No data available",
+    "search": "Search...",
+    "employee": "Employee",
+    "markAsRead": "Mark as read",
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "active": "Active",
+    "completed": "Completed",
+    "archived": "Archived",
+    "approve": "Approve",
+    "reject": "Reject",
+    "status": "Status",
+    "date": "Date",
+    "thisWeek": "This Week",
+    "selectPlaceholder": "Select...",
+    "budget": "Budget",
+    "hours": "hours",
+    "minutes": "min",
+    "totalHours": "Total Hours",
+    "budgetHours": "Budget (h)",
+    "memberCount": "Members",
+    "progress": "Progress",
+    "correctedTime": "Corrected",
+    "forgotClockPlaceholder": "Forgot to clock in/out, etc.",
+    "monthlyExceeded": "Monthly Exceeded",
+    "yearlyExceeded": "Yearly Exceeded",
+    "weekdays": {
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat"
+    }
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "sidebar": {
+    "expand": "Expand",
+    "collapse": "Collapse"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -22,7 +69,14 @@
     "leaves": "Leave Requests",
     "shifts": "Shift Management",
     "users": "User Management",
-    "settings": "Settings"
+    "settings": "Settings",
+    "overtime": "Overtime",
+    "corrections": "Corrections",
+    "notifications": "Notifications",
+    "projects": "Projects",
+    "holidays": "Calendar",
+    "export": "Export",
+    "approvalFlows": "Approval Flows"
   },
   "auth": {
     "loginTitle": "Login",
@@ -32,7 +86,12 @@
     "lastName": "Last Name",
     "loginButton": "Login",
     "registerButton": "Register",
-    "forgotPassword": "Forgot Password?"
+    "forgotPassword": "Forgot Password?",
+    "devEnvironment": "Dev environment",
+    "validation": {
+      "invalidEmail": "Please enter a valid email address",
+      "passwordMin": "Password must be at least 8 characters"
+    }
   },
   "attendance": {
     "clockIn": "Clock In",
@@ -65,17 +124,28 @@
     "rejected": "Rejected",
     "approve": "Approve",
     "reject": "Reject",
+    "history": "Request History",
     "types": {
       "paid": "Paid Leave",
       "sick": "Sick Leave",
       "special": "Special Leave",
       "half": "Half Day"
+    },
+    "validation": {
+      "startDateRequired": "Please enter a start date",
+      "endDateRequired": "Please enter an end date"
     }
   },
   "shifts": {
     "title": "Shift Management",
     "create": "Create Shift",
     "bulkCreate": "Bulk Create",
+    "register": "Register Shift",
+    "date": "Date",
+    "shiftType": "Shift Type",
+    "deleteConfirm": "Are you sure you want to delete this shift?",
+    "noUsers": "No users",
+    "noShiftData": "No shift data available",
     "types": {
       "morning": "Morning",
       "day": "Day",
@@ -89,14 +159,176 @@
     "todayPresent": "Present Today",
     "todayAbsent": "Absent Today",
     "pendingLeaves": "Pending Leaves",
-    "monthlyOvertime": "Monthly Overtime"
+    "monthlyOvertime": "Monthly Overtime",
+    "thisMonth": "this month",
+    "absent": "absent",
+    "allPresent": "All present",
+    "awaitingApproval": "awaiting approval",
+    "monthlyTotal": "monthly total",
+    "present": "Present",
+    "leave": "Leave",
+    "weeklyTrend": "Weekly Attendance Trend",
+    "departmentStatus": "Department Attendance Status",
+    "showAll": "Show All",
+    "departmentName": "Department",
+    "employeeCount": "Employees",
+    "presentToday": "Present Today",
+    "attendanceRate": "Attendance Rate",
+    "monthlyGoal": "Monthly Attendance Goal",
+    "goalDays": "Target Work Days",
+    "days": "days",
+    "achieved": "achieved"
   },
   "users": {
     "title": "User Management",
+    "role": "Role",
+    "department": "Department",
+    "unassigned": "Unassigned",
+    "name": "Name",
+    "status": "Status",
+    "actions": "Actions",
+    "active": "Active",
+    "inactive": "Inactive",
+    "passwordPlaceholder": "Enter only if changing",
+    "createNew": "Create New User",
+    "editUser": "Edit User",
+    "addNew": "New User",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "newPassword": "New Password",
+    "passwordRequirement": "8+ characters",
+    "requiredFieldsError": "Please fill in all required fields",
+    "deleteConfirm": "Are you sure you want to delete {{name}}?\nThis action cannot be undone.",
     "roles": {
       "admin": "Admin",
       "manager": "Manager",
       "employee": "Employee"
+    }
+  },
+  "overtime": {
+    "title": "Overtime Requests",
+    "newRequest": "New Overtime Request",
+    "date": "Date",
+    "plannedMinutes": "Planned Minutes",
+    "reason": "Reason",
+    "pending": "Pending Overtime Requests",
+    "history": "Request History",
+    "alerts": "36 Agreement Alerts",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "validation": {
+      "dateRequired": "Please enter a date",
+      "minutesRequired": "Please enter planned time",
+      "minutesMax": "Please enter within 8 hours",
+      "reasonRequired": "Please enter a reason"
+    }
+  },
+  "corrections": {
+    "title": "Attendance Corrections",
+    "newRequest": "New Correction Request",
+    "date": "Target Date",
+    "correctedClockIn": "Corrected Clock In",
+    "correctedClockOut": "Corrected Clock Out",
+    "reason": "Reason for Correction",
+    "pending": "Pending Corrections",
+    "history": "Correction History",
+    "validation": {
+      "dateRequired": "Please enter a date",
+      "reasonRequired": "Please enter a reason"
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Mark All as Read",
+    "empty": "No notifications"
+  },
+  "projects": {
+    "title": "Project Time Tracking",
+    "newProject": "New Project",
+    "logTime": "Log Time",
+    "list": "Project List",
+    "myTimeEntries": "My Time Entries",
+    "summary": "Time Summary",
+    "name": "Project Name",
+    "code": "Project Code",
+    "description": "Description",
+    "budgetHours": "Budget (Hours)",
+    "project": "Project",
+    "date": "Date",
+    "minutes": "Minutes",
+    "entryDescription": "Work Description",
+    "validation": {
+      "nameRequired": "Please enter a project name",
+      "codeRequired": "Please enter a project code",
+      "projectRequired": "Please select a project",
+      "dateRequired": "Please enter a date",
+      "minutesRequired": "Please enter time"
+    }
+  },
+  "holidays": {
+    "title": "Holidays & Calendar",
+    "add": "Add Holiday",
+    "date": "Date",
+    "name": "Name",
+    "type": "Type",
+    "recurring": "Recurring Yearly",
+    "yearMonth": "{{year}} / {{month}}",
+    "yearHolidays": "Holidays in {{year}}",
+    "workingDays": "Working Days",
+    "holidayCount": "Holidays",
+    "weekends": "Weekends",
+    "totalDays": "Total Days",
+    "types": {
+      "national": "National Holiday",
+      "company": "Company Holiday",
+      "optional": "Optional Holiday"
+    },
+    "validation": {
+      "dateRequired": "Please enter a date",
+      "nameRequired": "Please enter a name"
+    }
+  },
+  "export": {
+    "title": "Data Export",
+    "dateRange": "Date Range",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "attendance": "Attendance Data",
+    "leaves": "Leave Data",
+    "overtime": "Overtime Data",
+    "projects": "Project Time Data",
+    "adminOnly": "This feature is available for administrators only.",
+    "attendanceDesc": "Daily attendance data for employees (clock in/out times, work hours, overtime)",
+    "leavesDesc": "Leave request data (type, period, approval status)",
+    "overtimeDesc": "Overtime data and 36 Agreement violation status",
+    "projectsDesc": "Project-wise time tracking summary"
+  },
+  "approvalFlows": {
+    "title": "Approval Flow Management",
+    "create": "Create Flow",
+    "name": "Flow Name",
+    "flowType": "Target Type",
+    "steps": "Approval Steps",
+    "addStep": "Add Step",
+    "placeholder": "e.g. Leave Request Flow",
+    "step": "Step {{num}}",
+    "specifiedUser": "Specified User",
+    "active": "Active",
+    "inactive": "Inactive",
+    "enable": "Enable",
+    "disable": "Disable",
+    "flowTypes": {
+      "leave": "Leave Request",
+      "overtime": "Overtime Request",
+      "correction": "Attendance Correction"
+    },
+    "stepTypes": {
+      "role": "By Role",
+      "specificUser": "Specific User"
+    },
+    "validation": {
+      "nameRequired": "Please enter a name",
+      "stepsRequired": "At least one step is required"
     }
   }
 }

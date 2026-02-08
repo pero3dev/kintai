@@ -27,7 +27,7 @@ export function DashboardPage() {
     {
       title: t('dashboard.todayPresent'),
       value: stats?.today_present_count ?? '-',
-      subtitle: '+3 今月',
+      subtitle: `+3 ${t('dashboard.thisMonth')}`,
       icon: 'group',
       color: 'text-primary',
       bgColor: 'bg-primary/10',
@@ -36,7 +36,7 @@ export function DashboardPage() {
     {
       title: t('dashboard.todayAbsent'),
       value: stats?.today_absent_count ?? '-',
-      subtitle: stats?.today_absent_count && stats.today_absent_count > 0 ? `${stats.today_absent_count}名 欠勤` : '全員出勤',
+      subtitle: stats?.today_absent_count && stats.today_absent_count > 0 ? `${stats.today_absent_count} ${t('dashboard.absent')}` : t('dashboard.allPresent'),
       icon: 'error',
       color: 'text-destructive',
       bgColor: 'bg-destructive/10',
@@ -45,7 +45,7 @@ export function DashboardPage() {
     {
       title: t('dashboard.pendingLeaves'),
       value: stats?.pending_leaves ?? '-',
-      subtitle: '承認待ち',
+      subtitle: t('dashboard.awaitingApproval'),
       icon: 'event_available',
       color: 'text-primary',
       bgColor: 'bg-primary/10',
@@ -54,7 +54,7 @@ export function DashboardPage() {
     {
       title: t('dashboard.monthlyOvertime'),
       value: stats?.monthly_overtime ? `${Math.round(stats.monthly_overtime / 60)}h` : '-',
-      subtitle: '今月の合計',
+      subtitle: t('dashboard.monthlyTotal'),
       icon: 'schedule',
       color: 'text-emerald-500',
       bgColor: 'bg-emerald-500/10',
@@ -102,13 +102,13 @@ export function DashboardPage() {
               </h2>
               <div className="flex gap-2">
                 <span className="px-2 py-1 bg-emerald-500/10 text-emerald-500 text-[10px] font-bold rounded uppercase">
-                  出勤: {stats?.today_present_count ?? 0}
+                  {t('dashboard.present')}: {stats?.today_present_count ?? 0}
                 </span>
                 <span className="px-2 py-1 bg-amber-500/10 text-amber-500 text-[10px] font-bold rounded uppercase">
-                  休暇: {stats?.pending_leaves ?? 0}
+                  {t('dashboard.leave')}: {stats?.pending_leaves ?? 0}
                 </span>
                 <span className="px-2 py-1 bg-destructive/10 text-destructive text-[10px] font-bold rounded uppercase">
-                  欠勤: {stats?.today_absent_count ?? 0}
+                  {t('dashboard.absent')}: {stats?.today_absent_count ?? 0}
                 </span>
               </div>
             </div>
@@ -125,7 +125,7 @@ export function DashboardPage() {
                     <div className="w-8 bg-primary/60 h-18 rounded-t"></div>
                     <div className="w-8 bg-destructive h-8 rounded-t"></div>
                   </div>
-                  <p className="text-xs text-muted-foreground">週間勤怠統計トレンド</p>
+                  <p className="text-xs text-muted-foreground">{t('dashboard.weeklyTrend')}</p>
                 </div>
               </div>
             </div>
@@ -137,20 +137,20 @@ export function DashboardPage() {
               <div className="p-6 border-b border-border flex items-center justify-between">
                 <h2 className="font-bold text-lg flex items-center gap-2">
                   <MaterialIcon name="corporate_fare" className="text-primary" />
-                  部署別出勤状況
+                  {t('dashboard.departmentStatus')}
                 </h2>
                 <button className="text-primary text-sm font-semibold hover:underline">
-                  すべて表示
+                  {t('dashboard.showAll')}
                 </button>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm">
                   <thead>
                     <tr className="bg-black/20 text-muted-foreground font-medium">
-                      <th className="px-6 py-3">部署名</th>
-                      <th className="px-6 py-3">社員数</th>
-                      <th className="px-6 py-3">本日出勤</th>
-                      <th className="px-6 py-3 text-right">出勤率</th>
+                      <th className="px-6 py-3">{t('dashboard.departmentName')}</th>
+                      <th className="px-6 py-3">{t('dashboard.employeeCount')}</th>
+                      <th className="px-6 py-3">{t('dashboard.presentToday')}</th>
+                      <th className="px-6 py-3 text-right">{t('dashboard.attendanceRate')}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
@@ -233,12 +233,12 @@ export function DashboardPage() {
           <section className="bg-primary p-6 rounded-xl border border-primary text-primary-foreground shadow-lg shadow-primary/20">
             <h2 className="font-bold text-lg flex items-center gap-2 mb-4">
               <MaterialIcon name="trending_up" />
-              月間出勤目標
+              {t('dashboard.monthlyGoal')}
             </h2>
             <div className="space-y-4">
               <div className="flex justify-between text-sm font-bold">
-                <span>今月の目標</span>
-                <span>{stats ? `${Math.round((stats.today_present_count / (stats.today_present_count + stats.today_absent_count)) * 100) || 0}%` : '-'} 達成</span>
+                <span>{t('dashboard.monthlyGoal')}</span>
+                <span>{stats ? `${Math.round((stats.today_present_count / (stats.today_present_count + stats.today_absent_count)) * 100) || 0}%` : '-'} {t('dashboard.achieved')}</span>
               </div>
               <div className="w-full bg-white/30 h-3 rounded-full overflow-hidden">
                 <div
@@ -249,8 +249,8 @@ export function DashboardPage() {
               <div className="pt-4 border-t border-primary-foreground/10">
                 <div className="flex justify-between items-end">
                   <div>
-                    <p className="text-[10px] uppercase font-black opacity-60">目標出勤日数</p>
-                    <p className="text-2xl font-black">22 日</p>
+                    <p className="text-[10px] uppercase font-black opacity-60">{t('dashboard.goalDays')}</p>
+                    <p className="text-2xl font-black">22 {t('dashboard.days')}</p>
                   </div>
                   <MaterialIcon name="calendar_month" className="text-4xl opacity-20" />
                 </div>

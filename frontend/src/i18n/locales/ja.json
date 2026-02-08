@@ -1,6 +1,7 @@
 {
   "common": {
     "appName": "勤怠管理システム",
+    "subtitle": "勤怠管理",
     "login": "ログイン",
     "logout": "ログアウト",
     "email": "メールアドレス",
@@ -10,11 +11,57 @@
     "save": "保存",
     "delete": "削除",
     "edit": "編集",
+    "create": "作成",
     "confirm": "確認",
     "loading": "読み込み中...",
+    "downloading": "ダウンロード中...",
     "error": "エラーが発生しました",
     "success": "成功しました",
-    "noData": "データがありません"
+    "noData": "データがありません",
+    "search": "検索...",
+    "employee": "従業員",
+    "markAsRead": "既読にする",
+    "pending": "承認待ち",
+    "approved": "承認済み",
+    "rejected": "却下",
+    "active": "進行中",
+    "completed": "完了",
+    "archived": "アーカイブ",
+    "approve": "承認",
+    "reject": "却下",
+    "status": "ステータス",
+    "date": "日付",
+    "thisWeek": "今週",
+    "selectPlaceholder": "選択してください",
+    "budget": "予算",
+    "hours": "時間",
+    "minutes": "分",
+    "totalHours": "合計工数",
+    "budgetHours": "予算(h)",
+    "memberCount": "メンバー数",
+    "progress": "進捗",
+    "correctedTime": "修正後",
+    "forgotClockPlaceholder": "打刻忘れ等",
+    "monthlyExceeded": "月間超過",
+    "yearlyExceeded": "年間超過",
+    "weekdays": {
+      "sun": "日",
+      "mon": "月",
+      "tue": "火",
+      "wed": "水",
+      "thu": "木",
+      "fri": "金",
+      "sat": "土"
+    }
+  },
+  "theme": {
+    "light": "ライト",
+    "dark": "ダーク",
+    "system": "システム"
+  },
+  "sidebar": {
+    "expand": "展開",
+    "collapse": "折り畳み"
   },
   "nav": {
     "dashboard": "ダッシュボード",
@@ -22,7 +69,14 @@
     "leaves": "休暇申請",
     "shifts": "シフト管理",
     "users": "ユーザー管理",
-    "settings": "設定"
+    "settings": "設定",
+    "overtime": "残業申請",
+    "corrections": "勤怠修正",
+    "notifications": "通知",
+    "projects": "プロジェクト",
+    "holidays": "カレンダー",
+    "export": "エクスポート",
+    "approvalFlows": "承認フロー"
   },
   "auth": {
     "loginTitle": "ログイン",
@@ -32,7 +86,12 @@
     "lastName": "姓",
     "loginButton": "ログイン",
     "registerButton": "登録",
-    "forgotPassword": "パスワードを忘れた方"
+    "forgotPassword": "パスワードを忘れた方",
+    "devEnvironment": "開発環境",
+    "validation": {
+      "invalidEmail": "有効なメールアドレスを入力してください",
+      "passwordMin": "パスワードは8文字以上必要です"
+    }
   },
   "attendance": {
     "clockIn": "出勤",
@@ -65,17 +124,28 @@
     "rejected": "却下",
     "approve": "承認",
     "reject": "却下",
+    "history": "申請履歴",
     "types": {
       "paid": "有給休暇",
       "sick": "病気休暇",
       "special": "特別休暇",
       "half": "半休"
+    },
+    "validation": {
+      "startDateRequired": "開始日を入力してください",
+      "endDateRequired": "終了日を入力してください"
     }
   },
   "shifts": {
     "title": "シフト管理",
     "create": "シフト作成",
     "bulkCreate": "一括作成",
+    "register": "シフト登録",
+    "date": "日付",
+    "shiftType": "シフト種別",
+    "deleteConfirm": "このシフトを削除しますか？",
+    "noUsers": "ユーザーがいません",
+    "noShiftData": "シフトデータがありません",
     "types": {
       "morning": "早番",
       "day": "日勤",
@@ -89,14 +159,176 @@
     "todayPresent": "本日出勤",
     "todayAbsent": "本日欠勤",
     "pendingLeaves": "承認待ち休暇",
-    "monthlyOvertime": "今月の残業"
+    "monthlyOvertime": "今月の残業",
+    "thisMonth": "今月",
+    "absent": "欠勤",
+    "allPresent": "全員出勤",
+    "awaitingApproval": "承認待ち",
+    "monthlyTotal": "今月の合計",
+    "present": "出勤",
+    "leave": "休暇",
+    "weeklyTrend": "週間勤怠統計トレンド",
+    "departmentStatus": "部署別出勤状況",
+    "showAll": "すべて表示",
+    "departmentName": "部署名",
+    "employeeCount": "社員数",
+    "presentToday": "本日出勤",
+    "attendanceRate": "出勤率",
+    "monthlyGoal": "月間出勤目標",
+    "goalDays": "目標出勤日数",
+    "days": "日",
+    "achieved": "達成"
   },
   "users": {
     "title": "ユーザー管理",
+    "role": "役割",
+    "department": "部署",
+    "unassigned": "未所属",
+    "name": "名前",
+    "status": "ステータス",
+    "actions": "操作",
+    "active": "有効",
+    "inactive": "無効",
+    "passwordPlaceholder": "変更する場合のみ入力",
+    "createNew": "新規ユーザー作成",
+    "editUser": "ユーザー編集",
+    "addNew": "新規ユーザー",
+    "firstName": "名",
+    "lastName": "姓",
+    "newPassword": "新しいパスワード",
+    "passwordRequirement": "8文字以上",
+    "requiredFieldsError": "すべての必須項目を入力してください",
+    "deleteConfirm": "{{name}} を削除しますか？\nこの操作は取り消せません。",
     "roles": {
       "admin": "管理者",
       "manager": "マネージャー",
       "employee": "一般社員"
+    }
+  },
+  "overtime": {
+    "title": "残業申請",
+    "newRequest": "残業申請を作成",
+    "date": "日付",
+    "plannedMinutes": "予定時間（分）",
+    "reason": "理由",
+    "pending": "承認待ち残業申請",
+    "history": "申請履歴",
+    "alerts": "36協定アラート",
+    "monthly": "月間",
+    "yearly": "年間",
+    "validation": {
+      "dateRequired": "日付を入力してください",
+      "minutesRequired": "時間を入力してください",
+      "minutesMax": "8時間以内で入力してください",
+      "reasonRequired": "理由を入力してください"
+    }
+  },
+  "corrections": {
+    "title": "勤怠修正申請",
+    "newRequest": "修正申請を作成",
+    "date": "対象日",
+    "correctedClockIn": "修正後出勤時刻",
+    "correctedClockOut": "修正後退勤時刻",
+    "reason": "修正理由",
+    "pending": "承認待ち修正申請",
+    "history": "修正申請履歴",
+    "validation": {
+      "dateRequired": "日付を入力してください",
+      "reasonRequired": "理由を入力してください"
+    }
+  },
+  "notifications": {
+    "title": "通知",
+    "markAllRead": "すべて既読にする",
+    "empty": "通知はありません"
+  },
+  "projects": {
+    "title": "プロジェクト・工数管理",
+    "newProject": "新規プロジェクト",
+    "logTime": "工数を記録",
+    "list": "プロジェクト一覧",
+    "myTimeEntries": "自分の工数",
+    "summary": "工数サマリー",
+    "name": "プロジェクト名",
+    "code": "プロジェクトコード",
+    "description": "説明",
+    "budgetHours": "予算（時間）",
+    "project": "プロジェクト",
+    "date": "日付",
+    "minutes": "時間（分）",
+    "entryDescription": "作業内容",
+    "validation": {
+      "nameRequired": "プロジェクト名を入力してください",
+      "codeRequired": "コードを入力してください",
+      "projectRequired": "プロジェクトを選択してください",
+      "dateRequired": "日付を入力してください",
+      "minutesRequired": "時間を入力してください"
+    }
+  },
+  "holidays": {
+    "title": "祝日・カレンダー管理",
+    "add": "祝日を追加",
+    "date": "日付",
+    "name": "名称",
+    "type": "種別",
+    "recurring": "毎年繰り返し",
+    "yearMonth": "{{year}}年 {{month}}月",
+    "yearHolidays": "{{year}}年の祝日",
+    "workingDays": "営業日",
+    "holidayCount": "祝日",
+    "weekends": "週末",
+    "totalDays": "合計日数",
+    "types": {
+      "national": "国民の祝日",
+      "company": "会社休日",
+      "optional": "任意休日"
+    },
+    "validation": {
+      "dateRequired": "日付を入力してください",
+      "nameRequired": "名称を入力してください"
+    }
+  },
+  "export": {
+    "title": "データエクスポート",
+    "dateRange": "対象期間",
+    "startDate": "開始日",
+    "endDate": "終了日",
+    "attendance": "勤怠データ",
+    "leaves": "休暇データ",
+    "overtime": "残業データ",
+    "projects": "プロジェクト工数データ",
+    "adminOnly": "この機能は管理者のみ利用できます。",
+    "attendanceDesc": "従業員の日次勤怠データ（出退勤時刻、勤務時間、残業時間）",
+    "leavesDesc": "休暇申請データ（種別、期間、承認状況）",
+    "overtimeDesc": "残業データと36協定超過状況",
+    "projectsDesc": "プロジェクト別工数サマリー"
+  },
+  "approvalFlows": {
+    "title": "承認フロー管理",
+    "create": "フローを作成",
+    "name": "フロー名",
+    "flowType": "対象種別",
+    "steps": "承認ステップ",
+    "addStep": "ステップ追加",
+    "placeholder": "例：休暇申請フロー",
+    "step": "ステップ {{num}}",
+    "specifiedUser": "指定ユーザー",
+    "active": "有効",
+    "inactive": "無効",
+    "enable": "有効化",
+    "disable": "無効化",
+    "flowTypes": {
+      "leave": "休暇申請",
+      "overtime": "残業申請",
+      "correction": "勤怠修正"
+    },
+    "stepTypes": {
+      "role": "ロール指定",
+      "specificUser": "個人指定"
+    },
+    "validation": {
+      "nameRequired": "名前を入力してください",
+      "stepsRequired": "少なくとも1つのステップが必要です"
     }
   }
 }
