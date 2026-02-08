@@ -62,6 +62,13 @@ migrate-down: ## マイグレーションをロールバック
 migrate-create: ## 新しいマイグレーションを作成 (NAME=xxx)
 	migrate create -ext sql -dir backend/migrations -seq $(NAME)
 
+seed: ## 開発用シードデータを投入
+	docker compose exec -T postgres psql -U kintai -d kintai < backend/seeds/seed.sql
+
+seed-reset: ## データベースをリセットしてシードを投入
+	docker compose exec -T postgres psql -U kintai -d kintai -c "TRUNCATE users, departments, attendances, leave_requests, shifts, refresh_tokens CASCADE;"
+	docker compose exec -T postgres psql -U kintai -d kintai < backend/seeds/seed.sql
+
 # ---- Infrastructure ----
 tf-init: ## Terraform初期化 (dev)
 	cd infrastructure/environments/dev && terraform init
