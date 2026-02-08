@@ -10,6 +10,13 @@ import { AttendancePage } from './pages/AttendancePage';
 import { LeavesPage } from './pages/LeavesPage';
 import { ShiftsPage } from './pages/ShiftsPage';
 import { UsersPage } from './pages/UsersPage';
+import { OvertimePage } from './pages/OvertimePage';
+import { CorrectionsPage } from './pages/CorrectionsPage';
+import { NotificationsPage } from './pages/NotificationsPage';
+import { ProjectsPage } from './pages/ProjectsPage';
+import { HolidaysPage } from './pages/HolidaysPage';
+import { ExportPage } from './pages/ExportPage';
+import { ApprovalFlowsPage } from './pages/ApprovalFlowsPage';
 
 // ルートルート
 const rootRoute = createRootRoute({
@@ -65,6 +72,55 @@ const usersRoute = createRoute({
   component: UsersPage,
 });
 
+// 残業申請
+const overtimeRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/overtime',
+  component: OvertimePage,
+});
+
+// 勤怠修正
+const correctionsRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/corrections',
+  component: CorrectionsPage,
+});
+
+// 通知
+const notificationsRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/notifications',
+  component: NotificationsPage,
+});
+
+// プロジェクト
+const projectsRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/projects',
+  component: ProjectsPage,
+});
+
+// 祝日・カレンダー
+const holidaysRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/holidays',
+  component: HolidaysPage,
+});
+
+// エクスポート
+const exportRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/export',
+  component: ExportPage,
+});
+
+// 承認フロー
+const approvalFlowsRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/approval-flows',
+  component: ApprovalFlowsPage,
+});
+
 // ルートツリー
 export const routeTree = rootRoute.addChildren([
   loginRoute,
@@ -74,5 +130,12 @@ export const routeTree = rootRoute.addChildren([
     leavesRoute,
     shiftsRoute,
     usersRoute,
+    overtimeRoute,
+    correctionsRoute,
+    notificationsRoute,
+    projectsRoute,
+    holidaysRoute,
+    exportRoute,
+    approvalFlowsRoute,
   ]),
 ]);

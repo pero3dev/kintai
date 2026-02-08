@@ -14,27 +14,45 @@ import (
 
 // Handlers は全ハンドラーを束ねる構造体
 type Handlers struct {
-	Auth       *AuthHandler
-	Attendance *AttendanceHandler
-	Leave      *LeaveHandler
-	Shift      *ShiftHandler
-	User       *UserHandler
-	Department *DepartmentHandler
-	Dashboard  *DashboardHandler
-	Health     *HealthHandler
+	Auth                 *AuthHandler
+	Attendance           *AttendanceHandler
+	Leave                *LeaveHandler
+	Shift                *ShiftHandler
+	User                 *UserHandler
+	Department           *DepartmentHandler
+	Dashboard            *DashboardHandler
+	Health               *HealthHandler
+	OvertimeRequest      *OvertimeRequestHandler
+	LeaveBalance         *LeaveBalanceHandler
+	AttendanceCorrection *AttendanceCorrectionHandler
+	Notification         *NotificationHandler
+	Project              *ProjectHandler
+	TimeEntry            *TimeEntryHandler
+	Holiday              *HolidayHandler
+	ApprovalFlow         *ApprovalFlowHandler
+	Export               *ExportHandler
 }
 
 // NewHandlers は全ハンドラーを初期化する
 func NewHandlers(services *service.Services, logger *logger.Logger) *Handlers {
 	return &Handlers{
-		Auth:       NewAuthHandler(services.Auth, logger),
-		Attendance: NewAttendanceHandler(services.Attendance, logger),
-		Leave:      NewLeaveHandler(services.Leave, logger),
-		Shift:      NewShiftHandler(services.Shift, logger),
-		User:       NewUserHandler(services.User, logger),
-		Department: NewDepartmentHandler(services.Department, logger),
-		Dashboard:  NewDashboardHandler(services.Dashboard, logger),
-		Health:     NewHealthHandler(),
+		Auth:                 NewAuthHandler(services.Auth, logger),
+		Attendance:           NewAttendanceHandler(services.Attendance, logger),
+		Leave:                NewLeaveHandler(services.Leave, logger),
+		Shift:                NewShiftHandler(services.Shift, logger),
+		User:                 NewUserHandler(services.User, logger),
+		Department:           NewDepartmentHandler(services.Department, logger),
+		Dashboard:            NewDashboardHandler(services.Dashboard, logger),
+		Health:               NewHealthHandler(),
+		OvertimeRequest:      NewOvertimeRequestHandler(services.OvertimeRequest, logger),
+		LeaveBalance:         NewLeaveBalanceHandler(services.LeaveBalance, logger),
+		AttendanceCorrection: NewAttendanceCorrectionHandler(services.AttendanceCorrection, logger),
+		Notification:         NewNotificationHandler(services.Notification, logger),
+		Project:              NewProjectHandler(services.Project, logger),
+		TimeEntry:            NewTimeEntryHandler(services.TimeEntry, logger),
+		Holiday:              NewHolidayHandler(services.Holiday, logger),
+		ApprovalFlow:         NewApprovalFlowHandler(services.ApprovalFlow, logger),
+		Export:               NewExportHandler(services.Export, logger),
 	}
 }
 
@@ -795,4 +813,770 @@ func (h *DashboardHandler) GetStats(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, stats)
+}
+
+// ===== OvertimeRequestHandler =====
+
+type OvertimeRequestHandler struct {
+	service service.OvertimeRequestService
+	logger  *logger.Logger
+}
+
+func NewOvertimeRequestHandler(service service.OvertimeRequestService, logger *logger.Logger) *OvertimeRequestHandler {
+	return &OvertimeRequestHandler{service: service, logger: logger}
+}
+
+func (h *OvertimeRequestHandler) Create(c *gin.Context) {
+	userID, err := getUserIDFromContext(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, model.ErrorResponse{Code: 401, Message: "認証が必要です"})
+		return
+	}
+	var req model.OvertimeRequestCreate
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: "リクエストが不正です", Details: err.Error()})
+		return
+	}
+	overtime, err := h.service.Create(c.Request.Context(), userID, &req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusCreated, overtime)
+}
+
+func (h *OvertimeRequestHandler) Approve(c *gin.Context) {
+	id, err := parseUUID(c, "id")
+	if err != nil {
+		return
+	}
+	approverID, err := getUserIDFromContext(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, model.ErrorResponse{Code: 401, Message: "認証が必要です"})
+		return
+	}
+	var req model.OvertimeRequestApproval
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: "リクエストが不正です"})
+		return
+	}
+	overtime, err := h.service.Approve(c.Request.Context(), id, approverID, &req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, overtime)
+}
+
+func (h *OvertimeRequestHandler) GetMy(c *gin.Context) {
+	userID, err := getUserIDFromContext(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, model.ErrorResponse{Code: 401, Message: "認証が必要です"})
+		return
+	}
+	page, pageSize := parsePagination(c)
+	overtimes, total, err := h.service.GetByUser(c.Request.Context(), userID, page, pageSize)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "取得に失敗しました"})
+		return
+	}
+	paginatedResponse(c, overtimes, total, page, pageSize)
+}
+
+func (h *OvertimeRequestHandler) GetPending(c *gin.Context) {
+	page, pageSize := parsePagination(c)
+	overtimes, total, err := h.service.GetPending(c.Request.Context(), page, pageSize)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "取得に失敗しました"})
+		return
+	}
+	paginatedResponse(c, overtimes, total, page, pageSize)
+}
+
+func (h *OvertimeRequestHandler) GetAlerts(c *gin.Context) {
+	alerts, err := h.service.GetOvertimeAlerts(c.Request.Context())
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "アラートの取得に失敗しました"})
+		return
+	}
+	c.JSON(http.StatusOK, alerts)
+}
+
+// ===== LeaveBalanceHandler =====
+
+type LeaveBalanceHandler struct {
+	service service.LeaveBalanceService
+	logger  *logger.Logger
+}
+
+func NewLeaveBalanceHandler(service service.LeaveBalanceService, logger *logger.Logger) *LeaveBalanceHandler {
+	return &LeaveBalanceHandler{service: service, logger: logger}
+}
+
+func (h *LeaveBalanceHandler) GetMy(c *gin.Context) {
+	userID, err := getUserIDFromContext(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, model.ErrorResponse{Code: 401, Message: "認証が必要です"})
+		return
+	}
+	year, _ := strconv.Atoi(c.DefaultQuery("fiscal_year", strconv.Itoa(time.Now().Year())))
+	balances, err := h.service.GetByUser(c.Request.Context(), userID, year)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "取得に失敗しました"})
+		return
+	}
+	c.JSON(http.StatusOK, balances)
+}
+
+func (h *LeaveBalanceHandler) GetByUser(c *gin.Context) {
+	userID, err := parseUUID(c, "user_id")
+	if err != nil {
+		return
+	}
+	year, _ := strconv.Atoi(c.DefaultQuery("fiscal_year", strconv.Itoa(time.Now().Year())))
+	balances, err := h.service.GetByUser(c.Request.Context(), userID, year)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "取得に失敗しました"})
+		return
+	}
+	c.JSON(http.StatusOK, balances)
+}
+
+func (h *LeaveBalanceHandler) SetBalance(c *gin.Context) {
+	userID, err := parseUUID(c, "user_id")
+	if err != nil {
+		return
+	}
+	year, _ := strconv.Atoi(c.DefaultQuery("fiscal_year", strconv.Itoa(time.Now().Year())))
+	leaveTypeStr := c.Param("leave_type")
+	leaveType := model.LeaveType(leaveTypeStr)
+	var req model.LeaveBalanceUpdate
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: "リクエストが不正です"})
+		return
+	}
+	if err := h.service.SetBalance(c.Request.Context(), userID, year, leaveType, &req); err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "残日数を更新しました"})
+}
+
+func (h *LeaveBalanceHandler) Initialize(c *gin.Context) {
+	userID, err := parseUUID(c, "user_id")
+	if err != nil {
+		return
+	}
+	year, _ := strconv.Atoi(c.DefaultQuery("fiscal_year", strconv.Itoa(time.Now().Year())))
+	if err := h.service.InitializeForUser(c.Request.Context(), userID, year); err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusCreated, gin.H{"message": "有給残日数を初期化しました"})
+}
+
+// ===== AttendanceCorrectionHandler =====
+
+type AttendanceCorrectionHandler struct {
+	service service.AttendanceCorrectionService
+	logger  *logger.Logger
+}
+
+func NewAttendanceCorrectionHandler(service service.AttendanceCorrectionService, logger *logger.Logger) *AttendanceCorrectionHandler {
+	return &AttendanceCorrectionHandler{service: service, logger: logger}
+}
+
+func (h *AttendanceCorrectionHandler) Create(c *gin.Context) {
+	userID, err := getUserIDFromContext(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, model.ErrorResponse{Code: 401, Message: "認証が必要です"})
+		return
+	}
+	var req model.AttendanceCorrectionCreate
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: "リクエストが不正です", Details: err.Error()})
+		return
+	}
+	correction, err := h.service.Create(c.Request.Context(), userID, &req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusCreated, correction)
+}
+
+func (h *AttendanceCorrectionHandler) Approve(c *gin.Context) {
+	id, err := parseUUID(c, "id")
+	if err != nil {
+		return
+	}
+	approverID, err := getUserIDFromContext(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, model.ErrorResponse{Code: 401, Message: "認証が必要です"})
+		return
+	}
+	var req model.AttendanceCorrectionApproval
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: "リクエストが不正です"})
+		return
+	}
+	correction, err := h.service.Approve(c.Request.Context(), id, approverID, &req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, correction)
+}
+
+func (h *AttendanceCorrectionHandler) GetMy(c *gin.Context) {
+	userID, err := getUserIDFromContext(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, model.ErrorResponse{Code: 401, Message: "認証が必要です"})
+		return
+	}
+	page, pageSize := parsePagination(c)
+	corrections, total, err := h.service.GetByUser(c.Request.Context(), userID, page, pageSize)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "取得に失敗しました"})
+		return
+	}
+	paginatedResponse(c, corrections, total, page, pageSize)
+}
+
+func (h *AttendanceCorrectionHandler) GetPending(c *gin.Context) {
+	page, pageSize := parsePagination(c)
+	corrections, total, err := h.service.GetPending(c.Request.Context(), page, pageSize)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "取得に失敗しました"})
+		return
+	}
+	paginatedResponse(c, corrections, total, page, pageSize)
+}
+
+// ===== NotificationHandler =====
+
+type NotificationHandler struct {
+	service service.NotificationService
+	logger  *logger.Logger
+}
+
+func NewNotificationHandler(service service.NotificationService, logger *logger.Logger) *NotificationHandler {
+	return &NotificationHandler{service: service, logger: logger}
+}
+
+func (h *NotificationHandler) GetMy(c *gin.Context) {
+	userID, err := getUserIDFromContext(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, model.ErrorResponse{Code: 401, Message: "認証が必要です"})
+		return
+	}
+	page, pageSize := parsePagination(c)
+	var isRead *bool
+	if r := c.Query("is_read"); r != "" {
+		v := r == "true"
+		isRead = &v
+	}
+	notifications, total, err := h.service.GetByUser(c.Request.Context(), userID, isRead, page, pageSize)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "取得に失敗しました"})
+		return
+	}
+	paginatedResponse(c, notifications, total, page, pageSize)
+}
+
+func (h *NotificationHandler) GetUnreadCount(c *gin.Context) {
+	userID, err := getUserIDFromContext(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, model.ErrorResponse{Code: 401, Message: "認証が必要です"})
+		return
+	}
+	count, err := h.service.GetUnreadCount(c.Request.Context(), userID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "取得に失敗しました"})
+		return
+	}
+	c.JSON(http.StatusOK, model.NotificationCount{Unread: int(count)})
+}
+
+func (h *NotificationHandler) MarkAsRead(c *gin.Context) {
+	id, err := parseUUID(c, "id")
+	if err != nil {
+		return
+	}
+	if err := h.service.MarkAsRead(c.Request.Context(), id); err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: err.Error()})
+		return
+	}
+	c.Status(http.StatusNoContent)
+}
+
+func (h *NotificationHandler) MarkAllAsRead(c *gin.Context) {
+	userID, err := getUserIDFromContext(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, model.ErrorResponse{Code: 401, Message: "認証が必要です"})
+		return
+	}
+	if err := h.service.MarkAllAsRead(c.Request.Context(), userID); err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "更新に失敗しました"})
+		return
+	}
+	c.Status(http.StatusNoContent)
+}
+
+func (h *NotificationHandler) Delete(c *gin.Context) {
+	id, err := parseUUID(c, "id")
+	if err != nil {
+		return
+	}
+	if err := h.service.Delete(c.Request.Context(), id); err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "削除に失敗しました"})
+		return
+	}
+	c.Status(http.StatusNoContent)
+}
+
+// ===== ProjectHandler =====
+
+type ProjectHandler struct {
+	service service.ProjectService
+	logger  *logger.Logger
+}
+
+func NewProjectHandler(service service.ProjectService, logger *logger.Logger) *ProjectHandler {
+	return &ProjectHandler{service: service, logger: logger}
+}
+
+func (h *ProjectHandler) Create(c *gin.Context) {
+	var req model.ProjectCreateRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: "リクエストが不正です", Details: err.Error()})
+		return
+	}
+	project, err := h.service.Create(c.Request.Context(), &req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusCreated, project)
+}
+
+func (h *ProjectHandler) GetAll(c *gin.Context) {
+	page, pageSize := parsePagination(c)
+	var status *model.ProjectStatus
+	if s := c.Query("status"); s != "" {
+		ps := model.ProjectStatus(s)
+		status = &ps
+	}
+	projects, total, err := h.service.GetAll(c.Request.Context(), status, page, pageSize)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "取得に失敗しました"})
+		return
+	}
+	paginatedResponse(c, projects, total, page, pageSize)
+}
+
+func (h *ProjectHandler) GetByID(c *gin.Context) {
+	id, err := parseUUID(c, "id")
+	if err != nil {
+		return
+	}
+	project, err := h.service.GetByID(c.Request.Context(), id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, model.ErrorResponse{Code: 404, Message: "プロジェクトが見つかりません"})
+		return
+	}
+	c.JSON(http.StatusOK, project)
+}
+
+func (h *ProjectHandler) Update(c *gin.Context) {
+	id, err := parseUUID(c, "id")
+	if err != nil {
+		return
+	}
+	var req model.ProjectUpdateRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: "リクエストが不正です"})
+		return
+	}
+	project, err := h.service.Update(c.Request.Context(), id, &req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, project)
+}
+
+func (h *ProjectHandler) Delete(c *gin.Context) {
+	id, err := parseUUID(c, "id")
+	if err != nil {
+		return
+	}
+	if err := h.service.Delete(c.Request.Context(), id); err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "削除に失敗しました"})
+		return
+	}
+	c.Status(http.StatusNoContent)
+}
+
+// ===== TimeEntryHandler =====
+
+type TimeEntryHandler struct {
+	service service.TimeEntryService
+	logger  *logger.Logger
+}
+
+func NewTimeEntryHandler(service service.TimeEntryService, logger *logger.Logger) *TimeEntryHandler {
+	return &TimeEntryHandler{service: service, logger: logger}
+}
+
+func (h *TimeEntryHandler) Create(c *gin.Context) {
+	userID, err := getUserIDFromContext(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, model.ErrorResponse{Code: 401, Message: "認証が必要です"})
+		return
+	}
+	var req model.TimeEntryCreate
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: "リクエストが不正です", Details: err.Error()})
+		return
+	}
+	entry, err := h.service.Create(c.Request.Context(), userID, &req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusCreated, entry)
+}
+
+func (h *TimeEntryHandler) GetMy(c *gin.Context) {
+	userID, err := getUserIDFromContext(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, model.ErrorResponse{Code: 401, Message: "認証が必要です"})
+		return
+	}
+	start, end, err := parseDateRange(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: "日付フォーマットが不正です"})
+		return
+	}
+	entries, err := h.service.GetByUserAndDateRange(c.Request.Context(), userID, start, end)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "取得に失敗しました"})
+		return
+	}
+	c.JSON(http.StatusOK, entries)
+}
+
+func (h *TimeEntryHandler) GetByProject(c *gin.Context) {
+	projectID, err := parseUUID(c, "id")
+	if err != nil {
+		return
+	}
+	start, end, err := parseDateRange(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: "日付フォーマットが不正です"})
+		return
+	}
+	entries, err := h.service.GetByProjectAndDateRange(c.Request.Context(), projectID, start, end)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "取得に失敗しました"})
+		return
+	}
+	c.JSON(http.StatusOK, entries)
+}
+
+func (h *TimeEntryHandler) Update(c *gin.Context) {
+	id, err := parseUUID(c, "id")
+	if err != nil {
+		return
+	}
+	var req model.TimeEntryUpdate
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: "リクエストが不正です"})
+		return
+	}
+	entry, err := h.service.Update(c.Request.Context(), id, &req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, entry)
+}
+
+func (h *TimeEntryHandler) Delete(c *gin.Context) {
+	id, err := parseUUID(c, "id")
+	if err != nil {
+		return
+	}
+	if err := h.service.Delete(c.Request.Context(), id); err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "削除に失敗しました"})
+		return
+	}
+	c.Status(http.StatusNoContent)
+}
+
+func (h *TimeEntryHandler) GetSummary(c *gin.Context) {
+	start, end, err := parseDateRange(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: "日付フォーマットが不正です"})
+		return
+	}
+	summaries, err := h.service.GetProjectSummary(c.Request.Context(), start, end)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "取得に失敗しました"})
+		return
+	}
+	c.JSON(http.StatusOK, summaries)
+}
+
+// ===== HolidayHandler =====
+
+type HolidayHandler struct {
+	service service.HolidayService
+	logger  *logger.Logger
+}
+
+func NewHolidayHandler(service service.HolidayService, logger *logger.Logger) *HolidayHandler {
+	return &HolidayHandler{service: service, logger: logger}
+}
+
+func (h *HolidayHandler) Create(c *gin.Context) {
+	var req model.HolidayCreateRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: "リクエストが不正です", Details: err.Error()})
+		return
+	}
+	holiday, err := h.service.Create(c.Request.Context(), &req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusCreated, holiday)
+}
+
+func (h *HolidayHandler) GetByYear(c *gin.Context) {
+	year, _ := strconv.Atoi(c.DefaultQuery("year", strconv.Itoa(time.Now().Year())))
+	holidays, err := h.service.GetByYear(c.Request.Context(), year)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "取得に失敗しました"})
+		return
+	}
+	c.JSON(http.StatusOK, holidays)
+}
+
+func (h *HolidayHandler) Update(c *gin.Context) {
+	id, err := parseUUID(c, "id")
+	if err != nil {
+		return
+	}
+	var req model.HolidayUpdateRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: "リクエストが不正です"})
+		return
+	}
+	holiday, err := h.service.Update(c.Request.Context(), id, &req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, holiday)
+}
+
+func (h *HolidayHandler) Delete(c *gin.Context) {
+	id, err := parseUUID(c, "id")
+	if err != nil {
+		return
+	}
+	if err := h.service.Delete(c.Request.Context(), id); err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "削除に失敗しました"})
+		return
+	}
+	c.Status(http.StatusNoContent)
+}
+
+func (h *HolidayHandler) GetCalendar(c *gin.Context) {
+	year, _ := strconv.Atoi(c.DefaultQuery("year", strconv.Itoa(time.Now().Year())))
+	month, _ := strconv.Atoi(c.DefaultQuery("month", strconv.Itoa(int(time.Now().Month()))))
+	calendar, err := h.service.GetCalendar(c.Request.Context(), year, month)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "取得に失敗しました"})
+		return
+	}
+	c.JSON(http.StatusOK, calendar)
+}
+
+func (h *HolidayHandler) GetWorkingDays(c *gin.Context) {
+	start, end, err := parseDateRange(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: "日付フォーマットが不正です"})
+		return
+	}
+	summary, err := h.service.GetWorkingDays(c.Request.Context(), start, end)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "取得に失敗しました"})
+		return
+	}
+	c.JSON(http.StatusOK, summary)
+}
+
+// ===== ApprovalFlowHandler =====
+
+type ApprovalFlowHandler struct {
+	service service.ApprovalFlowService
+	logger  *logger.Logger
+}
+
+func NewApprovalFlowHandler(service service.ApprovalFlowService, logger *logger.Logger) *ApprovalFlowHandler {
+	return &ApprovalFlowHandler{service: service, logger: logger}
+}
+
+func (h *ApprovalFlowHandler) Create(c *gin.Context) {
+	var req model.ApprovalFlowCreateRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: "リクエストが不正です", Details: err.Error()})
+		return
+	}
+	flow, err := h.service.Create(c.Request.Context(), &req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusCreated, flow)
+}
+
+func (h *ApprovalFlowHandler) GetAll(c *gin.Context) {
+	flows, err := h.service.GetAll(c.Request.Context())
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "取得に失敗しました"})
+		return
+	}
+	c.JSON(http.StatusOK, flows)
+}
+
+func (h *ApprovalFlowHandler) GetByID(c *gin.Context) {
+	id, err := parseUUID(c, "id")
+	if err != nil {
+		return
+	}
+	flow, err := h.service.GetByID(c.Request.Context(), id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, model.ErrorResponse{Code: 404, Message: "承認フローが見つかりません"})
+		return
+	}
+	c.JSON(http.StatusOK, flow)
+}
+
+func (h *ApprovalFlowHandler) Update(c *gin.Context) {
+	id, err := parseUUID(c, "id")
+	if err != nil {
+		return
+	}
+	var req model.ApprovalFlowUpdateRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: "リクエストが不正です"})
+		return
+	}
+	flow, err := h.service.Update(c.Request.Context(), id, &req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, flow)
+}
+
+func (h *ApprovalFlowHandler) Delete(c *gin.Context) {
+	id, err := parseUUID(c, "id")
+	if err != nil {
+		return
+	}
+	if err := h.service.Delete(c.Request.Context(), id); err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "削除に失敗しました"})
+		return
+	}
+	c.Status(http.StatusNoContent)
+}
+
+// ===== ExportHandler =====
+
+type ExportHandler struct {
+	service service.ExportService
+	logger  *logger.Logger
+}
+
+func NewExportHandler(service service.ExportService, logger *logger.Logger) *ExportHandler {
+	return &ExportHandler{service: service, logger: logger}
+}
+
+func (h *ExportHandler) ExportAttendance(c *gin.Context) {
+	start, end, err := parseDateRange(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: "日付フォーマットが不正です"})
+		return
+	}
+	var userID *uuid.UUID
+	if uid := c.Query("user_id"); uid != "" {
+		id, err := uuid.Parse(uid)
+		if err == nil {
+			userID = &id
+		}
+	}
+	data, err := h.service.ExportAttendanceCSV(c.Request.Context(), userID, start, end)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "エクスポートに失敗しました"})
+		return
+	}
+	c.Header("Content-Disposition", "attachment; filename=attendance.csv")
+	c.Data(http.StatusOK, "text/csv; charset=utf-8", data)
+}
+
+func (h *ExportHandler) ExportLeaves(c *gin.Context) {
+	start, end, err := parseDateRange(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: "日付フォーマットが不正です"})
+		return
+	}
+	var userID *uuid.UUID
+	if uid := c.Query("user_id"); uid != "" {
+		id, err := uuid.Parse(uid)
+		if err == nil {
+			userID = &id
+		}
+	}
+	data, err := h.service.ExportLeavesCSV(c.Request.Context(), userID, start, end)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "エクスポートに失敗しました"})
+		return
+	}
+	c.Header("Content-Disposition", "attachment; filename=leaves.csv")
+	c.Data(http.StatusOK, "text/csv; charset=utf-8", data)
+}
+
+func (h *ExportHandler) ExportOvertime(c *gin.Context) {
+	start, end, err := parseDateRange(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: "日付フォーマットが不正です"})
+		return
+	}
+	data, err := h.service.ExportOvertimeCSV(c.Request.Context(), start, end)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "エクスポートに失敗しました"})
+		return
+	}
+	c.Header("Content-Disposition", "attachment; filename=overtime.csv")
+	c.Data(http.StatusOK, "text/csv; charset=utf-8", data)
+}
+
+func (h *ExportHandler) ExportProjects(c *gin.Context) {
+	start, end, err := parseDateRange(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Code: 400, Message: "日付フォーマットが不正です"})
+		return
+	}
+	data, err := h.service.ExportProjectsCSV(c.Request.Context(), start, end)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Code: 500, Message: "エクスポートに失敗しました"})
+		return
+	}
+	c.Header("Content-Disposition", "attachment; filename=projects.csv")
+	c.Data(http.StatusOK, "text/csv; charset=utf-8", data)
 }

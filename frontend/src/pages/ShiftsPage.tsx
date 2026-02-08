@@ -26,12 +26,12 @@ interface User {
   role: string;
 }
 
-const SHIFT_TYPES: { value: ShiftType; label: string; color: string; bgColor: string }[] = [
-  { value: 'morning', label: '早番', color: 'text-orange-800', bgColor: 'bg-orange-100' },
-  { value: 'day', label: '日勤', color: 'text-blue-800', bgColor: 'bg-blue-100' },
-  { value: 'evening', label: '遅番', color: 'text-purple-800', bgColor: 'bg-purple-100' },
-  { value: 'night', label: '夜勤', color: 'text-indigo-800', bgColor: 'bg-indigo-100' },
-  { value: 'off', label: '休み', color: 'text-gray-800', bgColor: 'bg-gray-100' },
+const SHIFT_TYPES: { value: ShiftType; labelKey: string; color: string; bgColor: string }[] = [
+  { value: 'morning', labelKey: 'shifts.types.morning', color: 'text-orange-800', bgColor: 'bg-orange-100' },
+  { value: 'day', labelKey: 'shifts.types.day', color: 'text-blue-800', bgColor: 'bg-blue-100' },
+  { value: 'evening', labelKey: 'shifts.types.evening', color: 'text-purple-800', bgColor: 'bg-purple-100' },
+  { value: 'night', labelKey: 'shifts.types.night', color: 'text-indigo-800', bgColor: 'bg-indigo-100' },
+  { value: 'off', labelKey: 'shifts.types.off', color: 'text-gray-800', bgColor: 'bg-gray-100' },
 ];
 
 const getShiftStyle = (type: ShiftType) => {
@@ -115,7 +115,7 @@ export function ShiftsPage() {
     if (!isAdmin) return;
     const existing = getShiftForCell(userId, date);
     if (existing) {
-      if (confirm('このシフトを削除しますか？')) {
+      if (confirm(t('shifts.deleteConfirm'))) {
         deleteMutation.mutate(existing.id);
       }
     } else {
@@ -135,7 +135,8 @@ export function ShiftsPage() {
   const formatDate = (date: Date) => {
     const month = date.getMonth() + 1;
     const day = date.getDate();
-    const weekday = ['日', '月', '火', '水', '木', '金', '土'][date.getDay()];
+    const weekdayKeys = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+    const weekday = t(`common.weekdays.${weekdayKeys[date.getDay()]}`);
     return { month, day, weekday };
   };
 
@@ -171,7 +172,7 @@ export function ShiftsPage() {
             onClick={() => setCurrentDate(new Date())}
             className="px-3 py-1 text-sm bg-primary text-primary-foreground rounded-lg hover:opacity-90"
           >
-            今週
+            {t('common.thisWeek')}
           </button>
         </div>
       </div>
@@ -181,7 +182,7 @@ export function ShiftsPage() {
         {SHIFT_TYPES.map(type => (
           <div key={type.value} className="flex items-center gap-2">
             <span className={`px-2 py-1 rounded text-xs ${type.bgColor} ${type.color}`}>
-              {type.label}
+              {t(type.labelKey)}
             </span>
           </div>
         ))}
@@ -193,7 +194,7 @@ export function ShiftsPage() {
           <table className="w-full min-w-[800px]">
             <thead>
               <tr className="border-b border-border bg-muted/50">
-                <th className="py-3 px-4 text-left font-medium w-32">名前</th>
+                <th className="py-3 px-4 text-left font-medium w-32">{t('users.name')}</th>
                 {weekDays.map((date, i) => {
                   const { month, day, weekday } = formatDate(date);
                   const isToday = date.toDateString() === new Date().toDateString();
@@ -230,7 +231,7 @@ export function ShiftsPage() {
                       >
                         {shift && style && (
                           <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${style.bgColor} ${style.color}`}>
-                            {style.label}
+                            {t(style.labelKey)}
                           </span>
                         )}
                       </td>
@@ -241,7 +242,7 @@ export function ShiftsPage() {
               {displayUsers.length === 0 && (
                 <tr>
                   <td colSpan={8} className="py-8 text-center text-muted-foreground">
-                    {isAdmin ? 'ユーザーがいません' : 'シフトデータがありません'}
+                    {isAdmin ? t('shifts.noUsers') : t('shifts.noShiftData')}
                   </td>
                 </tr>
               )}
@@ -255,7 +256,7 @@ export function ShiftsPage() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-card border border-border rounded-lg p-6 w-full max-w-md">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold">シフト登録</h2>
+              <h2 className="text-lg font-semibold">{t('shifts.register')}</h2>
               <button onClick={() => setSelectedCell(null)} className="p-1 hover:bg-accent rounded">
                 <X className="h-5 w-5" />
               </button>
@@ -263,12 +264,12 @@ export function ShiftsPage() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-1">日付</label>
+                <label className="block text-sm font-medium mb-1">{t('shifts.date')}</label>
                 <div className="text-muted-foreground">{selectedCell.date}</div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">シフト種別</label>
+                <label className="block text-sm font-medium mb-2">{t('shifts.shiftType')}</label>
                 <div className="grid grid-cols-5 gap-2">
                   {SHIFT_TYPES.map(type => (
                     <button
@@ -279,7 +280,7 @@ export function ShiftsPage() {
                           : 'bg-muted hover:bg-accent'
                         }`}
                     >
-                      {type.label}
+                      {t(type.labelKey)}
                     </button>
                   ))}
                 </div>
@@ -290,7 +291,7 @@ export function ShiftsPage() {
                   onClick={() => setSelectedCell(null)}
                   className="flex-1 px-4 py-2 border border-border rounded-lg hover:bg-accent"
                 >
-                  キャンセル
+                  {t('common.cancel')}
                 </button>
                 <button
                   onClick={handleCreateShift}
@@ -298,7 +299,7 @@ export function ShiftsPage() {
                   className="flex-1 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   <Plus className="h-4 w-4" />
-                  登録
+                  {t('common.save')}
                 </button>
               </div>
             </div>

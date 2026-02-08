@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/api/client';
 import { Users, X, Save, Plus, Trash2, UserPlus } from 'lucide-react';
+import { Pagination } from '@/components/ui/Pagination';
 
 interface User {
   id: string;
@@ -42,10 +43,12 @@ export function UsersPage() {
     role: 'employee',
   });
   const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
 
   const { data: usersResponse } = useQuery({
-    queryKey: ['users'],
-    queryFn: () => api.users.getAll(),
+    queryKey: ['users', page, pageSize],
+    queryFn: () => api.users.getAll({ page, page_size: pageSize }),
   });
 
   const { data: departments = [] } = useQuery<Department[]>({
@@ -90,9 +93,9 @@ export function UsersPage() {
 
   const roleBadge = (role: string) => {
     const styles: Record<string, string> = {
-      admin: 'bg-purple-100 text-purple-800',
-      manager: 'bg-blue-100 text-blue-800',
-      employee: 'bg-gray-100 text-gray-800',
+      admin: 'bg-purple-500/20 text-purple-400 border border-purple-500/30',
+      manager: 'bg-blue-500/20 text-blue-400 border border-blue-500/30',
+      employee: 'bg-muted text-muted-foreground border border-border',
     };
     return (
       <span className={`px-2 py-1 rounded-full text-xs ${styles[role] || ''}`}>
@@ -123,14 +126,14 @@ export function UsersPage() {
 
   const handleCreate = () => {
     if (!createData.email || !createData.password || !createData.first_name || !createData.last_name) {
-      setError('すべての必須項目を入力してください');
+      setError(t('users.requiredFieldsError'));
       return;
     }
     createMutation.mutate(createData);
   };
 
   const handleDelete = (user: User) => {
-    if (confirm(`${user.last_name} ${user.first_name} を削除しますか？\nこの操作は取り消せません。`)) {
+    if (confirm(t('users.deleteConfirm', { name: `${user.last_name} ${user.first_name}` }))) {
       deleteMutation.mutate(user.id);
     }
   };
@@ -147,7 +150,7 @@ export function UsersPage() {
           className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90"
         >
           <UserPlus className="h-4 w-4" />
-          新規ユーザー
+          {t('users.addNew')}
         </button>
       </div>
 
@@ -156,11 +159,11 @@ export function UsersPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border">
-                <th className="text-left py-2 px-4">名前</th>
+                <th className="text-left py-2 px-4">{t('users.name')}</th>
                 <th className="text-left py-2 px-4">{t('common.email')}</th>
-                <th className="text-left py-2 px-4">役割</th>
-                <th className="text-left py-2 px-4">ステータス</th>
-                <th className="text-right py-2 px-4">操作</th>
+                <th className="text-left py-2 px-4">{t('users.role')}</th>
+                <th className="text-left py-2 px-4">{t('users.status')}</th>
+                <th className="text-right py-2 px-4">{t('users.actions')}</th>
               </tr>
             </thead>
             <tbody>
@@ -170,8 +173,8 @@ export function UsersPage() {
                   <td className="py-2 px-4">{user.email}</td>
                   <td className="py-2 px-4">{roleBadge(user.role)}</td>
                   <td className="py-2 px-4">
-                    <span className={`px-2 py-1 rounded-full text-xs ${user.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                      {user.is_active ? '有効' : '無効'}
+                    <span className={`px-2 py-1 rounded-full text-xs ${user.is_active ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
+                      {user.is_active ? t('users.active') : t('users.inactive')}
                     </span>
                   </td>
                   <td className="text-right py-2 px-4">
@@ -185,7 +188,7 @@ export function UsersPage() {
                       <button
                         onClick={() => handleDelete(user)}
                         className="text-sm text-red-600 hover:text-red-800"
-                        title="削除"
+                        title={t('common.delete')}
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -196,6 +199,16 @@ export function UsersPage() {
             </tbody>
           </table>
         </div>
+        {usersResponse?.total_pages > 0 && (
+          <Pagination
+            currentPage={page}
+            totalPages={usersResponse.total_pages}
+            totalItems={usersResponse.total}
+            pageSize={pageSize}
+            onPageChange={(p) => setPage(p)}
+            onPageSizeChange={(s) => { setPageSize(s); setPage(1); }}
+          />
+        )}
       </div>
 
       {/* 新規作成モーダル */}
@@ -205,7 +218,7 @@ export function UsersPage() {
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold flex items-center gap-2">
                 <UserPlus className="h-5 w-5" />
-                新規ユーザー作成
+                {t('users.createNew')}
               </h2>
               <button onClick={() => setShowCreateModal(false)} className="p-1 hover:bg-accent rounded">
                 <X className="h-5 w-5" />
@@ -220,7 +233,7 @@ export function UsersPage() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-1">メールアドレス *</label>
+                <label className="block text-sm font-medium mb-1">{t('common.email')} *</label>
                 <input
                   type="email"
                   value={createData.email}
@@ -231,19 +244,19 @@ export function UsersPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">パスワード *</label>
+                <label className="block text-sm font-medium mb-1">{t('common.password')} *</label>
                 <input
                   type="password"
                   value={createData.password}
                   onChange={(e) => setCreateData({ ...createData, password: e.target.value })}
                   className="w-full px-3 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                  placeholder="8文字以上"
+                  placeholder={t('users.passwordRequirement')}
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1">姓 *</label>
+                  <label className="block text-sm font-medium mb-1">{t('users.lastName')} *</label>
                   <input
                     type="text"
                     value={createData.last_name}
@@ -252,7 +265,7 @@ export function UsersPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">名 *</label>
+                  <label className="block text-sm font-medium mb-1">{t('users.firstName')} *</label>
                   <input
                     type="text"
                     value={createData.first_name}
@@ -263,26 +276,26 @@ export function UsersPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">役割</label>
+                <label className="block text-sm font-medium mb-1">{t('users.role')}</label>
                 <select
                   value={createData.role}
                   onChange={(e) => setCreateData({ ...createData, role: e.target.value as User['role'] })}
                   className="w-full px-3 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
                 >
-                  <option value="employee">一般社員</option>
-                  <option value="manager">マネージャー</option>
-                  <option value="admin">管理者</option>
+                  <option value="employee">{t('users.roles.employee')}</option>
+                  <option value="manager">{t('users.roles.manager')}</option>
+                  <option value="admin">{t('users.roles.admin')}</option>
                 </select>
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">部署</label>
+                <label className="block text-sm font-medium mb-1">{t('users.department')}</label>
                 <select
                   value={createData.department_id || ''}
                   onChange={(e) => setCreateData({ ...createData, department_id: e.target.value || undefined })}
                   className="w-full px-3 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
                 >
-                  <option value="">未所属</option>
+                  <option value="">{t('users.unassigned')}</option>
                   {departments.map((dept) => (
                     <option key={dept.id} value={dept.id}>{dept.name}</option>
                   ))}
@@ -294,7 +307,7 @@ export function UsersPage() {
                   onClick={() => setShowCreateModal(false)}
                   className="flex-1 px-4 py-2 border border-border rounded-lg hover:bg-accent"
                 >
-                  キャンセル
+                  {t('common.cancel')}
                 </button>
                 <button
                   onClick={handleCreate}
@@ -302,7 +315,7 @@ export function UsersPage() {
                   className="flex-1 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   <Plus className="h-4 w-4" />
-                  作成
+                  {t('common.create')}
                 </button>
               </div>
             </div>
@@ -315,7 +328,7 @@ export function UsersPage() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-card border border-border rounded-lg p-6 w-full max-w-md">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold">ユーザー編集</h2>
+              <h2 className="text-lg font-semibold">{t('users.editUser')}</h2>
               <button onClick={() => setEditingUser(null)} className="p-1 hover:bg-accent rounded">
                 <X className="h-5 w-5" />
               </button>
@@ -329,13 +342,13 @@ export function UsersPage() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-1">メールアドレス</label>
+                <label className="block text-sm font-medium mb-1">{t('common.email')}</label>
                 <div className="text-muted-foreground">{editingUser.email}</div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1">姓</label>
+                  <label className="block text-sm font-medium mb-1">{t('users.lastName')}</label>
                   <input
                     type="text"
                     value={formData.last_name || ''}
@@ -344,7 +357,7 @@ export function UsersPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">名</label>
+                  <label className="block text-sm font-medium mb-1">{t('users.firstName')}</label>
                   <input
                     type="text"
                     value={formData.first_name || ''}
@@ -355,37 +368,37 @@ export function UsersPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">新しいパスワード</label>
+                <label className="block text-sm font-medium mb-1">{t('users.newPassword')}</label>
                 <input
                   type="password"
                   value={formData.password || ''}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   className="w-full px-3 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                  placeholder="変更する場合のみ入力"
+                  placeholder={t('users.passwordPlaceholder')}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">役割</label>
+                <label className="block text-sm font-medium mb-1">{t('users.role')}</label>
                 <select
                   value={formData.role || 'employee'}
                   onChange={(e) => setFormData({ ...formData, role: e.target.value as User['role'] })}
                   className="w-full px-3 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
                 >
-                  <option value="employee">一般社員</option>
-                  <option value="manager">マネージャー</option>
-                  <option value="admin">管理者</option>
+                  <option value="employee">{t('users.roles.employee')}</option>
+                  <option value="manager">{t('users.roles.manager')}</option>
+                  <option value="admin">{t('users.roles.admin')}</option>
                 </select>
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">部署</label>
+                <label className="block text-sm font-medium mb-1">{t('users.department')}</label>
                 <select
                   value={formData.department_id || ''}
                   onChange={(e) => setFormData({ ...formData, department_id: e.target.value || undefined })}
                   className="w-full px-3 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
                 >
-                  <option value="">未所属</option>
+                  <option value="">{t('users.unassigned')}</option>
                   {departments.map((dept) => (
                     <option key={dept.id} value={dept.id}>{dept.name}</option>
                   ))}
@@ -400,7 +413,7 @@ export function UsersPage() {
                   onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
                   className="rounded border-border"
                 />
-                <label htmlFor="is_active" className="text-sm font-medium">有効</label>
+                <label htmlFor="is_active" className="text-sm font-medium">{t('users.active')}</label>
               </div>
 
               <div className="flex gap-2 pt-4">
@@ -408,7 +421,7 @@ export function UsersPage() {
                   onClick={() => setEditingUser(null)}
                   className="flex-1 px-4 py-2 border border-border rounded-lg hover:bg-accent"
                 >
-                  キャンセル
+                  {t('common.cancel')}
                 </button>
                 <button
                   onClick={handleSave}
@@ -416,7 +429,7 @@ export function UsersPage() {
                   className="flex-1 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   <Save className="h-4 w-4" />
-                  保存
+                  {t('common.save')}
                 </button>
               </div>
             </div>

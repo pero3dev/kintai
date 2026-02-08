@@ -1,15 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { api } from '@/api/client';
 import { format } from 'date-fns';
-import { ja } from 'date-fns/locale';
+import { ja, enUS } from 'date-fns/locale';
 import { Clock, LogIn, LogOut } from 'lucide-react';
+import { Pagination } from '@/components/ui/Pagination';
 
 export function AttendancePage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const queryClient = useQueryClient();
   const [note, setNote] = useState('');
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
+  const dateLocale = i18n.language === 'ja' ? ja : enUS;
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  // 毎秒時刻を更新
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const { data: todayStatus } = useQuery({
     queryKey: ['attendance', 'today'],
@@ -18,8 +31,8 @@ export function AttendancePage() {
   });
 
   const { data: attendanceList } = useQuery({
-    queryKey: ['attendance', 'list'],
-    queryFn: () => api.attendance.getList({ page: 1, page_size: 31 }),
+    queryKey: ['attendance', 'list', page, pageSize],
+    queryFn: () => api.attendance.getList({ page, page_size: pageSize }),
   });
 
   const { data: summary } = useQuery({
@@ -59,10 +72,10 @@ export function AttendancePage() {
 
         <div className="text-center py-6">
           <p className="text-4xl font-mono font-bold text-primary mb-2">
-            {format(new Date(), 'HH:mm:ss')}
+            {format(currentTime, 'HH:mm:ss')}
           </p>
           <p className="text-muted-foreground">
-            {format(new Date(), 'yyyy年MM月dd日 (EEEE)', { locale: ja })}
+            {format(currentTime, i18n.language === 'ja' ? 'yyyy年MM月dd日 (EEEE)' : 'MMMM d, yyyy (EEEE)', { locale: dateLocale })}
           </p>
         </div>
 
@@ -110,7 +123,7 @@ export function AttendancePage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-card border border-border rounded-lg p-4">
             <p className="text-sm text-muted-foreground">{t('attendance.totalWorkDays')}</p>
-            <p className="text-2xl font-bold">{summary.total_work_days}日</p>
+            <p className="text-2xl font-bold">{summary.total_work_days}{t('dashboard.days')}</p>
           </div>
           <div className="bg-card border border-border rounded-lg p-4">
             <p className="text-sm text-muted-foreground">{t('attendance.totalWorkHours')}</p>
@@ -134,25 +147,25 @@ export function AttendancePage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border">
-                <th className="text-left py-2 px-4">日付</th>
+                <th className="text-left py-2 px-4">{t('common.date')}</th>
                 <th className="text-left py-2 px-4">{t('attendance.clockIn')}</th>
                 <th className="text-left py-2 px-4">{t('attendance.clockOut')}</th>
                 <th className="text-right py-2 px-4">{t('attendance.workTime')}</th>
                 <th className="text-right py-2 px-4">{t('attendance.overtime')}</th>
-                <th className="text-left py-2 px-4">ステータス</th>
+                <th className="text-left py-2 px-4">{t('common.status')}</th>
               </tr>
             </thead>
             <tbody>
               {attendanceList?.data?.map((record: Record<string, unknown>) => (
                 <tr key={record.id as string} className="border-b border-border/50 hover:bg-accent/50">
                   <td className="py-2 px-4">
-                    {format(new Date(record.date as string), 'MM/dd (EEE)', { locale: ja })}
+                    {format(new Date(record.date as string), 'MM/dd (EEE)', { locale: dateLocale })}
                   </td>
                   <td className="py-2 px-4">
-                    {record.clock_in ? new Date(record.clock_in as string).toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' }) : '-'}
+                    {record.clock_in ? new Date(record.clock_in as string).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '-'}
                   </td>
                   <td className="py-2 px-4">
-                    {record.clock_out ? new Date(record.clock_out as string).toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' }) : '-'}
+                    {record.clock_out ? new Date(record.clock_out as string).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '-'}
                   </td>
                   <td className="text-right py-2 px-4">
                     {record.work_minutes ? `${Math.floor(record.work_minutes as number / 60)}h ${(record.work_minutes as number) % 60}m` : '-'}
@@ -174,6 +187,16 @@ export function AttendancePage() {
             </tbody>
           </table>
         </div>
+        {attendanceList?.total_pages > 0 && (
+          <Pagination
+            currentPage={page}
+            totalPages={attendanceList.total_pages}
+            totalItems={attendanceList.total}
+            pageSize={pageSize}
+            onPageChange={(p) => setPage(p)}
+            onPageSizeChange={(s) => { setPageSize(s); setPage(1); }}
+          />
+        )}
       </div>
     </div>
   );
