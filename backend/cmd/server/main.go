@@ -64,6 +64,14 @@ func main() {
 		} else {
 			zapLogger.Info("テーブルは既に存在するため、AutoMigrateをスキップします")
 		}
+		// HR関連テーブルのマイグレーション
+		if err := model.HRAutoMigrate(db); err != nil {
+			zapLogger.Fatal("HR AutoMigrateに失敗", err)
+		}
+		// 経費関連テーブルのマイグレーション
+		if err := model.ExpenseAutoMigrate(db); err != nil {
+			zapLogger.Fatal("Expense AutoMigrateに失敗", err)
+		}
 	}
 
 	// リポジトリ層の初期化

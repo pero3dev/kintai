@@ -31,6 +31,33 @@ type Handlers struct {
 	Holiday              *HolidayHandler
 	ApprovalFlow         *ApprovalFlowHandler
 	Export               *ExportHandler
+	// HR
+	HREmployee               *HREmployeeHandler
+	HRDepartment             *HRDepartmentHandler
+	Evaluation               *EvaluationHandler
+	Goal                     *GoalHandler
+	Training                 *TrainingHandler
+	Recruitment              *RecruitmentHandler
+	Document                 *DocumentHandler
+	Announcement             *AnnouncementHandler
+	HRDashboard              *HRDashboardHandler
+	AttendanceIntegration    *AttendanceIntegrationHandler
+	OrgChart                 *OrgChartHandler
+	OneOnOne                 *OneOnOneHandler
+	Skill                    *SkillHandler
+	Salary                   *SalaryHandler
+	Onboarding               *OnboardingHandler
+	Offboarding              *OffboardingHandler
+	Survey                   *SurveyHandler
+	// Expense
+	Expense              *ExpenseHandler
+	ExpenseComment       *ExpenseCommentHandler
+	ExpenseHistory       *ExpenseHistoryHandler
+	ExpenseReceipt       *ExpenseReceiptHandler
+	ExpenseTemplate      *ExpenseTemplateHandler
+	ExpensePolicy        *ExpensePolicyHandler
+	ExpenseNotification  *ExpenseNotificationHandler
+	ExpenseApprovalFlow  *ExpenseApprovalFlowHandler
 }
 
 // NewHandlers は全ハンドラーを初期化する
@@ -53,6 +80,33 @@ func NewHandlers(services *service.Services, logger *logger.Logger) *Handlers {
 		Holiday:              NewHolidayHandler(services.Holiday, logger),
 		ApprovalFlow:         NewApprovalFlowHandler(services.ApprovalFlow, logger),
 		Export:               NewExportHandler(services.Export, logger),
+		// HR
+		HREmployee:            NewHREmployeeHandler(services.HREmployee, logger),
+		HRDepartment:          NewHRDepartmentHandler(services.HRDepartment, logger),
+		Evaluation:            NewEvaluationHandler(services.Evaluation, logger),
+		Goal:                  NewGoalHandler(services.Goal, logger),
+		Training:              NewTrainingHandler(services.Training, logger),
+		Recruitment:           NewRecruitmentHandler(services.Recruitment, logger),
+		Document:              NewDocumentHandler(services.Document, logger),
+		Announcement:          NewAnnouncementHandler(services.Announcement, logger),
+		HRDashboard:           NewHRDashboardHandler(services.HRDashboard, logger),
+		AttendanceIntegration: NewAttendanceIntegrationHandler(services.AttendanceIntegration, logger),
+		OrgChart:              NewOrgChartHandler(services.OrgChart, logger),
+		OneOnOne:              NewOneOnOneHandler(services.OneOnOne, logger),
+		Skill:                 NewSkillHandler(services.Skill, logger),
+		Salary:                NewSalaryHandler(services.Salary, logger),
+		Onboarding:            NewOnboardingHandler(services.Onboarding, logger),
+		Offboarding:           NewOffboardingHandler(services.Offboarding, logger),
+		Survey:                NewSurveyHandler(services.Survey, logger),
+		// Expense
+		Expense:             NewExpenseHandler(services.Expense, logger),
+		ExpenseComment:      NewExpenseCommentHandler(services.ExpenseComment, logger),
+		ExpenseHistory:      NewExpenseHistoryHandler(services.ExpenseHistory, logger),
+		ExpenseReceipt:      NewExpenseReceiptHandler(services.ExpenseReceipt, logger),
+		ExpenseTemplate:     NewExpenseTemplateHandler(services.ExpenseTemplate, logger),
+		ExpensePolicy:       NewExpensePolicyHandler(services.ExpensePolicy, logger),
+		ExpenseNotification: NewExpenseNotificationHandler(services.ExpenseNotification, logger),
+		ExpenseApprovalFlow: NewExpenseApprovalFlowHandler(services.ExpenseApprovalFlow, logger),
 	}
 }
 

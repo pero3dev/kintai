@@ -104,14 +104,14 @@ export function ExpenseReportPage() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* ヘッダー */}
-      <div className="flex items-center justify-between flex-wrap gap-4">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
           <Link to="/expenses" className="p-2 rounded-xl glass-subtle hover:bg-white/10 transition-all">
             <MaterialIcon name="arrow_back" />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold gradient-text">{t('expenses.report.title')}</h1>
-            <p className="text-muted-foreground text-sm mt-1">{t('expenses.report.subtitle')}</p>
+            <h1 className="text-xl sm:text-2xl font-bold gradient-text">{t('expenses.report.title')}</h1>
+            <p className="text-muted-foreground text-xs sm:text-sm mt-1">{t('expenses.report.subtitle')}</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -276,12 +276,42 @@ export function ExpenseReportPage() {
 
       {/* 部門別内訳テーブル */}
       {deptData.length > 0 && (
-        <div className="glass-card rounded-2xl p-6">
+        <div className="glass-card rounded-2xl p-4 sm:p-6">
           <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
             <MaterialIcon name="corporate_fare" className="text-indigo-400" />
             {t('expenses.report.departmentBreakdown')}
           </h2>
-          <div className="overflow-x-auto">
+
+          {/* モバイル: カードビュー */}
+          <div className="space-y-3 md:hidden">
+            {deptData.map((dept: Record<string, unknown>) => {
+              const amount = Number(dept.amount) || 0;
+              const count = Number(dept.count) || 1;
+              const totalAll = Number(report.total_amount) || 1;
+              const ratio = (amount / totalAll) * 100;
+              return (
+                <div key={dept.department as string} className="glass-subtle rounded-xl p-4 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium">{dept.department as string}</span>
+                    <span className="font-bold gradient-text">¥{amount.toLocaleString()}</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 text-sm">
+                    <div><span className="text-muted-foreground">{t('expenses.report.claimCount')}: </span>{count}</div>
+                    <div><span className="text-muted-foreground">{t('expenses.report.avgPerClaim')}: </span>¥{Math.round(amount / count).toLocaleString()}</div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 h-2 rounded-full bg-white/5 overflow-hidden">
+                      <div className="h-full rounded-full gradient-primary" style={{ width: `${ratio}%` }} />
+                    </div>
+                    <span className="text-xs text-muted-foreground w-10 text-right">{ratio.toFixed(1)}%</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* デスクトップ: テーブルビュー */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-white/5">

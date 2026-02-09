@@ -88,11 +88,11 @@ export function AttendancePage() {
             placeholder={t('attendance.note')}
             className="w-full max-w-md px-3 py-2.5 glass-input rounded-xl"
           />
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto sm:gap-4">
             <button
               onClick={() => clockInMutation.mutate()}
               disabled={!!isClockedIn || !!isClockedOut || clockInMutation.isPending}
-              className="flex items-center gap-2 px-8 py-3 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-xl hover:bg-emerald-500/30 hover:shadow-glow-sm disabled:opacity-50 disabled:cursor-not-allowed transition-all text-lg"
+              className="flex items-center justify-center gap-2 px-6 sm:px-8 py-3 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-xl hover:bg-emerald-500/30 hover:shadow-glow-sm disabled:opacity-50 disabled:cursor-not-allowed transition-all text-base sm:text-lg"
             >
               <LogIn className="h-5 w-5" />
               {t('attendance.clockIn')}
@@ -100,7 +100,7 @@ export function AttendancePage() {
             <button
               onClick={() => clockOutMutation.mutate()}
               disabled={!isClockedIn || clockOutMutation.isPending}
-              className="flex items-center gap-2 px-8 py-3 bg-red-500/20 text-red-400 border border-red-500/30 rounded-xl hover:bg-red-500/30 hover:shadow-glow-sm disabled:opacity-50 disabled:cursor-not-allowed transition-all text-lg"
+              className="flex items-center justify-center gap-2 px-6 sm:px-8 py-3 bg-red-500/20 text-red-400 border border-red-500/30 rounded-xl hover:bg-red-500/30 hover:shadow-glow-sm disabled:opacity-50 disabled:cursor-not-allowed transition-all text-base sm:text-lg"
             >
               <LogOut className="h-5 w-5" />
               {t('attendance.clockOut')}
@@ -141,9 +141,49 @@ export function AttendancePage() {
       )}
 
       {/* 勤怠履歴 */}
-      <div className="glass-card rounded-2xl p-6">
+      <div className="glass-card rounded-2xl p-4 sm:p-6">
         <h2 className="text-lg font-semibold mb-4">{t('attendance.history')}</h2>
-        <div className="overflow-x-auto">
+
+        {/* モバイルカードビュー */}
+        <div className="space-y-3 md:hidden">
+          {attendanceList?.data?.map((record: Record<string, unknown>) => (
+            <div key={record.id as string} className="glass-subtle rounded-xl p-4 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="font-semibold text-sm">
+                  {format(new Date(record.date as string), 'MM/dd (EEE)', { locale: dateLocale })}
+                </span>
+                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${record.status === 'present' ? 'bg-emerald-500/20 text-emerald-400' :
+                    record.status === 'absent' ? 'bg-red-500/20 text-red-400' :
+                      record.status === 'leave' ? 'bg-indigo-500/20 text-indigo-400' :
+                        'bg-white/10 text-muted-foreground'
+                  }`}>
+                  {record.status as string}
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-2 text-sm">
+                <div>
+                  <p className="text-[10px] text-muted-foreground uppercase">{t('attendance.clockIn')}</p>
+                  <p className="font-medium">{record.clock_in ? new Date(record.clock_in as string).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '-'}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] text-muted-foreground uppercase">{t('attendance.clockOut')}</p>
+                  <p className="font-medium">{record.clock_out ? new Date(record.clock_out as string).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '-'}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] text-muted-foreground uppercase">{t('attendance.workTime')}</p>
+                  <p className="font-medium">{record.work_minutes ? `${Math.floor(record.work_minutes as number / 60)}h ${(record.work_minutes as number) % 60}m` : '-'}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] text-muted-foreground uppercase">{t('attendance.overtime')}</p>
+                  <p className="font-medium">{(record.overtime_minutes as number) > 0 ? `${Math.floor(record.overtime_minutes as number / 60)}h ${(record.overtime_minutes as number) % 60}m` : '-'}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* デスクトップテーブルビュー */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/5">

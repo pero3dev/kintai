@@ -72,14 +72,14 @@ export function ExpenseDashboardPage() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* ヘッダー */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold gradient-text">{t('expenses.dashboard.title')}</h1>
-          <p className="text-muted-foreground text-sm mt-1">{t('expenses.dashboard.subtitle')}</p>
+          <h1 className="text-xl sm:text-2xl font-bold gradient-text">{t('expenses.dashboard.title')}</h1>
+          <p className="text-muted-foreground text-xs sm:text-sm mt-0.5">{t('expenses.dashboard.subtitle')}</p>
         </div>
         <Link
           to="/expenses/new"
-          className="flex items-center gap-2 px-5 py-2.5 gradient-primary text-white font-semibold text-sm rounded-xl hover:shadow-glow-md transition-all duration-300"
+          className="flex items-center justify-center gap-2 px-5 py-2.5 gradient-primary text-white font-semibold text-sm rounded-xl hover:shadow-glow-md transition-all duration-300"
         >
           <MaterialIcon name="add" className="text-lg" />
           {t('expenses.newExpense')}

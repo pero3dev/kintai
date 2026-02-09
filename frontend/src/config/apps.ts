@@ -39,8 +39,7 @@ export const apps: AppDefinition[] = [
     icon: 'badge',
     color: 'bg-purple-500',
     basePath: '/hr',
-    enabled: false,
-    comingSoon: true,
+    enabled: true,
     requiredRoles: ['admin', 'manager'],
   },
   {

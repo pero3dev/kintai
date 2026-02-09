@@ -145,21 +145,21 @@ export function ShiftsPage() {
 
   return (
     <div className="space-y-6 animate-fade-in">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold flex items-center gap-2">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <h1 className="text-xl sm:text-2xl font-bold flex items-center gap-2">
           <CalendarRange className="h-6 w-6 text-indigo-400" />
           {t('shifts.title')}
         </h1>
 
         {/* 週ナビゲーション */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           <button
             onClick={() => navigateWeek(-1)}
             className="p-2 hover:bg-white/5 rounded-xl transition-colors"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
-          <span className="font-medium min-w-[200px] text-center">
+          <span className="font-medium text-xs sm:text-base text-center flex-1 sm:flex-initial sm:min-w-[200px]">
             {startDate} 〜 {endDate}
           </span>
           <button
@@ -189,7 +189,52 @@ export function ShiftsPage() {
       </div>
 
       {/* シフトカレンダー */}
-      <div className="glass-card rounded-2xl overflow-hidden">
+      {/* モバイル: 日別カードビュー */}
+      <div className="space-y-4 md:hidden">
+        {weekDays.map((date, i) => {
+          const { month, day, weekday } = formatDate(date);
+          const dateStr = date.toISOString().split('T')[0];
+          const isToday = date.toDateString() === new Date().toDateString();
+          const isWeekend = i === 0 || i === 6;
+          return (
+            <div key={i} className={`glass-card rounded-2xl overflow-hidden ${isToday ? 'ring-1 ring-indigo-400/30' : ''}`}>
+              <div className={`px-4 py-2 glass-subtle flex items-center gap-2 ${isWeekend ? 'text-red-500' : ''}`}>
+                <span className="text-sm font-bold">{month}/{day}</span>
+                <span className={`text-sm ${isWeekend ? 'text-red-500' : 'text-muted-foreground'}`}>({weekday})</span>
+                {isToday && <span className="text-[10px] px-1.5 py-0.5 bg-indigo-500/20 text-indigo-400 rounded-full font-bold ml-auto">Today</span>}
+              </div>
+              <div className="p-3 space-y-2">
+                {displayUsers.map((u) => {
+                  const shift = getShiftForCell(u.id, dateStr);
+                  const style = shift ? getShiftStyle(shift.shift_type) : null;
+                  return (
+                    <div
+                      key={u.id}
+                      onClick={() => handleCellClick(u.id, dateStr)}
+                      className={`flex items-center justify-between px-3 py-2.5 rounded-xl glass-subtle ${isAdmin ? 'cursor-pointer active:bg-white/10' : ''}`}
+                    >
+                      <span className="text-sm font-medium">{u.last_name} {u.first_name}</span>
+                      {shift && style ? (
+                        <span className={`px-2.5 py-1 rounded-lg text-xs font-medium ${style.bgColor} ${style.color}`}>
+                          {t(style.labelKey)}
+                        </span>
+                      ) : (
+                        <span className="text-xs text-muted-foreground">—</span>
+                      )}
+                    </div>
+                  );
+                })}
+                {displayUsers.length === 0 && (
+                  <p className="text-center text-sm text-muted-foreground py-2">{t('common.noData')}</p>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* デスクトップ: テーブルビュー */}
+      <div className="hidden md:block glass-card rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[800px]">
             <thead>
@@ -254,7 +299,7 @@ export function ShiftsPage() {
       {/* シフト作成モーダル */}
       {selectedCell && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="glass-card rounded-2xl p-6 w-full max-w-md animate-scale-in">
+          <div className="glass-card rounded-2xl p-6 w-full max-w-md mx-4 animate-scale-in">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">{t('shifts.register')}</h2>
               <button onClick={() => setSelectedCell(null)} className="p-1 hover:bg-white/10 rounded-lg transition-colors">
@@ -270,7 +315,7 @@ export function ShiftsPage() {
 
               <div>
                 <label className="block text-sm font-medium mb-2">{t('shifts.shiftType')}</label>
-                <div className="grid grid-cols-5 gap-2">
+                <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
                   {SHIFT_TYPES.map(type => (
                     <button
                       key={type.value}

@@ -140,14 +140,14 @@ export function ExpenseAdvancedApprovePage() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* ヘッダー */}
-      <div className="flex items-center justify-between flex-wrap gap-4">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
           <Link to="/expenses" className="p-2 rounded-xl glass-subtle hover:bg-white/10 transition-all">
             <MaterialIcon name="arrow_back" />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold gradient-text">{t('expenses.advancedApprove.title')}</h1>
-            <p className="text-muted-foreground text-sm mt-1">{t('expenses.advancedApprove.subtitle')}</p>
+            <h1 className="text-xl sm:text-2xl font-bold gradient-text">{t('expenses.advancedApprove.title')}</h1>
+            <p className="text-muted-foreground text-xs sm:text-sm mt-1">{t('expenses.advancedApprove.subtitle')}</p>
           </div>
         </div>
         <button
@@ -273,8 +273,97 @@ export function ExpenseAdvancedApprovePage() {
       )}
 
       {/* 承認待ちリスト */}
-      <div className="glass-card rounded-2xl p-6">
-        <div className="overflow-x-auto">
+      <div className="glass-card rounded-2xl p-4 sm:p-6">
+        {/* モバイル: カードビュー */}
+        <div className="space-y-3 md:hidden">
+          {isLoading ? (
+            <p className="text-center py-12 text-muted-foreground">{t('common.loading')}</p>
+          ) : expenses.length === 0 ? (
+            <div className="text-center py-12 text-muted-foreground">
+              <MaterialIcon name="check_circle" className="text-4xl mb-2 block text-emerald-400 opacity-50" />
+              <p>{t('expenses.approve.noPending')}</p>
+            </div>
+          ) : (
+            expenses.map((expense: Record<string, unknown>) => (
+              <div key={expense.id as string} className="glass-subtle rounded-xl p-4 space-y-3">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex-1 min-w-0">
+                    <Link
+                      to="/expenses/$expenseId"
+                      params={{ expenseId: expense.id as string }}
+                      className="text-sm font-semibold text-indigo-400 hover:underline truncate block"
+                    >
+                      {expense.title as string}
+                    </Link>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {expense.user_name as string || '-'} · {expense.created_at ? format(new Date(expense.created_at as string), 'PP', { locale }) : '-'}
+                    </p>
+                  </div>
+                  <span className="text-base font-bold gradient-text whitespace-nowrap">
+                    ¥{Number(expense.amount).toLocaleString()}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-bold ${statusBadge(expense.status as string)}`}>
+                    {expense.current_step ? t('expenses.advancedApprove.step', { num: expense.current_step }) : t(`expenses.status.${expense.status}`)}
+                  </span>
+                </div>
+                {selectedId === expense.id as string && action ? (
+                  <div className="space-y-2">
+                    <textarea
+                      value={reason}
+                      onChange={(e) => setReason(e.target.value)}
+                      className="px-3 py-2 glass-input rounded-lg text-sm w-full"
+                      rows={2}
+                      placeholder={action === 'reject' ? t('expenses.approve.rejectReason') : t('expenses.advancedApprove.returnReason')}
+                    />
+                    <div className="flex gap-2">
+                      <button
+                        onClick={submitAction}
+                        disabled={approveMutation.isPending}
+                        className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
+                          action === 'reject'
+                            ? 'bg-red-500/20 text-red-400 border border-red-500/30 hover:bg-red-500/30'
+                            : 'bg-orange-500/20 text-orange-400 border border-orange-500/30 hover:bg-orange-500/30'
+                        }`}
+                      >
+                        {t('common.confirm')}
+                      </button>
+                      <button onClick={resetAction}
+                        className="flex-1 py-2.5 glass-subtle rounded-xl text-sm hover:bg-white/10 transition-colors">
+                        {t('common.cancel')}
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleAction(expense.id as string, 'approve')}
+                      className="flex-1 py-2.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-xl text-sm font-semibold hover:bg-emerald-500/30 transition-colors"
+                    >
+                      {t('common.approve')}
+                    </button>
+                    <button
+                      onClick={() => handleAction(expense.id as string, 'return')}
+                      className="flex-1 py-2.5 bg-orange-500/20 text-orange-400 border border-orange-500/30 rounded-xl text-sm font-semibold hover:bg-orange-500/30 transition-colors"
+                    >
+                      {t('expenses.advancedApprove.return')}
+                    </button>
+                    <button
+                      onClick={() => handleAction(expense.id as string, 'reject')}
+                      className="flex-1 py-2.5 bg-red-500/20 text-red-400 border border-red-500/30 rounded-xl text-sm font-semibold hover:bg-red-500/30 transition-colors"
+                    >
+                      {t('common.reject')}
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* デスクトップ: テーブルビュー */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/5">

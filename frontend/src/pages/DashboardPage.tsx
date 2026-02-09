@@ -95,12 +95,12 @@ export function DashboardPage() {
         <div className="lg:col-span-2 space-y-8">
           {/* 今日の勤怠状況 */}
           <section className="glass-card rounded-2xl">
-            <div className="p-6 border-b border-white/5 flex items-center justify-between">
+            <div className="p-4 sm:p-6 border-b border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <h2 className="font-bold text-lg flex items-center gap-2">
                 <MaterialIcon name="analytics" className="text-indigo-400" />
                 {t('attendance.todayStatus')}
               </h2>
-              <div className="flex gap-2">
+              <div className="flex gap-2 flex-wrap">
                 <span className="px-2 py-1 bg-emerald-500/10 text-emerald-400 text-[10px] font-bold rounded-full uppercase">
                   {t('dashboard.present')}: {stats?.today_present_count ?? 0}
                 </span>
@@ -134,7 +134,7 @@ export function DashboardPage() {
           {/* 部署別統計 */}
           {stats?.department_stats && stats.department_stats.length > 0 && (
             <section className="glass-card rounded-2xl overflow-hidden">
-              <div className="p-6 border-b border-white/5 flex items-center justify-between">
+              <div className="p-4 sm:p-6 border-b border-white/5 flex items-center justify-between">
                 <h2 className="font-bold text-lg flex items-center gap-2">
                   <MaterialIcon name="corporate_fare" className="text-indigo-400" />
                   {t('dashboard.departmentStatus')}
@@ -143,7 +143,27 @@ export function DashboardPage() {
                   {t('dashboard.showAll')}
                 </button>
               </div>
-              <div className="overflow-x-auto">
+              {/* モバイルカードビュー */}
+              <div className="p-4 space-y-3 md:hidden">
+                {stats.department_stats.map((dept: { department_name: string; total_employees: number; present_today: number; attendance_rate: number }) => (
+                  <div key={dept.department_name} className="glass-subtle rounded-xl p-4 flex items-center justify-between">
+                    <div>
+                      <p className="font-semibold text-sm">{dept.department_name}</p>
+                      <p className="text-xs text-muted-foreground">{dept.present_today}/{dept.total_employees} {t('dashboard.presentToday')}</p>
+                    </div>
+                    <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${dept.attendance_rate >= 0.9
+                        ? 'bg-emerald-500/20 text-emerald-400'
+                        : dept.attendance_rate >= 0.7
+                          ? 'bg-amber-500/20 text-amber-400'
+                          : 'bg-destructive/20 text-destructive'
+                      }`}>
+                      {(dept.attendance_rate * 100).toFixed(1)}%
+                    </span>
+                  </div>
+                ))}
+              </div>
+              {/* デスクトップテーブルビュー */}
+              <div className="hidden md:block overflow-x-auto">
                 <table className="w-full text-left text-sm">
                   <thead>
                     <tr className="glass-subtle text-muted-foreground font-medium">

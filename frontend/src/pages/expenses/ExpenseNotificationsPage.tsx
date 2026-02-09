@@ -71,14 +71,14 @@ export function ExpenseNotificationsPage() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* ヘッダー */}
-      <div className="flex items-center justify-between flex-wrap gap-4">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
           <Link to="/expenses" className="p-2 rounded-xl glass-subtle hover:bg-white/10 transition-all">
             <MaterialIcon name="arrow_back" />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold gradient-text">{t('expenses.notifications.title')}</h1>
-            <p className="text-muted-foreground text-sm mt-1">
+            <h1 className="text-xl sm:text-2xl font-bold gradient-text">{t('expenses.notifications.title')}</h1>
+            <p className="text-muted-foreground text-xs sm:text-sm mt-1">
               {unreadCount > 0
                 ? t('expenses.notifications.unreadCount', { count: unreadCount })
                 : t('expenses.notifications.allRead')
@@ -107,7 +107,7 @@ export function ExpenseNotificationsPage() {
           </h2>
           <div className="space-y-3">
             {reminders.map((reminder: Record<string, unknown>) => (
-              <div key={reminder.id as string} className="flex items-center gap-3 glass-subtle rounded-xl p-3">
+              <div key={reminder.id as string} className="flex flex-col sm:flex-row sm:items-center gap-3 glass-subtle rounded-xl p-3">
                 <div className="size-10 rounded-xl bg-amber-500/20 flex items-center justify-center flex-shrink-0">
                   <MaterialIcon name={
                     reminder.type === 'month_end' ? 'calendar_month' :
@@ -119,7 +119,7 @@ export function ExpenseNotificationsPage() {
                   <p className="text-sm font-medium">{reminder.title as string}</p>
                   <p className="text-xs text-muted-foreground">{reminder.message as string}</p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-shrink-0">
                   {!!reminder.action_url && (
                     <Link
                       to={reminder.action_url as string}
@@ -142,7 +142,7 @@ export function ExpenseNotificationsPage() {
       )}
 
       {/* フィルター */}
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-wrap">
         {(['all', 'unread', 'action_required'] as const).map((f) => (
           <button
             key={f}

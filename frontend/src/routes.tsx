@@ -28,6 +28,24 @@ import { ExpenseTemplatesPage } from './pages/expenses/ExpenseTemplatesPage';
 import { ExpensePolicyPage } from './pages/expenses/ExpensePolicyPage';
 import { ExpenseNotificationsPage } from './pages/expenses/ExpenseNotificationsPage';
 import { ExpenseAdvancedApprovePage } from './pages/expenses/ExpenseAdvancedApprovePage';
+import { HRDashboardPage } from './pages/hr/HRDashboardPage';
+import { HREmployeesPage } from './pages/hr/HREmployeesPage';
+import { HREmployeeDetailPage } from './pages/hr/HREmployeeDetailPage';
+import { HRDepartmentsPage } from './pages/hr/HRDepartmentsPage';
+import { HREvaluationsPage } from './pages/hr/HREvaluationsPage';
+import { HRGoalsPage } from './pages/hr/HRGoalsPage';
+import { HRTrainingPage } from './pages/hr/HRTrainingPage';
+import { HRRecruitmentPage } from './pages/hr/HRRecruitmentPage';
+import { HRDocumentsPage } from './pages/hr/HRDocumentsPage';
+import { HRAnnouncementsPage } from './pages/hr/HRAnnouncementsPage';
+import { HRAttendanceIntegrationPage } from './pages/hr/HRAttendanceIntegrationPage';
+import { HROrgChartPage } from './pages/hr/HROrgChartPage';
+import { HROneOnOnePage } from './pages/hr/HROneOnOnePage';
+import { HRSkillMapPage } from './pages/hr/HRSkillMapPage';
+import { HRSalarySimulatorPage } from './pages/hr/HRSalarySimulatorPage';
+import { HROnboardingPage } from './pages/hr/HROnboardingPage';
+import { HROffboardingPage } from './pages/hr/HROffboardingPage';
+import { HRSurveyPage } from './pages/hr/HRSurveyPage';
 
 // ルートルート
 const rootRoute = createRootRoute({
@@ -200,6 +218,115 @@ const expenseAdvancedApproveRoute = createRoute({
   component: ExpenseAdvancedApprovePage,
 });
 
+// 人事管理
+const hrDashboardRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/hr',
+  component: HRDashboardPage,
+});
+
+const hrEmployeesRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/hr/employees',
+  component: HREmployeesPage,
+});
+
+const hrEmployeeDetailRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/hr/employees/$employeeId',
+  component: HREmployeeDetailPage,
+});
+
+const hrDepartmentsRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/hr/departments',
+  component: HRDepartmentsPage,
+});
+
+const hrEvaluationsRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/hr/evaluations',
+  component: HREvaluationsPage,
+});
+
+const hrGoalsRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/hr/goals',
+  component: HRGoalsPage,
+});
+
+const hrTrainingRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/hr/training',
+  component: HRTrainingPage,
+});
+
+const hrRecruitmentRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/hr/recruitment',
+  component: HRRecruitmentPage,
+});
+
+const hrDocumentsRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/hr/documents',
+  component: HRDocumentsPage,
+});
+
+const hrAnnouncementsRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/hr/announcements',
+  component: HRAnnouncementsPage,
+});
+
+const hrAttendanceIntegrationRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/hr/attendance-integration',
+  component: HRAttendanceIntegrationPage,
+});
+
+const hrOrgChartRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/hr/org-chart',
+  component: HROrgChartPage,
+});
+
+const hrOneOnOneRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/hr/one-on-one',
+  component: HROneOnOnePage,
+});
+
+const hrSkillMapRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/hr/skill-map',
+  component: HRSkillMapPage,
+});
+
+const hrSalarySimulatorRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/hr/salary',
+  component: HRSalarySimulatorPage,
+});
+
+const hrOnboardingRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/hr/onboarding',
+  component: HROnboardingPage,
+});
+
+const hrOffboardingRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/hr/offboarding',
+  component: HROffboardingPage,
+});
+
+const hrSurveyRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/hr/survey',
+  component: HRSurveyPage,
+});
+
 // ルートツリー
 export const routeTree = rootRoute.addChildren([
   loginRoute,
@@ -227,5 +354,23 @@ export const routeTree = rootRoute.addChildren([
     expensePolicyRoute,
     expenseNotificationsRoute,
     expenseAdvancedApproveRoute,
+    hrDashboardRoute,
+    hrEmployeesRoute,
+    hrEmployeeDetailRoute,
+    hrDepartmentsRoute,
+    hrEvaluationsRoute,
+    hrGoalsRoute,
+    hrTrainingRoute,
+    hrRecruitmentRoute,
+    hrDocumentsRoute,
+    hrAnnouncementsRoute,
+    hrAttendanceIntegrationRoute,
+    hrOrgChartRoute,
+    hrOneOnOneRoute,
+    hrSkillMapRoute,
+    hrSalarySimulatorRoute,
+    hrOnboardingRoute,
+    hrOffboardingRoute,
+    hrSurveyRoute,
   ]),
 ]);

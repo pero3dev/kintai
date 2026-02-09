@@ -126,14 +126,14 @@ export function ExpenseTemplatesPage() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* ヘッダー */}
-      <div className="flex items-center justify-between flex-wrap gap-4">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
           <Link to="/expenses" className="p-2 rounded-xl glass-subtle hover:bg-white/10 transition-all">
             <MaterialIcon name="arrow_back" />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold gradient-text">{t('expenses.templates.title')}</h1>
-            <p className="text-muted-foreground text-sm mt-1">{t('expenses.templates.subtitle')}</p>
+            <h1 className="text-xl sm:text-2xl font-bold gradient-text">{t('expenses.templates.title')}</h1>
+            <p className="text-muted-foreground text-xs sm:text-sm mt-1">{t('expenses.templates.subtitle')}</p>
           </div>
         </div>
         <button
@@ -348,7 +348,7 @@ function TemplateCard({
           )}
         </div>
       </div>
-      <div className="flex items-center gap-2 mt-3 pt-3 border-t border-white/5 opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="flex items-center gap-2 mt-3 pt-3 border-t border-white/5 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
         <button
           onClick={onUse}
           className="flex items-center gap-1.5 px-3 py-1.5 gradient-primary text-white text-xs font-semibold rounded-lg hover:shadow-glow-sm transition-all"

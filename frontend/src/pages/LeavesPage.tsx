@@ -80,14 +80,14 @@ export function LeavesPage() {
 
   return (
     <div className="space-y-6 animate-fade-in">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <CalendarDays className="h-6 w-6 text-indigo-400" />
           {t('leaves.title')}
         </h1>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-2 px-4 py-2.5 gradient-primary text-white rounded-xl hover:shadow-glow-md transition-all"
+          className="flex items-center justify-center gap-2 px-4 py-2.5 gradient-primary text-white rounded-xl hover:shadow-glow-md transition-all"
         >
           <Plus className="h-4 w-4" />
           {t('leaves.newRequest')}
@@ -142,24 +142,24 @@ export function LeavesPage() {
           <h2 className="text-lg font-semibold mb-4">{t('leaves.pending')}</h2>
           <div className="space-y-3">
             {pendingLeaves.data.map((leave: Record<string, unknown>) => (
-              <div key={leave.id as string} className="flex items-center justify-between p-4 glass-subtle rounded-xl">
-                <div>
+              <div key={leave.id as string} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 glass-subtle rounded-xl">
+                <div className="flex-1 min-w-0">
                   <p className="font-medium">{(leave.user as Record<string, string>)?.last_name} {(leave.user as Record<string, string>)?.first_name}</p>
                   <p className="text-sm text-muted-foreground">
                     {leave.start_date as string} ~ {leave.end_date as string} | {t(`leaves.types.${leave.leave_type as string}`)}
                   </p>
                   {leave.reason ? <p className="text-sm mt-1">{String(leave.reason)}</p> : null}
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-shrink-0">
                   <button
                     onClick={() => approveMutation.mutate({ id: leave.id as string, data: { status: 'approved' } })}
-                    className="px-3 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-lg text-sm hover:bg-emerald-500/30 transition-all"
+                    className="flex-1 sm:flex-initial px-3 py-2 sm:py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-lg text-sm hover:bg-emerald-500/30 transition-all"
                   >
                     {t('leaves.approve')}
                   </button>
                   <button
                     onClick={() => approveMutation.mutate({ id: leave.id as string, data: { status: 'rejected' } })}
-                    className="px-3 py-1 bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg text-sm hover:bg-red-500/30 transition-all"
+                    className="flex-1 sm:flex-initial px-3 py-2 sm:py-1 bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg text-sm hover:bg-red-500/30 transition-all"
                   >
                     {t('leaves.reject')}
                   </button>
@@ -180,9 +180,32 @@ export function LeavesPage() {
       )}
 
       {/* 自分の申請一覧 */}
-      <div className="glass-card rounded-2xl p-6">
+      <div className="glass-card rounded-2xl p-4 sm:p-6">
         <h2 className="text-lg font-semibold mb-4">{t('leaves.history')}</h2>
-        <div className="overflow-x-auto">
+
+        {/* モバイルカードビュー */}
+        <div className="space-y-3 md:hidden">
+          {myLeaves?.data?.map((leave: Record<string, unknown>) => (
+            <div key={leave.id as string} className="glass-subtle rounded-xl p-4 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-semibold">{t(`leaves.types.${leave.leave_type as string}`)}</span>
+                {statusBadge(leave.status as string)}
+              </div>
+              <div className="text-sm text-muted-foreground">
+                {leave.start_date as string} ~ {leave.end_date as string}
+              </div>
+              {(leave.reason as string) && (
+                <p className="text-sm">{leave.reason as string}</p>
+              )}
+            </div>
+          ))}
+          {(!myLeaves?.data || myLeaves.data.length === 0) && (
+            <p className="py-4 text-center text-muted-foreground">{t('common.noData')}</p>
+          )}
+        </div>
+
+        {/* デスクトップテーブルビュー */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/5">

@@ -129,8 +129,8 @@ export function ExpenseDetailPage() {
   return (
     <div className="max-w-5xl mx-auto space-y-6 animate-fade-in">
       {/* ヘッダー */}
-      <div className="flex items-center justify-between flex-wrap gap-4">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
           <button
             onClick={() => navigate({ to: '/expenses/history' })}
             className="p-2 rounded-xl glass-subtle hover:bg-white/10 transition-all"
@@ -138,8 +138,8 @@ export function ExpenseDetailPage() {
             <MaterialIcon name="arrow_back" />
           </button>
           <div>
-            <h1 className="text-2xl font-bold gradient-text">{expense.title}</h1>
-            <div className="flex items-center gap-3 mt-1">
+            <h1 className="text-xl sm:text-2xl font-bold gradient-text">{expense.title}</h1>
+            <div className="flex items-center gap-2 sm:gap-3 mt-1 flex-wrap">
               <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${statusBadge(expense.status)}`}>
                 <MaterialIcon name={statusIcon(expense.status)} className="text-sm" />
                 {t(`expenses.status.${expense.status}`)}
@@ -153,7 +153,7 @@ export function ExpenseDetailPage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           {expense.status === 'draft' && (
             <>
               <button

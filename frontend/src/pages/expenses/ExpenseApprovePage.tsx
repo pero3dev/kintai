@@ -78,19 +78,92 @@ export function ExpenseApprovePage() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* ヘッダー */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3 sm:gap-4">
         <Link to="/expenses" className="p-2 rounded-xl glass-subtle hover:bg-white/10 transition-all">
           <MaterialIcon name="arrow_back" />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold gradient-text">{t('expenses.approve.title')}</h1>
-          <p className="text-muted-foreground text-sm mt-1">{t('expenses.approve.subtitle')}</p>
+          <h1 className="text-xl sm:text-2xl font-bold gradient-text">{t('expenses.approve.title')}</h1>
+          <p className="text-muted-foreground text-xs sm:text-sm mt-0.5">{t('expenses.approve.subtitle')}</p>
         </div>
       </div>
 
       {/* 承認待ちリスト */}
-      <div className="glass-card rounded-2xl p-6">
-        <div className="overflow-x-auto">
+      <div className="glass-card rounded-2xl p-4 sm:p-6">
+        {/* モバイルカードビュー */}
+        <div className="space-y-3 md:hidden">
+          {isLoading ? (
+            <div className="text-center py-12 text-muted-foreground">{t('common.loading')}</div>
+          ) : expenses.length === 0 ? (
+            <div className="text-center py-12 text-muted-foreground">
+              <MaterialIcon name="check_circle" className="text-4xl mb-2 block text-emerald-400 opacity-50" />
+              <p>{t('expenses.approve.noPending')}</p>
+            </div>
+          ) : (
+            expenses.map((expense: Record<string, unknown>) => (
+              <div key={expense.id as string} className="glass-subtle rounded-xl p-4 space-y-3">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <MaterialIcon name={getCategoryIcon(expense.category as string)} className="text-indigo-400 text-base flex-shrink-0" />
+                      <span className="font-medium text-sm truncate">{expense.title as string}</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">{expense.user_name as string || '-'}</p>
+                  </div>
+                  <span className="text-base font-bold ml-2 flex-shrink-0">¥{Number(expense.amount).toLocaleString()}</span>
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  {expense.expense_date ? format(new Date(expense.expense_date as string), 'PP', { locale }) : '-'}
+                  {expense.category ? ` · ${t(`expenses.categories.${expense.category}`)}` : ''}
+                </div>
+                {rejectingId === expense.id ? (
+                  <div className="space-y-2">
+                    <input
+                      value={rejectReason}
+                      onChange={(e) => setRejectReason(e.target.value)}
+                      placeholder={t('expenses.approve.rejectReason')}
+                      className="w-full px-3 py-2 glass-input rounded-lg text-sm"
+                    />
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => rejectMutation.mutate({ id: expense.id as string, reason: rejectReason })}
+                        disabled={rejectMutation.isPending}
+                        className="flex-1 px-3 py-2 bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg text-sm font-semibold hover:bg-red-500/30 transition-colors"
+                      >
+                        {t('common.confirm')}
+                      </button>
+                      <button
+                        onClick={() => { setRejectingId(null); setRejectReason(''); }}
+                        className="flex-1 px-3 py-2 glass-subtle rounded-lg text-sm hover:bg-white/10 transition-colors"
+                      >
+                        {t('common.cancel')}
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => approveMutation.mutate(expense.id as string)}
+                      disabled={approveMutation.isPending}
+                      className="flex-1 px-3 py-2.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-lg text-sm font-semibold hover:bg-emerald-500/30 transition-colors"
+                    >
+                      {t('common.approve')}
+                    </button>
+                    <button
+                      onClick={() => setRejectingId(expense.id as string)}
+                      className="flex-1 px-3 py-2.5 bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg text-sm font-semibold hover:bg-red-500/30 transition-colors"
+                    >
+                      {t('common.reject')}
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* デスクトップテーブルビュー */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/5">

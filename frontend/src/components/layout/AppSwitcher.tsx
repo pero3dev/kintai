@@ -27,17 +27,37 @@ export function AppSwitcher({ collapsed = false }: AppSwitcherProps) {
   const activeApp = getActiveApp(location.pathname);
   const availableApps = getAvailableApps(user?.role);
 
-  // ドロップダウンの位置を計算
+  // ドロップダウンの位置を計算（ビューポートクランプ付き）
   const updatePosition = useCallback(() => {
     if (!triggerRef.current) return;
     const rect = triggerRef.current.getBoundingClientRect();
+    const dropdownWidth = Math.min(280, window.innerWidth - 16);
+    const dropdownHeight = 340; // 推定高さ
+    let top: number;
+    let left: number;
+
     if (collapsed) {
       // サイドバー折り畳み時: ボタンの右側に表示
-      setDropdownPos({ top: rect.top, left: rect.right + 8 });
+      top = rect.top;
+      left = rect.right + 8;
     } else {
       // 通常時: ボタンの下に表示
-      setDropdownPos({ top: rect.bottom + 8, left: rect.left });
+      top = rect.bottom + 8;
+      left = rect.left;
     }
+
+    // ビューポート右端クランプ
+    if (left + dropdownWidth > window.innerWidth - 8) {
+      left = window.innerWidth - dropdownWidth - 8;
+    }
+    // ビューポート左端クランプ
+    if (left < 8) left = 8;
+    // ビューポート下端クランプ
+    if (top + dropdownHeight > window.innerHeight - 8) {
+      top = Math.max(8, rect.top - dropdownHeight - 8);
+    }
+
+    setDropdownPos({ top, left });
   }, [collapsed]);
 
   // 外側クリックで閉じる
@@ -108,7 +128,7 @@ export function AppSwitcher({ collapsed = false }: AppSwitcherProps) {
         <div
           ref={dropdownRef}
           className="fixed z-[9999] glass rounded-2xl shadow-2xl overflow-hidden animate-scale-in"
-          style={{ top: dropdownPos.top, left: dropdownPos.left, minWidth: '280px' }}
+          style={{ top: dropdownPos.top, left: dropdownPos.left, minWidth: Math.min(280, window.innerWidth - 16) + 'px', maxWidth: 'calc(100vw - 16px)' }}
         >
           {/* ヘッダー */}
           <div className="px-4 py-3 border-b border-white/5">

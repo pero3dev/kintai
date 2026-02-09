@@ -58,7 +58,7 @@ export function LoginPage() {
       <div className="noise-overlay" />
 
       {/* Login Card */}
-      <div className="w-full max-w-md p-8 glass-card rounded-2xl relative z-10 animate-scale-in">
+      <div className="w-full max-w-md mx-4 p-6 sm:p-8 glass-card rounded-2xl relative z-10 animate-scale-in">
         {/* ロゴ */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center size-16 gradient-primary rounded-2xl mb-4 shadow-glow-md">

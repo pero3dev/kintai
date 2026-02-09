@@ -60,19 +60,19 @@ export function ExpenseHistoryPage() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* ヘッダー */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-3 sm:gap-4">
           <Link to="/expenses" className="p-2 rounded-xl glass-subtle hover:bg-white/10 transition-all">
             <MaterialIcon name="arrow_back" />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold gradient-text">{t('expenses.history.title')}</h1>
-            <p className="text-muted-foreground text-sm mt-1">{t('expenses.history.subtitle')}</p>
+            <h1 className="text-xl sm:text-2xl font-bold gradient-text">{t('expenses.history.title')}</h1>
+            <p className="text-muted-foreground text-xs sm:text-sm mt-0.5">{t('expenses.history.subtitle')}</p>
           </div>
         </div>
         <Link
           to="/expenses/new"
-          className="flex items-center gap-2 px-5 py-2.5 gradient-primary text-white font-semibold text-sm rounded-xl hover:shadow-glow-md transition-all duration-300"
+          className="flex items-center justify-center gap-2 px-5 py-2.5 gradient-primary text-white font-semibold text-sm rounded-xl hover:shadow-glow-md transition-all duration-300"
         >
           <MaterialIcon name="add" className="text-lg" />
           {t('expenses.newExpense')}
@@ -110,8 +110,47 @@ export function ExpenseHistoryPage() {
       </div>
 
       {/* テーブル */}
-      <div className="glass-card rounded-2xl p-6">
-        <div className="overflow-x-auto">
+      <div className="glass-card rounded-2xl p-4 sm:p-6">
+        {/* モバイルカードビュー */}
+        <div className="space-y-3 md:hidden">
+          {isLoading ? (
+            <div className="text-center py-12 text-muted-foreground">{t('common.loading')}</div>
+          ) : expenses.length === 0 ? (
+            <div className="text-center py-12 text-muted-foreground">
+              <MaterialIcon name="receipt_long" className="text-4xl mb-2 block opacity-50" />
+              {t('common.noData')}
+            </div>
+          ) : (
+            expenses.map((expense: Record<string, unknown>) => (
+              <Link
+                key={expense.id as string}
+                to="/expenses/$expenseId"
+                params={{ expenseId: expense.id as string }}
+                className="block glass-subtle rounded-xl p-4 space-y-2 hover:bg-white/5 transition-colors"
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-2 flex-1 min-w-0">
+                    <MaterialIcon name={getCategoryIcon(expense.category as string)} className="text-indigo-400 text-base flex-shrink-0" />
+                    <span className="font-medium text-sm truncate">{expense.title as string}</span>
+                  </div>
+                  <span className={`ml-2 flex-shrink-0 px-2 py-0.5 rounded-full text-[10px] font-bold ${statusBadge(expense.status as string)}`}>
+                    {t(`expenses.status.${expense.status}`)}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">
+                    {expense.expense_date ? format(new Date(expense.expense_date as string), 'PP', { locale }) : '-'}
+                    {expense.category ? ` · ${t(`expenses.categories.${expense.category}`)}` : ''}
+                  </span>
+                  <span className="font-bold">¥{Number(expense.amount).toLocaleString()}</span>
+                </div>
+              </Link>
+            ))
+          )}
+        </div>
+
+        {/* デスクトップテーブルビュー */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/5">

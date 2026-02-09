@@ -140,22 +140,49 @@ export function UsersPage() {
 
   return (
     <div className="space-y-6 animate-fade-in">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Users className="h-6 w-6 text-indigo-400" />
           {t('users.title')}
         </h1>
         <button
           onClick={() => { setShowCreateModal(true); setError(null); }}
-          className="flex items-center gap-2 px-4 py-2.5 gradient-primary text-white rounded-xl hover:shadow-glow-md transition-all"
+          className="flex items-center justify-center gap-2 px-4 py-2.5 gradient-primary text-white rounded-xl hover:shadow-glow-md transition-all"
         >
           <UserPlus className="h-4 w-4" />
           {t('users.addNew')}
         </button>
       </div>
 
-      <div className="glass-card rounded-2xl p-6">
-        <div className="overflow-x-auto">
+      <div className="glass-card rounded-2xl p-4 sm:p-6">
+        {/* モバイルカードビュー */}
+        <div className="space-y-3 md:hidden">
+          {users.map((user) => (
+            <div key={user.id} className="glass-subtle rounded-xl p-4 space-y-3">
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="font-semibold">{user.last_name} {user.first_name}</p>
+                  <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                </div>
+                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${user.is_active ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'}`}>
+                  {user.is_active ? t('users.active') : t('users.inactive')}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                {roleBadge(user.role)}
+                <div className="flex gap-3">
+                  <button onClick={() => handleEdit(user)} className="text-sm text-indigo-400 py-1">{t('common.edit')}</button>
+                  <button onClick={() => handleDelete(user)} className="text-sm text-red-400 py-1">
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* デスクトップテーブルビュー */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/5">
@@ -254,7 +281,7 @@ export function UsersPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-1 text-foreground/80">{t('users.lastName')} *</label>
                   <input
@@ -326,7 +353,7 @@ export function UsersPage() {
       {/* 編集モーダル */}
       {editingUser && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="glass-card rounded-2xl p-6 w-full max-w-md animate-scale-in">
+          <div className="glass-card rounded-2xl p-6 w-full max-w-md mx-4 animate-scale-in max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">{t('users.editUser')}</h2>
               <button onClick={() => setEditingUser(null)} className="p-1 hover:bg-white/10 rounded-lg transition-colors">
@@ -346,7 +373,7 @@ export function UsersPage() {
                 <div className="text-muted-foreground">{editingUser.email}</div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-1 text-foreground/80">{t('users.lastName')}</label>
                   <input

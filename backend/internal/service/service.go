@@ -55,6 +55,33 @@ type Services struct {
 	Holiday              HolidayService
 	ApprovalFlow         ApprovalFlowService
 	Export               ExportService
+	// HR
+	HREmployee               HREmployeeService
+	HRDepartment             HRDepartmentService
+	Evaluation               EvaluationService
+	Goal                     GoalService
+	Training                 TrainingService
+	Recruitment              RecruitmentService
+	Document                 DocumentService
+	Announcement             AnnouncementService
+	HRDashboard              HRDashboardService
+	AttendanceIntegration    AttendanceIntegrationService
+	OrgChart                 OrgChartService
+	OneOnOne                 OneOnOneService
+	Skill                    SkillService
+	Salary                   SalaryService
+	Onboarding               OnboardingService
+	Offboarding              OffboardingService
+	Survey                   SurveyService
+	// Expense
+	Expense              ExpenseService
+	ExpenseComment       ExpenseCommentService
+	ExpenseHistory       ExpenseHistoryService
+	ExpenseReceipt       ExpenseReceiptService
+	ExpenseTemplate      ExpenseTemplateService
+	ExpensePolicy        ExpensePolicyService
+	ExpenseNotification  ExpenseNotificationService
+	ExpenseApprovalFlow  ExpenseApprovalFlowService
 }
 
 // NewServices は全サービスを初期化する
@@ -77,6 +104,33 @@ func NewServices(deps Deps) *Services {
 		Holiday:              NewHolidayService(deps),
 		ApprovalFlow:         NewApprovalFlowService(deps),
 		Export:               NewExportService(deps),
+		// HR
+		HREmployee:            NewHREmployeeService(deps),
+		HRDepartment:          NewHRDepartmentService(deps),
+		Evaluation:            NewEvaluationService(deps),
+		Goal:                  NewGoalService(deps),
+		Training:              NewTrainingService(deps),
+		Recruitment:           NewRecruitmentService(deps),
+		Document:              NewDocumentService(deps),
+		Announcement:          NewAnnouncementService(deps),
+		HRDashboard:           NewHRDashboardService(deps),
+		AttendanceIntegration: NewAttendanceIntegrationService(deps),
+		OrgChart:              NewOrgChartService(deps),
+		OneOnOne:              NewOneOnOneService(deps),
+		Skill:                 NewSkillService(deps),
+		Salary:                NewSalaryService(deps),
+		Onboarding:            NewOnboardingService(deps),
+		Offboarding:           NewOffboardingService(deps),
+		Survey:                NewSurveyService(deps),
+		// Expense
+		Expense:             NewExpenseService(deps),
+		ExpenseComment:      NewExpenseCommentService(deps),
+		ExpenseHistory:      NewExpenseHistoryService(deps),
+		ExpenseReceipt:      NewExpenseReceiptService(deps),
+		ExpenseTemplate:     NewExpenseTemplateService(deps),
+		ExpensePolicy:       NewExpensePolicyService(deps),
+		ExpenseNotification: NewExpenseNotificationService(deps),
+		ExpenseApprovalFlow: NewExpenseApprovalFlowService(deps),
 	}
 }
 
