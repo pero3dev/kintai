@@ -203,7 +203,7 @@ export function HREvaluationsPage() {
                 </div>
                 <span className={`px-2 py-1 rounded-lg text-xs ${
                   cycle.status === 'active' ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'
-                }`}>{String(cycle.status || 'draft')}</span>
+                }`}>{t(`hr.evaluations.statuses.${String(cycle.status || 'draft')}`)}</span>
               </div>
               {!!cycle.description && <p className="text-xs text-muted-foreground">{String(cycle.description)}</p>}
               <div className="flex gap-2 mt-3 text-xs text-muted-foreground">

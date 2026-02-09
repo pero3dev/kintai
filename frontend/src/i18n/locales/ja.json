@@ -635,6 +635,7 @@
       "addEmployee": "社員追加",
       "totalCount": "{{count}}名",
       "employeeId": "社員番号",
+      "employeeName": "社員名",
       "position": "役職",
       "department": "部門",
       "hireDate": "入社日",
@@ -715,12 +716,26 @@
       "comment": "コメント",
       "submit": "評価を提出",
       "overallScore": "総合スコア",
+      "evaluationCycle": "評価サイクル",
+      "startEvaluation": "評価開始",
+      "addCycle": "サイクル追加",
+      "totalEvaluations": "評価件数",
+      "selfComment": "自己コメント",
+      "selfScore": "自己評価スコア",
+      "startDate": "開始日",
+      "endDate": "終了日",
+      "description": "説明",
       "scores": {
         "excellent": "S (卓越)",
         "good": "A (優秀)",
         "satisfactory": "B (良好)",
         "needsImprovement": "C (改善要)",
-        "unsatisfactory": "D (不十分)"
+        "unsatisfactory": "D (不十分)",
+        "S": "卓越",
+        "A": "優秀",
+        "B": "良好",
+        "C": "改善要",
+        "D": "不十分"
       },
       "criteria": {
         "performance": "業績",
@@ -733,9 +748,12 @@
         "draft": "下書き",
         "selfReview": "自己評価中",
         "managerReview": "上司評価中",
+        "self_review": "自己評価中",
+        "manager_review": "上司評価中",
         "calibration": "調整中",
         "completed": "完了",
-        "acknowledged": "確認済み"
+        "acknowledged": "確認済み",
+        "active": "実施中"
       }
     },
     "goals": {
@@ -754,11 +772,16 @@
       "priority": "優先度",
       "alignedTo": "上位目標",
       "overallProgress": "全体進捗",
+      "totalGoals": "目標総数",
+      "goalStatus": "目標ステータス",
+      "targetDate": "目標期限",
       "categories": {
         "business": "事業目標",
         "personal": "個人成長",
         "team": "チーム目標",
-        "skill": "スキル開発"
+        "skill": "スキル開発",
+        "performance": "業績目標",
+        "career": "キャリア目標"
       },
       "priorities": {
         "high": "高",
@@ -767,7 +790,9 @@
       },
       "statuses": {
         "notStarted": "未着手",
+        "not_started": "未着手",
         "inProgress": "進行中",
+        "in_progress": "進行中",
         "atRisk": "リスクあり",
         "completed": "達成",
         "cancelled": "中止"
@@ -793,17 +818,28 @@
       "mandatory": "必須研修",
       "optional": "任意研修",
       "completionRate": "修了率",
+      "trainingStatus": "研修ステータス",
+      "startDate": "開始日",
+      "endDate": "終了日",
+      "description": "説明",
+      "maxParticipants": "最大定員",
+      "participants": "参加者",
+      "complete": "修了する",
+      "enroll": "受講申込",
+      "category": "カテゴリ",
       "categories": {
         "compliance": "コンプライアンス",
         "technical": "技術研修",
         "leadership": "リーダーシップ",
         "onboarding": "オンボーディング",
         "softSkills": "ソフトスキル",
+        "communication": "コミュニケーション",
         "safety": "安全研修"
       },
       "statuses": {
         "upcoming": "開催予定",
         "inProgress": "実施中",
+        "in_progress": "実施中",
         "completed": "終了",
         "cancelled": "中止"
       }
@@ -819,11 +855,30 @@
       "applicants": "応募者",
       "pipeline": "パイプライン",
       "totalApplicants": "応募者数",
+      "openPositions": "募集ポジション",
+      "addPosition": "ポジション追加",
+      "addApplicant": "応募者追加",
+      "allPositions": "全ポジション",
+      "location": "勤務地",
+      "description": "職種説明",
+      "requirements": "応募要件",
+      "position": "ポジション",
+      "applicantName": "応募者名",
+      "email": "メール",
+      "phone": "電話番号",
+      "coverLetter": "志望動機",
+      "statuses": {
+        "open": "募集中",
+        "closed": "締切",
+        "draft": "下書き"
+      },
       "stages": {
         "applied": "応募",
         "screening": "書類選考",
+        "interview": "面接",
         "interview1": "一次面接",
         "interview2": "二次面接",
+        "technical": "技術試験",
         "finalInterview": "最終面接",
         "offer": "内定",
         "hired": "採用",
@@ -853,11 +908,18 @@
       "download": "ダウンロード",
       "preview": "プレビュー",
       "totalDocuments": "総書類数",
+      "fileName": "ファイル名",
+      "fileSize": "ファイルサイズ",
+      "dropzone": "ファイルをドロップまたはクリック",
+      "description": "説明",
       "types": {
         "contract": "雇用契約書",
         "nda": "秘密保持契約",
+        "policy": "社内規程",
         "certificate": "資格証明書",
+        "id": "身分証明書",
         "idDocument": "身分証明書",
+        "tax": "税務書類",
         "taxForm": "税務書類",
         "insurance": "保険証",
         "evaluation": "評価書",
@@ -886,8 +948,10 @@
       "targets": {
         "all": "全社員",
         "department": "部門指定",
-        "role": "役職指定"
-      }
+        "role": "役職指定",
+        "individual": "個人指定"
+      },
+      "targetValue": "対象先"
     },
     "attendanceIntegration": {
       "title": "勤怠連携",
@@ -930,6 +994,9 @@
       "viewMode": "表示モード",
       "tree": "ツリー",
       "flat": "フラット",
+      "treeView": "ツリー表示",
+      "flatView": "フラット表示",
+      "searchPlaceholder": "検索...",
       "zoomIn": "拡大",
       "zoomOut": "縮小",
       "resetZoom": "リセット",
@@ -948,6 +1015,8 @@
       "subtitle": "上司と部下の定期面談記録",
       "newMeeting": "新規1on1",
       "editMeeting": "1on1を編集",
+      "allStatuses": "全ステータス",
+      "schedule": "スケジュール",
       "scheduledDate": "予定日",
       "duration": "所要時間",
       "participant": "参加者",
@@ -978,7 +1047,9 @@
         "good": "良い",
         "neutral": "普通",
         "concerned": "やや心配",
-        "struggling": "困難"
+        "bad": "やや心配",
+        "struggling": "困難",
+        "terrible": "困難"
       },
       "totalMeetings": "ミーティング数",
       "completionRate": "完了率",
@@ -992,11 +1063,21 @@
       "subtitle": "社員のスキルとコンピテンシーの可視化",
       "skillName": "スキル名",
       "level": "レベル",
+      "skillMap": "スキルマップ",
+      "department": "部門",
+      "currentLevel": "現在のレベル",
+      "requiredLevel": "必要レベル",
       "levels": {
         "beginner": "初級",
         "intermediate": "中級",
         "advanced": "上級",
-        "expert": "エキスパート"
+        "expert": "エキスパート",
+        "0": "未設定",
+        "1": "初級",
+        "2": "中級",
+        "3": "上級",
+        "4": "エキスパート",
+        "5": "マスター"
       },
       "category": "カテゴリー",
       "categories": {
@@ -1004,7 +1085,9 @@
         "business": "ビジネス",
         "leadership": "リーダーシップ",
         "communication": "コミュニケーション",
-        "management": "マネジメント"
+        "management": "マネジメント",
+        "soft": "ソフトスキル",
+        "domain": "ドメイン知識"
       },
       "addSkill": "スキル追加",
       "editSkill": "スキル編集",
@@ -1033,6 +1116,15 @@
       "department": "部門",
       "simulation": "シミュレーション",
       "simulate": "シミュレーション実行",
+      "runSimulation": "シミュレーション実行",
+      "simulationResult": "シミュレーション結果",
+      "totalPayroll": "総人件費",
+      "headcount": "人数",
+      "evaluationScore": "評価スコア",
+      "yearsOfService": "勤続年数",
+      "marketPercentile": "市場パーセンタイル",
+      "budgetOverview": "予算概要",
+      "departmentBreakdown": "部門別内訳",
       "budgetTotal": "人件費予算",
       "budgetUsed": "使用済み",
       "budgetRemaining": "残り予算",
@@ -1079,9 +1171,11 @@
         "training": "研修受講",
         "equipment": "備品準備",
         "introductions": "紹介・挨拶",
+        "general": "一般",
         "other": "その他"
       },
       "statuses": {
+        "pending": "保留中",
         "not_started": "未着手",
         "in_progress": "進行中",
         "completed": "完了",
@@ -1091,6 +1185,9 @@
       "completedTasks": "完了タスク",
       "overdueTasks": "期限超過タスク",
       "activeOnboardings": "進行中のオンボーディング",
+      "allStatuses": "全ステータス",
+      "startOnboarding": "オンボーディング開始",
+      "selectTemplate": "テンプレートを選択",
       "timeline": "タイムライン",
       "assignee": "担当者",
       "day": "日目"
@@ -1099,6 +1196,14 @@
       "title": "退職管理",
       "subtitle": "退職手続きと離職分析",
       "newOffboarding": "退職手続き開始",
+      "startOffboarding": "退職手続き開始",
+      "analytics": "離職分析",
+      "allStatuses": "全ステータス",
+      "annualTurnover": "年間離職率",
+      "totalDepartures": "総退職者数",
+      "reasonBreakdown": "退職理由内訳",
+      "departmentBreakdown": "部門別内訳",
+      "exitInterviewNotes": "退職面談メモ",
       "employee": "退職者",
       "lastDay": "最終出社日",
       "resignationDate": "退職届提出日",
@@ -1113,6 +1218,11 @@
         "health": "健康上の理由",
         "management": "マネジメント",
         "culture": "社風",
+        "resignation": "自己都合退職",
+        "retirement": "定年退職",
+        "termination": "解雇",
+        "contract_end": "契約満了",
+        "transfer": "転籍",
         "other": "その他"
       },
       "handover": "引き継ぎ",
@@ -1164,7 +1274,8 @@
         "satisfaction": "満足度",
         "360feedback": "360度フィードバック",
         "onboarding": "入社後",
-        "exit": "退職時"
+        "exit": "退職時",
+        "custom": "カスタム"
       },
       "questions": "質問",
       "addQuestion": "質問追加",
@@ -1185,6 +1296,10 @@
       "close": "終了する",
       "totalSurveys": "総サーベイ数",
       "activeSurveys": "実施中",
+      "allStatuses": "全ステータス",
+      "createSurvey": "サーベイ作成",
+      "surveyTitle": "サーベイタイトル",
+      "questionsPlaceholder": "1行につき1つの質問を入力",
       "categories": {
         "work_environment": "職場環境",
         "management": "マネジメント",
