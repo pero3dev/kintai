@@ -128,7 +128,7 @@ export function HRRecruitmentPage() {
                   <span className={`px-2 py-1 rounded-lg text-[10px] font-medium ${
                     pos.status === 'open' ? 'bg-green-500/20 text-green-400' :
                     pos.status === 'closed' ? 'bg-red-500/20 text-red-400' : 'bg-gray-500/20 text-gray-400'
-                  }`}>{String(pos.status || 'open')}</span>
+                  }`}>{t(`hr.recruitment.statuses.${String(pos.status || 'open')}`)}</span>
                 </div>
                 {!!pos.description && <p className="text-xs text-muted-foreground mb-3 line-clamp-2">{String(pos.description)}</p>}
                 <div className="flex items-center justify-between text-xs">
