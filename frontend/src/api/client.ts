@@ -296,4 +296,111 @@ export const api = {
     projects: (params: { start_date: string; end_date: string }) =>
       fetchWithAuthBlob('/export/projects', params),
   },
+
+  // 経費精算
+  expenses: {
+    getList: (params?: { page?: number; page_size?: number; status?: string; category?: string }) => {
+      const query = new URLSearchParams(params as Record<string, string>).toString();
+      return fetchWithAuth(`/expenses?${query}`);
+    },
+    getByID: (id: string) => fetchWithAuth(`/expenses/${id}`),
+    create: (data: { title: string; status: string; notes?: string; items: Array<{ expense_date: string; category: string; description: string; amount: number; receipt_url?: string }> }) =>
+      fetchWithAuth('/expenses', { method: 'POST', body: JSON.stringify(data) }),
+    update: (id: string, data: Record<string, unknown>) =>
+      fetchWithAuth(`/expenses/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+    delete: (id: string) => fetchWithAuth(`/expenses/${id}`, { method: 'DELETE' }),
+    getPending: (params?: { page?: number; page_size?: number }) => {
+      const query = new URLSearchParams(params as Record<string, string>).toString();
+      return fetchWithAuth(`/expenses/pending?${query}`);
+    },
+    approve: (id: string, data: { status: string; rejected_reason?: string }) =>
+      fetchWithAuth(`/expenses/${id}/approve`, { method: 'PUT', body: JSON.stringify(data) }),
+    getStats: () => fetchWithAuth('/expenses/stats'),
+
+    // コメント
+    getComments: (id: string) => fetchWithAuth(`/expenses/${id}/comments`),
+    addComment: (id: string, data: { content: string }) =>
+      fetchWithAuth(`/expenses/${id}/comments`, { method: 'POST', body: JSON.stringify(data) }),
+
+    // 変更履歴
+    getHistory: (id: string) => fetchWithAuth(`/expenses/${id}/history`),
+
+    // レポート
+    getReport: (params: { start_date: string; end_date: string }) => {
+      const query = new URLSearchParams(params).toString();
+      return fetchWithAuth(`/expenses/report?${query}`);
+    },
+    getMonthlyTrend: (params: { year: string }) => {
+      const query = new URLSearchParams(params).toString();
+      return fetchWithAuth(`/expenses/report/monthly?${query}`);
+    },
+    exportCSV: (params: { start_date: string; end_date: string }) =>
+      fetchWithAuthBlob('/expenses/export/csv', params),
+    exportPDF: (params: { start_date: string; end_date: string }) =>
+      fetchWithAuthBlob('/expenses/export/pdf', params),
+
+    // レシートアップロード
+    uploadReceipt: async (file: File) => {
+      const token = useAuthStore.getState().accessToken;
+      const formData = new FormData();
+      formData.append('file', file);
+      const response = await fetch(`${BASE_URL}/expenses/receipts/upload`, {
+        method: 'POST',
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: formData,
+      });
+      if (!response.ok) throw new Error('Upload failed');
+      return response.json();
+    },
+
+    // テンプレート
+    getTemplates: () => fetchWithAuth('/expenses/templates'),
+    createTemplate: (data: Record<string, unknown>) =>
+      fetchWithAuth('/expenses/templates', { method: 'POST', body: JSON.stringify(data) }),
+    updateTemplate: (id: string, data: Record<string, unknown>) =>
+      fetchWithAuth(`/expenses/templates/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+    deleteTemplate: (id: string) =>
+      fetchWithAuth(`/expenses/templates/${id}`, { method: 'DELETE' }),
+    useTemplate: (id: string) =>
+      fetchWithAuth(`/expenses/templates/${id}/use`, { method: 'POST' }),
+
+    // ポリシー
+    getPolicies: () => fetchWithAuth('/expenses/policies'),
+    createPolicy: (data: Record<string, unknown>) =>
+      fetchWithAuth('/expenses/policies', { method: 'POST', body: JSON.stringify(data) }),
+    updatePolicy: (id: string, data: Record<string, unknown>) =>
+      fetchWithAuth(`/expenses/policies/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+    deletePolicy: (id: string) =>
+      fetchWithAuth(`/expenses/policies/${id}`, { method: 'DELETE' }),
+    getBudgets: () => fetchWithAuth('/expenses/budgets'),
+    getPolicyViolations: () => fetchWithAuth('/expenses/policy-violations'),
+
+    // 通知
+    getNotifications: (params?: { filter?: string }) => {
+      const query = new URLSearchParams(params as Record<string, string>).toString();
+      return fetchWithAuth(`/expenses/notifications?${query}`);
+    },
+    markNotificationRead: (id: string) =>
+      fetchWithAuth(`/expenses/notifications/${id}/read`, { method: 'PUT' }),
+    markAllNotificationsRead: () =>
+      fetchWithAuth('/expenses/notifications/read-all', { method: 'PUT' }),
+    getReminders: () => fetchWithAuth('/expenses/reminders'),
+    dismissReminder: (id: string) =>
+      fetchWithAuth(`/expenses/reminders/${id}/dismiss`, { method: 'PUT' }),
+    getNotificationSettings: () => fetchWithAuth('/expenses/notification-settings'),
+    updateNotificationSettings: (data: Record<string, unknown>) =>
+      fetchWithAuth('/expenses/notification-settings', { method: 'PUT', body: JSON.stringify(data) }),
+
+    // 高度な承認ワークフロー
+    advancedApprove: (id: string, data: Record<string, unknown>) =>
+      fetchWithAuth(`/expenses/${id}/advanced-approve`, { method: 'PUT', body: JSON.stringify(data) }),
+    getApprovalFlowConfig: () => fetchWithAuth('/expenses/approval-flow'),
+    getDelegates: () => fetchWithAuth('/expenses/delegates'),
+    setDelegate: (data: Record<string, unknown>) =>
+      fetchWithAuth('/expenses/delegates', { method: 'POST', body: JSON.stringify(data) }),
+    removeDelegate: (id: string) =>
+      fetchWithAuth(`/expenses/delegates/${id}`, { method: 'DELETE' }),
+  },
 };

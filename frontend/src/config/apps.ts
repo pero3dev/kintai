@@ -30,8 +30,7 @@ export const apps: AppDefinition[] = [
     icon: 'receipt_long',
     color: 'bg-green-500',
     basePath: '/expenses',
-    enabled: false,
-    comingSoon: true,
+    enabled: true,
   },
   {
     id: 'hr',

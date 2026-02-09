@@ -44,6 +44,10 @@
     "forgotClockPlaceholder": "Forgot to clock in/out, etc.",
     "monthlyExceeded": "Monthly Exceeded",
     "yearlyExceeded": "Yearly Exceeded",
+    "submitting": "Submitting...",
+    "noPermission": "You don't have permission to access this feature",
+    "actions": "Actions",
+    "viewAll": "View All",
     "weekdays": {
       "sun": "Sun",
       "mon": "Mon",
@@ -380,6 +384,229 @@
     "booking": {
       "name": "Booking",
       "description": "Room and resource reservations"
+    }
+  },
+  "expenses": {
+    "dashboard": {
+      "title": "Expense Reports",
+      "subtitle": "Submit and manage expense claims",
+      "quickActions": "Quick Actions",
+      "recentExpenses": "Recent Expenses",
+      "newExpenseDesc": "Submit a new expense claim",
+      "historyDesc": "View past expense reports",
+      "approveDesc": "Process pending expense claims",
+      "reportDesc": "View expense reports & analytics",
+      "templatesDesc": "Quickly create from templates"
+    },
+    "newExpense": "New Expense",
+    "new": {
+      "title": "New Expense Report",
+      "subtitle": "Enter the details of your expenses",
+      "basicInfo": "Basic Information",
+      "items": "Line Items",
+      "addItem": "Add Item",
+      "itemNumber": "Item #{{number}}"
+    },
+    "history": {
+      "title": "Expense History",
+      "subtitle": "Past expense reports"
+    },
+    "approve": {
+      "title": "Expense Approval",
+      "subtitle": "Process pending expense claims",
+      "noPending": "No pending expenses to approve",
+      "rejectReason": "Rejection reason"
+    },
+    "detail": {
+      "view": "View",
+      "itemCount": "Item Count",
+      "receipt": "Receipt",
+      "viewReceipt": "View Receipt",
+      "rejectionReason": "Rejection Reason",
+      "deleteConfirm": "Are you sure you want to delete this expense?",
+      "approvalAction": "Approval Action",
+      "confirmReject": "Reject",
+      "noComments": "No comments yet",
+      "noHistory": "No change history",
+      "commentPlaceholder": "Write a comment...",
+      "addComment": "Send",
+      "tabs": {
+        "details": "Details",
+        "comments": "Comments",
+        "history": "History"
+      }
+    },
+    "receipt": {
+      "label": "Receipt",
+      "dragOrTap": "Drag & drop or tap to upload",
+      "fromTemplate": "Add from template"
+    },
+    "report": {
+      "title": "Expense Report",
+      "subtitle": "Expense analytics and summaries",
+      "totalExpenses": "Total Expenses",
+      "approvedAmount": "Approved Amount",
+      "pendingAmount": "Pending Amount",
+      "totalCount": "Total Claims",
+      "claims": "claims",
+      "categoryBreakdown": "By Category",
+      "monthlyTrend": "Monthly Trend",
+      "departmentBreakdown": "By Department",
+      "statusSummary": "By Status",
+      "department": "Department",
+      "claimCount": "Claims",
+      "avgPerClaim": "Avg per Claim",
+      "ratio": "Ratio",
+      "period": {
+        "month": "Monthly",
+        "quarter": "Quarterly",
+        "year": "Yearly"
+      }
+    },
+    "templates": {
+      "title": "Expense Templates",
+      "subtitle": "Save common expense patterns for quick submission",
+      "create": "Create Template",
+      "edit": "Edit Template",
+      "templateName": "Template Name",
+      "templateNamePlaceholder": "e.g. Monthly Commute",
+      "recurring": "Set as recurring expense",
+      "recurringDesc": "Automatically create expense claims monthly",
+      "recurringDay": "Day of month to submit",
+      "dayOfMonth": "Day {{day}}",
+      "recurringTemplates": "Recurring Templates",
+      "savedTemplates": "Saved Templates",
+      "noTemplates": "No templates yet",
+      "useTemplate": "Use Template",
+      "deleteConfirm": "Are you sure you want to delete this template?",
+      "everyMonth": "Every {{day}}th"
+    },
+    "policy": {
+      "title": "Expense Policies & Limits",
+      "subtitle": "Manage category limits and auto-approval rules",
+      "addPolicy": "Add Policy",
+      "editPolicy": "Edit Policy",
+      "currentPolicies": "Current Policies",
+      "noPolicies": "No policies configured",
+      "monthlyLimit": "Monthly Limit",
+      "perClaimLimit": "Per-Claim Limit",
+      "autoApproveLimit": "Auto-Approve Limit",
+      "autoApproveDesc": "Claims below this amount are auto-approved",
+      "receiptRequired": "Receipt Required Amount",
+      "receiptRequiredDesc": "Receipt required for claims above this amount",
+      "description": "Description",
+      "descriptionPlaceholder": "Additional policy notes",
+      "active": "Active",
+      "inactive": "Inactive",
+      "deleteConfirm": "Are you sure you want to delete this policy?",
+      "budgetOverview": "Department Budget Overview",
+      "violations": "Policy Violations"
+    },
+    "notifications": {
+      "title": "Expense Notifications",
+      "unreadCount": "{{count}} unread notifications",
+      "allRead": "All caught up!",
+      "markAllRead": "Mark all as read",
+      "reminders": "Reminders",
+      "takeAction": "Take Action",
+      "empty": "No notifications",
+      "filter": {
+        "all": "All",
+        "unread": "Unread",
+        "action_required": "Action Required"
+      },
+      "settings": {
+        "title": "Notification Settings",
+        "onApproved": "When expense is approved",
+        "onRejected": "When expense is rejected",
+        "onComment": "When a comment is added",
+        "onReimbursed": "When expense is reimbursed",
+        "monthEnd": "End-of-month reminder",
+        "overdue": "Overdue processing alert"
+      }
+    },
+    "advancedApprove": {
+      "title": "Advanced Approval Workflow",
+      "subtitle": "Manage multi-step and delegated approvals",
+      "flowSteps": "Approval Flow",
+      "step": "Step {{num}}",
+      "currentStep": "Current Step",
+      "autoApprove": "Auto-Approve",
+      "finalApproval": "Final Approval",
+      "delegate": "Delegate Settings",
+      "setDelegate": "Set Delegate",
+      "delegateTo": "Delegate To",
+      "delegateStart": "Start Date",
+      "delegateEnd": "End Date",
+      "currentDelegates": "Current Delegates",
+      "return": "Return",
+      "returnReason": "Return Reason"
+    },
+    "fields": {
+      "title": "Title",
+      "date": "Date",
+      "category": "Category",
+      "description": "Description",
+      "amount": "Amount",
+      "totalAmount": "Total Amount",
+      "status": "Status",
+      "notes": "Notes",
+      "applicant": "Applicant"
+    },
+    "placeholders": {
+      "title": "e.g. February Business Trip",
+      "category": "Select a category",
+      "description": "e.g. Shinkansen Tokyo to Osaka",
+      "notes": "Add any additional notes"
+    },
+    "categories": {
+      "transportation": "Transportation",
+      "meals": "Meals",
+      "accommodation": "Accommodation",
+      "supplies": "Supplies",
+      "communication": "Communication",
+      "entertainment": "Entertainment",
+      "other": "Other"
+    },
+    "status": {
+      "draft": "Draft",
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "reimbursed": "Reimbursed"
+    },
+    "stats": {
+      "totalThisMonth": "Total This Month",
+      "pendingCount": "Pending Count",
+      "approvedThisMonth": "Approved This Month",
+      "reimbursedTotal": "Reimbursed Total"
+    },
+    "actions": {
+      "saveDraft": "Save Draft",
+      "submit": "Submit"
+    },
+    "filters": {
+      "allStatuses": "All Statuses",
+      "allCategories": "All Categories"
+    },
+    "validation": {
+      "titleRequired": "Title is required",
+      "dateRequired": "Date is required",
+      "categoryRequired": "Category is required",
+      "descriptionRequired": "Description is required",
+      "amountRequired": "Amount must be at least 1",
+      "itemsRequired": "At least one line item is required"
+    },
+    "nav": {
+      "dashboard": "Dashboard",
+      "newExpense": "New Expense",
+      "history": "History",
+      "approve": "Approval",
+      "report": "Report",
+      "templates": "Templates",
+      "notifications": "Notifications",
+      "advancedApprove": "Advanced Approval",
+      "policy": "Policies"
     }
   }
 }

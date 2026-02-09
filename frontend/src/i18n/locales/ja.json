@@ -44,6 +44,10 @@
     "forgotClockPlaceholder": "打刻忘れ等",
     "monthlyExceeded": "月間超過",
     "yearlyExceeded": "年間超過",
+    "submitting": "送信中...",
+    "noPermission": "この機能にアクセスする権限がありません",
+    "actions": "操作",
+    "viewAll": "すべて見る",
     "weekdays": {
       "sun": "日",
       "mon": "月",
@@ -380,6 +384,229 @@
     "booking": {
       "name": "予約管理",
       "description": "会議室・備品の予約"
+    }
+  },
+  "expenses": {
+    "dashboard": {
+      "title": "経費精算",
+      "subtitle": "経費の申請・管理を行います",
+      "quickActions": "クイックアクション",
+      "recentExpenses": "最近の経費",
+      "newExpenseDesc": "新しい経費精算を申請",
+      "historyDesc": "過去の経費精算を確認",
+      "approveDesc": "承認待ちの経費を処理",
+      "reportDesc": "経費レポート・分析を確認",
+      "templatesDesc": "テンプレートから素早く作成"
+    },
+    "newExpense": "新規申請",
+    "new": {
+      "title": "経費精算申請",
+      "subtitle": "経費の詳細を入力してください",
+      "basicInfo": "基本情報",
+      "items": "明細",
+      "addItem": "明細を追加",
+      "itemNumber": "明細 #{{number}}"
+    },
+    "history": {
+      "title": "経費精算履歴",
+      "subtitle": "過去の経費精算一覧"
+    },
+    "approve": {
+      "title": "経費承認",
+      "subtitle": "承認待ちの経費精算を処理します",
+      "noPending": "承認待ちの経費はありません",
+      "rejectReason": "却下理由"
+    },
+    "detail": {
+      "view": "詳細",
+      "itemCount": "明細件数",
+      "receipt": "領収書",
+      "viewReceipt": "領収書を表示",
+      "rejectionReason": "却下理由",
+      "deleteConfirm": "この経費精算を削除しますか？",
+      "approvalAction": "承認アクション",
+      "confirmReject": "却下する",
+      "noComments": "コメントはまだありません",
+      "noHistory": "変更履歴はありません",
+      "commentPlaceholder": "コメントを入力...",
+      "addComment": "送信",
+      "tabs": {
+        "details": "明細",
+        "comments": "コメント",
+        "history": "変更履歴"
+      }
+    },
+    "receipt": {
+      "label": "領収書",
+      "dragOrTap": "ドラッグ＆ドロップまたはタップ",
+      "fromTemplate": "テンプレートから追加"
+    },
+    "report": {
+      "title": "経費レポート",
+      "subtitle": "経費の分析・集計を確認",
+      "totalExpenses": "合計経費",
+      "approvedAmount": "承認済み金額",
+      "pendingAmount": "承認待ち金額",
+      "totalCount": "申請件数",
+      "claims": "件",
+      "categoryBreakdown": "カテゴリ別内訳",
+      "monthlyTrend": "月次推移",
+      "departmentBreakdown": "部門別内訳",
+      "statusSummary": "ステータス別集計",
+      "department": "部門",
+      "claimCount": "件数",
+      "avgPerClaim": "平均単価",
+      "ratio": "構成比",
+      "period": {
+        "month": "月次",
+        "quarter": "四半期",
+        "year": "年次"
+      }
+    },
+    "templates": {
+      "title": "経費テンプレート",
+      "subtitle": "よく使う経費パターンを保存して素早く申請",
+      "create": "テンプレート作成",
+      "edit": "テンプレート編集",
+      "templateName": "テンプレート名",
+      "templateNamePlaceholder": "例：毎月の定期代",
+      "recurring": "定期経費として設定",
+      "recurringDesc": "毎月自動で経費申請を作成します",
+      "recurringDay": "毎月の申請日",
+      "dayOfMonth": "{{day}}日",
+      "recurringTemplates": "定期経費テンプレート",
+      "savedTemplates": "保存済みテンプレート",
+      "noTemplates": "テンプレートはまだありません",
+      "useTemplate": "テンプレートを使用",
+      "deleteConfirm": "このテンプレートを削除しますか？",
+      "everyMonth": "毎月{{day}}日"
+    },
+    "policy": {
+      "title": "経費ポリシー・上限管理",
+      "subtitle": "カテゴリごとの利用上限と自動承認ルールを管理",
+      "addPolicy": "ポリシー追加",
+      "editPolicy": "ポリシー編集",
+      "currentPolicies": "現在のポリシー",
+      "noPolicies": "ポリシーは設定されていません",
+      "monthlyLimit": "月間上限",
+      "perClaimLimit": "1件あたり上限",
+      "autoApproveLimit": "自動承認上限",
+      "autoApproveDesc": "この金額以下は自動承認",
+      "receiptRequired": "領収書必須金額",
+      "receiptRequiredDesc": "この金額以上は領収書添付必須",
+      "description": "説明",
+      "descriptionPlaceholder": "ポリシーの補足説明",
+      "active": "有効",
+      "inactive": "無効",
+      "deleteConfirm": "このポリシーを削除しますか？",
+      "budgetOverview": "部門別予算状況",
+      "violations": "ポリシー違反"
+    },
+    "notifications": {
+      "title": "経費通知",
+      "unreadCount": "{{count}}件の未読通知",
+      "allRead": "すべて既読済みです",
+      "markAllRead": "すべて既読にする",
+      "reminders": "リマインダー",
+      "takeAction": "対応する",
+      "empty": "通知はありません",
+      "filter": {
+        "all": "すべて",
+        "unread": "未読",
+        "action_required": "要対応"
+      },
+      "settings": {
+        "title": "通知設定",
+        "onApproved": "経費が承認されたとき",
+        "onRejected": "経費が却下されたとき",
+        "onComment": "コメントが追加されたとき",
+        "onReimbursed": "経費が精算されたとき",
+        "monthEnd": "月末の未申請リマインド",
+        "overdue": "長期間未処理のアラート"
+      }
+    },
+    "advancedApprove": {
+      "title": "高度な承認ワークフロー",
+      "subtitle": "多段階承認・代理承認の管理",
+      "flowSteps": "承認フロー",
+      "step": "ステップ {{num}}",
+      "currentStep": "現在のステップ",
+      "autoApprove": "自動承認",
+      "finalApproval": "最終承認",
+      "delegate": "代理承認設定",
+      "setDelegate": "代理承認者を設定",
+      "delegateTo": "代理承認者",
+      "delegateStart": "開始日",
+      "delegateEnd": "終了日",
+      "currentDelegates": "現在の代理設定",
+      "return": "差し戻し",
+      "returnReason": "差し戻し理由"
+    },
+    "fields": {
+      "title": "件名",
+      "date": "利用日",
+      "category": "カテゴリ",
+      "description": "摘要",
+      "amount": "金額",
+      "totalAmount": "合計金額",
+      "status": "ステータス",
+      "notes": "備考",
+      "applicant": "申請者"
+    },
+    "placeholders": {
+      "title": "例：2月出張経費",
+      "category": "カテゴリを選択",
+      "description": "例：新幹線 東京→大阪",
+      "notes": "補足事項があれば入力"
+    },
+    "categories": {
+      "transportation": "交通費",
+      "meals": "飲食費",
+      "accommodation": "宿泊費",
+      "supplies": "消耗品費",
+      "communication": "通信費",
+      "entertainment": "交際費",
+      "other": "その他"
+    },
+    "status": {
+      "draft": "下書き",
+      "pending": "承認待ち",
+      "approved": "承認済み",
+      "rejected": "却下",
+      "reimbursed": "精算済み"
+    },
+    "stats": {
+      "totalThisMonth": "今月の申請額",
+      "pendingCount": "承認待ち件数",
+      "approvedThisMonth": "今月の承認額",
+      "reimbursedTotal": "精算済み金額"
+    },
+    "actions": {
+      "saveDraft": "下書き保存",
+      "submit": "申請する"
+    },
+    "filters": {
+      "allStatuses": "すべてのステータス",
+      "allCategories": "すべてのカテゴリ"
+    },
+    "validation": {
+      "titleRequired": "件名を入力してください",
+      "dateRequired": "利用日を選択してください",
+      "categoryRequired": "カテゴリを選択してください",
+      "descriptionRequired": "摘要を入力してください",
+      "amountRequired": "1円以上の金額を入力してください",
+      "itemsRequired": "明細を1件以上追加してください"
+    },
+    "nav": {
+      "dashboard": "ダッシュボード",
+      "newExpense": "新規申請",
+      "history": "履歴",
+      "approve": "承認",
+      "report": "レポート",
+      "templates": "テンプレート",
+      "notifications": "通知",
+      "advancedApprove": "高度な承認",
+      "policy": "ポリシー"
     }
   }
 }

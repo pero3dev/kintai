@@ -2,8 +2,9 @@ import { Outlet, Link, useNavigate, useLocation } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '@/stores/authStore';
 import { useThemeStore, applyTheme } from '@/stores/themeStore';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { AppSwitcher } from './AppSwitcher';
+import { getActiveApp } from '@/config/apps';
 
 // Material Symbols icon component
 function MaterialIcon({ name, className = '' }: { name: string; className?: string }) {
@@ -57,25 +58,49 @@ export function Layout() {
     return t('theme.system');
   };
 
-  const navItems = [
-    { to: '/' as const, icon: 'home', label: t('nav.home') },
-    { to: '/attendance' as const, icon: 'schedule', label: t('nav.attendance') },
-    { to: '/leaves' as const, icon: 'event_available', label: t('nav.leaves') },
-    { to: '/overtime' as const, icon: 'more_time', label: t('nav.overtime') },
-    { to: '/corrections' as const, icon: 'edit_note', label: t('nav.corrections') },
-    { to: '/projects' as const, icon: 'folder_open', label: t('nav.projects') },
-    { to: '/shifts' as const, icon: 'calendar_month', label: t('nav.shifts') },
-    { to: '/holidays' as const, icon: 'celebration', label: t('nav.holidays') },
-    { to: '/notifications' as const, icon: 'notifications', label: t('nav.notifications') },
-    ...(user?.role === 'admin' || user?.role === 'manager'
-      ? [
-          { to: '/dashboard' as const, icon: 'dashboard', label: t('nav.dashboard') },
-          { to: '/users' as const, icon: 'group', label: t('nav.users') },
-          { to: '/export' as const, icon: 'download', label: t('nav.export') },
-          { to: '/approval-flows' as const, icon: 'account_tree', label: t('nav.approvalFlows') },
-        ]
-      : []),
-  ];
+  const navItems = useMemo(() => {
+    const activeApp = getActiveApp(location.pathname);
+
+    // 経費精算アプリのナビ
+    if (activeApp?.id === 'expenses') {
+      return [
+        { to: '/expenses' as const, icon: 'dashboard', label: t('expenses.nav.dashboard') },
+        { to: '/expenses/new' as const, icon: 'add_card', label: t('expenses.nav.newExpense') },
+        { to: '/expenses/history' as const, icon: 'history', label: t('expenses.nav.history') },
+        { to: '/expenses/report' as const, icon: 'bar_chart', label: t('expenses.nav.report') },
+        { to: '/expenses/templates' as const, icon: 'content_copy', label: t('expenses.nav.templates') },
+        { to: '/expenses/notifications' as const, icon: 'notifications', label: t('expenses.nav.notifications') },
+        ...(user?.role === 'admin' || user?.role === 'manager'
+          ? [
+              { to: '/expenses/approve' as const, icon: 'fact_check', label: t('expenses.nav.approve') },
+              { to: '/expenses/advanced-approve' as const, icon: 'account_tree', label: t('expenses.nav.advancedApprove') },
+              { to: '/expenses/policy' as const, icon: 'policy', label: t('expenses.nav.policy') },
+            ]
+          : []),
+      ];
+    }
+
+    // デフォルト: 勤怠管理アプリのナビ
+    return [
+      { to: '/' as const, icon: 'home', label: t('nav.home') },
+      { to: '/attendance' as const, icon: 'schedule', label: t('nav.attendance') },
+      { to: '/leaves' as const, icon: 'event_available', label: t('nav.leaves') },
+      { to: '/overtime' as const, icon: 'more_time', label: t('nav.overtime') },
+      { to: '/corrections' as const, icon: 'edit_note', label: t('nav.corrections') },
+      { to: '/projects' as const, icon: 'folder_open', label: t('nav.projects') },
+      { to: '/shifts' as const, icon: 'calendar_month', label: t('nav.shifts') },
+      { to: '/holidays' as const, icon: 'celebration', label: t('nav.holidays') },
+      { to: '/notifications' as const, icon: 'notifications', label: t('nav.notifications') },
+      ...(user?.role === 'admin' || user?.role === 'manager'
+        ? [
+            { to: '/dashboard' as const, icon: 'dashboard', label: t('nav.dashboard') },
+            { to: '/users' as const, icon: 'group', label: t('nav.users') },
+            { to: '/export' as const, icon: 'download', label: t('nav.export') },
+            { to: '/approval-flows' as const, icon: 'account_tree', label: t('nav.approvalFlows') },
+          ]
+        : []),
+    ];
+  }, [location.pathname, user?.role, t]);
 
   const isActive = (path: string) => {
     if (path === '/') return location.pathname === '/';

@@ -18,6 +18,16 @@ import { ProjectsPage } from './pages/ProjectsPage';
 import { HolidaysPage } from './pages/HolidaysPage';
 import { ExportPage } from './pages/ExportPage';
 import { ApprovalFlowsPage } from './pages/ApprovalFlowsPage';
+import { ExpenseDashboardPage } from './pages/expenses/ExpenseDashboardPage';
+import { ExpenseNewPage } from './pages/expenses/ExpenseNewPage';
+import { ExpenseHistoryPage } from './pages/expenses/ExpenseHistoryPage';
+import { ExpenseApprovePage } from './pages/expenses/ExpenseApprovePage';
+import { ExpenseDetailPage } from './pages/expenses/ExpenseDetailPage';
+import { ExpenseReportPage } from './pages/expenses/ExpenseReportPage';
+import { ExpenseTemplatesPage } from './pages/expenses/ExpenseTemplatesPage';
+import { ExpensePolicyPage } from './pages/expenses/ExpensePolicyPage';
+import { ExpenseNotificationsPage } from './pages/expenses/ExpenseNotificationsPage';
+import { ExpenseAdvancedApprovePage } from './pages/expenses/ExpenseAdvancedApprovePage';
 
 // ルートルート
 const rootRoute = createRootRoute({
@@ -129,6 +139,67 @@ const approvalFlowsRoute = createRoute({
   component: ApprovalFlowsPage,
 });
 
+// 経費精算
+const expenseDashboardRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/expenses',
+  component: ExpenseDashboardPage,
+});
+
+const expenseNewRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/expenses/new',
+  component: ExpenseNewPage,
+});
+
+const expenseHistoryRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/expenses/history',
+  component: ExpenseHistoryPage,
+});
+
+const expenseApproveRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/expenses/approve',
+  component: ExpenseApprovePage,
+});
+
+const expenseDetailRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/expenses/$expenseId',
+  component: ExpenseDetailPage,
+});
+
+const expenseReportRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/expenses/report',
+  component: ExpenseReportPage,
+});
+
+const expenseTemplatesRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/expenses/templates',
+  component: ExpenseTemplatesPage,
+});
+
+const expensePolicyRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/expenses/policy',
+  component: ExpensePolicyPage,
+});
+
+const expenseNotificationsRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/expenses/notifications',
+  component: ExpenseNotificationsPage,
+});
+
+const expenseAdvancedApproveRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/expenses/advanced-approve',
+  component: ExpenseAdvancedApprovePage,
+});
+
 // ルートツリー
 export const routeTree = rootRoute.addChildren([
   loginRoute,
@@ -146,5 +217,15 @@ export const routeTree = rootRoute.addChildren([
     holidaysRoute,
     exportRoute,
     approvalFlowsRoute,
+    expenseDashboardRoute,
+    expenseNewRoute,
+    expenseHistoryRoute,
+    expenseApproveRoute,
+    expenseDetailRoute,
+    expenseReportRoute,
+    expenseTemplatesRoute,
+    expensePolicyRoute,
+    expenseNotificationsRoute,
+    expenseAdvancedApproveRoute,
   ]),
 ]);
