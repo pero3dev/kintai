@@ -56,7 +56,7 @@ export function NotificationsPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Bell className="h-6 w-6" />
@@ -70,7 +70,7 @@ export function NotificationsPage() {
         {(unreadCount?.unread ?? 0) > 0 && (
           <button
             onClick={() => markAllReadMutation.mutate()}
-            className="flex items-center gap-2 px-4 py-2 border border-input rounded-md hover:bg-accent text-sm"
+            className="flex items-center gap-2 px-4 py-2 glass-input rounded-xl hover:bg-white/10 transition-all text-sm"
           >
             <CheckCheck className="h-4 w-4" />
             {t('notifications.markAllRead')}

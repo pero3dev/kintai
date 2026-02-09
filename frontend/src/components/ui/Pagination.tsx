@@ -63,7 +63,7 @@ export function Pagination({
             <select
               value={pageSize}
               onChange={(e) => onPageSizeChange(Number(e.target.value))}
-              className="px-2 py-1 border border-input rounded-md bg-background text-sm"
+              className="px-2 py-1 glass-input rounded-xl text-sm"
             >
               {pageSizeOptions.map((size) => (
                 <option key={size} value={size}>
@@ -78,7 +78,7 @@ export function Pagination({
           <button
             onClick={() => onPageChange(1)}
             disabled={currentPage === 1}
-            className="p-1.5 rounded-md hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-1.5 rounded-xl hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             title="最初のページ"
           >
             <ChevronsLeft className="h-4 w-4" />
@@ -86,7 +86,7 @@ export function Pagination({
           <button
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="p-1.5 rounded-md hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-1.5 rounded-xl hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             title="前のページ"
           >
             <ChevronLeft className="h-4 w-4" />
@@ -102,10 +102,10 @@ export function Pagination({
                 <button
                   key={page}
                   onClick={() => onPageChange(page as number)}
-                  className={`min-w-[2rem] h-8 px-2 rounded-md text-sm font-medium transition-colors ${
+                  className={`min-w-[2rem] h-8 px-2 rounded-xl text-sm font-medium transition-all ${
                     currentPage === page
-                      ? 'bg-primary text-primary-foreground'
-                      : 'hover:bg-accent'
+                      ? 'gradient-primary text-white shadow-glow-sm'
+                      : 'hover:bg-white/10'
                   }`}
                 >
                   {page}
@@ -117,7 +117,7 @@ export function Pagination({
           <button
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="p-1.5 rounded-md hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-1.5 rounded-xl hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             title="次のページ"
           >
             <ChevronRight className="h-4 w-4" />
@@ -125,7 +125,7 @@ export function Pagination({
           <button
             onClick={() => onPageChange(totalPages)}
             disabled={currentPage === totalPages}
-            className="p-1.5 rounded-md hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-1.5 rounded-xl hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             title="最後のページ"
           >
             <ChevronsRight className="h-4 w-4" />

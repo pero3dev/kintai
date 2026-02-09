@@ -79,15 +79,15 @@ export function LeavesPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold flex items-center gap-2">
-          <CalendarDays className="h-6 w-6" />
+          <CalendarDays className="h-6 w-6 text-indigo-400" />
           {t('leaves.title')}
         </h1>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+          className="flex items-center gap-2 px-4 py-2.5 gradient-primary text-white rounded-xl hover:shadow-glow-md transition-all"
         >
           <Plus className="h-4 w-4" />
           {t('leaves.newRequest')}
@@ -96,13 +96,13 @@ export function LeavesPage() {
 
       {/* 申請フォーム */}
       {showForm && (
-        <div className="bg-card border border-border rounded-lg p-6">
+        <div className="glass-card rounded-2xl p-6">
           <h2 className="text-lg font-semibold mb-4">{t('leaves.newRequest')}</h2>
           <form onSubmit={handleSubmit((data) => createMutation.mutate(data))} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1">{t('leaves.type')}</label>
-                <select {...register('leave_type')} className="w-full px-3 py-2 border border-input rounded-md bg-background">
+                <label className="block text-sm font-medium mb-1 text-foreground/80">{t('leaves.type')}</label>
+                <select {...register('leave_type')} className="w-full px-3 py-2.5 glass-input rounded-xl">
                   <option value="paid">{t('leaves.types.paid')}</option>
                   <option value="sick">{t('leaves.types.sick')}</option>
                   <option value="special">{t('leaves.types.special')}</option>
@@ -110,25 +110,25 @@ export function LeavesPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">{t('leaves.reason')}</label>
-                <input type="text" {...register('reason')} className="w-full px-3 py-2 border border-input rounded-md bg-background" />
+                <label className="block text-sm font-medium mb-1 text-foreground/80">{t('leaves.reason')}</label>
+                <input type="text" {...register('reason')} className="w-full px-3 py-2.5 glass-input rounded-xl" />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">{t('leaves.startDate')}</label>
-                <input type="date" {...register('start_date')} className="w-full px-3 py-2 border border-input rounded-md bg-background" />
-                {errors.start_date && <p className="text-sm text-destructive mt-1">{errors.start_date.message}</p>}
+                <label className="block text-sm font-medium mb-1 text-foreground/80">{t('leaves.startDate')}</label>
+                <input type="date" {...register('start_date')} className="w-full px-3 py-2.5 glass-input rounded-xl" />
+                {errors.start_date && <p className="text-sm text-red-400 mt-1">{errors.start_date.message}</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">{t('leaves.endDate')}</label>
-                <input type="date" {...register('end_date')} className="w-full px-3 py-2 border border-input rounded-md bg-background" />
-                {errors.end_date && <p className="text-sm text-destructive mt-1">{errors.end_date.message}</p>}
+                <label className="block text-sm font-medium mb-1 text-foreground/80">{t('leaves.endDate')}</label>
+                <input type="date" {...register('end_date')} className="w-full px-3 py-2.5 glass-input rounded-xl" />
+                {errors.end_date && <p className="text-sm text-red-400 mt-1">{errors.end_date.message}</p>}
               </div>
             </div>
             <div className="flex gap-2">
-              <button type="submit" disabled={createMutation.isPending} className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50">
+              <button type="submit" disabled={createMutation.isPending} className="px-4 py-2.5 gradient-primary text-white rounded-xl hover:shadow-glow-md disabled:opacity-50 transition-all">
                 {t('common.submit')}
               </button>
-              <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 border border-input rounded-md hover:bg-accent">
+              <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2.5 glass-input rounded-xl hover:bg-white/10 transition-all">
                 {t('common.cancel')}
               </button>
             </div>
@@ -138,11 +138,11 @@ export function LeavesPage() {
 
       {/* 承認待ち一覧（管理者用） */}
       {(user?.role === 'admin' || user?.role === 'manager') && pendingLeaves?.data?.length > 0 && (
-        <div className="bg-card border border-border rounded-lg p-6">
+        <div className="glass-card rounded-2xl p-6">
           <h2 className="text-lg font-semibold mb-4">{t('leaves.pending')}</h2>
           <div className="space-y-3">
             {pendingLeaves.data.map((leave: Record<string, unknown>) => (
-              <div key={leave.id as string} className="flex items-center justify-between p-4 border border-border rounded-md">
+              <div key={leave.id as string} className="flex items-center justify-between p-4 glass-subtle rounded-xl">
                 <div>
                   <p className="font-medium">{(leave.user as Record<string, string>)?.last_name} {(leave.user as Record<string, string>)?.first_name}</p>
                   <p className="text-sm text-muted-foreground">
@@ -153,13 +153,13 @@ export function LeavesPage() {
                 <div className="flex gap-2">
                   <button
                     onClick={() => approveMutation.mutate({ id: leave.id as string, data: { status: 'approved' } })}
-                    className="px-3 py-1 bg-green-600/80 text-white rounded text-sm hover:bg-green-600"
+                    className="px-3 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-lg text-sm hover:bg-emerald-500/30 transition-all"
                   >
                     {t('leaves.approve')}
                   </button>
                   <button
                     onClick={() => approveMutation.mutate({ id: leave.id as string, data: { status: 'rejected' } })}
-                    className="px-3 py-1 bg-red-600/80 text-white rounded text-sm hover:bg-red-600"
+                    className="px-3 py-1 bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg text-sm hover:bg-red-500/30 transition-all"
                   >
                     {t('leaves.reject')}
                   </button>
@@ -180,12 +180,12 @@ export function LeavesPage() {
       )}
 
       {/* 自分の申請一覧 */}
-      <div className="bg-card border border-border rounded-lg p-6">
+      <div className="glass-card rounded-2xl p-6">
         <h2 className="text-lg font-semibold mb-4">{t('leaves.history')}</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-border">
+              <tr className="border-b border-white/5">
                 <th className="text-left py-2 px-4">{t('leaves.type')}</th>
                 <th className="text-left py-2 px-4">{t('leaves.startDate')}</th>
                 <th className="text-left py-2 px-4">{t('leaves.endDate')}</th>
@@ -195,7 +195,7 @@ export function LeavesPage() {
             </thead>
             <tbody>
               {myLeaves?.data?.map((leave: Record<string, unknown>) => (
-                <tr key={leave.id as string} className="border-b border-border/50">
+                <tr key={leave.id as string} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                   <td className="py-2 px-4">{t(`leaves.types.${leave.leave_type as string}`)}</td>
                   <td className="py-2 px-4">{leave.start_date as string}</td>
                   <td className="py-2 px-4">{leave.end_date as string}</td>

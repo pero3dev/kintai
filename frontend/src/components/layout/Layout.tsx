@@ -83,18 +83,27 @@ export function Layout() {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen overflow-hidden relative">
+      {/* Aurora Background */}
+      <div className="aurora-bg">
+        <div className="aurora-orb-1" />
+        <div className="aurora-orb-2" />
+      </div>
+
+      {/* Noise Overlay */}
+      <div className="noise-overlay" />
+
       {/* サイドバー */}
-      <aside className={`${sidebarCollapsed ? 'w-16' : 'w-64'} flex-shrink-0 bg-card border-r border-border flex flex-col transition-all duration-300`}>
+      <aside className={`${sidebarCollapsed ? 'w-16' : 'w-64'} flex-shrink-0 sidebar-glass flex flex-col transition-all duration-300 relative z-10`}>
         {/* ロゴ */}
         <div className={`p-4 flex items-center ${sidebarCollapsed ? 'justify-center' : 'gap-3 px-6'}`}>
-          <div className="size-10 bg-primary rounded-lg flex items-center justify-center text-primary-foreground flex-shrink-0">
-            <MaterialIcon name="schedule" className="text-2xl" />
+          <div className="size-10 rounded-xl flex items-center justify-center flex-shrink-0 gradient-primary shadow-glow-sm">
+            <MaterialIcon name="schedule" className="text-2xl text-white" />
           </div>
           {!sidebarCollapsed && (
             <div>
-              <h1 className="font-bold text-lg leading-tight">{t('common.appName')}</h1>
-              <p className="text-xs text-primary/70">{t('common.subtitle')}</p>
+              <h1 className="font-bold text-lg leading-tight gradient-text">{t('common.appName')}</h1>
+              <p className="text-xs text-muted-foreground">{t('common.subtitle')}</p>
             </div>
           )}
         </div>
@@ -108,7 +117,7 @@ export function Layout() {
         <div className={`px-2 ${sidebarCollapsed ? 'flex justify-center' : 'px-4'}`}>
           <button
             onClick={toggleSidebar}
-            className="flex items-center justify-center w-full py-2 rounded-lg text-muted-foreground hover:bg-primary/10 transition-colors"
+            className="flex items-center justify-center w-full py-2 rounded-lg text-muted-foreground hover:text-foreground nav-item-hover transition-colors"
             title={sidebarCollapsed ? t('sidebar.expand') : t('sidebar.collapse')}
           >
             <MaterialIcon name={sidebarCollapsed ? 'chevron_right' : 'chevron_left'} />
@@ -116,29 +125,29 @@ export function Layout() {
         </div>
 
         {/* ナビゲーション */}
-        <nav className={`flex-1 ${sidebarCollapsed ? 'px-2' : 'px-4'} space-y-1 mt-4 overflow-y-auto scrollbar-thin`}>
+        <nav className={`flex-1 ${sidebarCollapsed ? 'px-2' : 'px-3'} space-y-1 mt-4 overflow-y-auto scrollbar-thin`}>
           {navItems.map((item) => (
             <Link
               key={item.to}
               to={item.to}
               title={sidebarCollapsed ? item.label : undefined}
-              className={`flex items-center ${sidebarCollapsed ? 'justify-center' : 'gap-3'} px-3 py-2 rounded-lg transition-colors text-sm ${isActive(item.to)
-                  ? 'bg-primary text-primary-foreground font-semibold'
-                  : 'text-muted-foreground hover:bg-primary/10'
+              className={`flex items-center ${sidebarCollapsed ? 'justify-center' : 'gap-3'} px-3 py-2.5 rounded-xl transition-all duration-200 text-sm ${isActive(item.to)
+                  ? 'nav-item-active font-semibold'
+                  : 'text-muted-foreground hover:text-foreground nav-item-hover'
                 }`}
             >
-              <MaterialIcon name={item.icon} />
+              <MaterialIcon name={item.icon} className={isActive(item.to) ? 'text-indigo-400' : ''} />
               {!sidebarCollapsed && <span>{item.label}</span>}
             </Link>
           ))}
         </nav>
 
         {/* 設定とユーザー情報 */}
-        <div className={`p-4 border-t border-border space-y-2 ${sidebarCollapsed ? 'px-2' : ''}`}>
+        <div className={`p-4 border-t border-white/5 space-y-1 ${sidebarCollapsed ? 'px-2' : ''}`}>
           <button
             onClick={toggleLanguage}
             title={sidebarCollapsed ? (i18n.language === 'ja' ? 'English' : '日本語') : undefined}
-            className={`flex items-center ${sidebarCollapsed ? 'justify-center' : 'gap-3'} px-3 py-2.5 rounded-lg text-muted-foreground hover:bg-primary/10 transition-colors w-full`}
+            className={`flex items-center ${sidebarCollapsed ? 'justify-center' : 'gap-3'} px-3 py-2.5 rounded-xl text-muted-foreground hover:text-foreground nav-item-hover transition-all w-full text-sm`}
           >
             <MaterialIcon name="language" />
             {!sidebarCollapsed && <span>{i18n.language === 'ja' ? 'English' : '日本語'}</span>}
@@ -146,7 +155,7 @@ export function Layout() {
           <button
             onClick={cycleTheme}
             title={sidebarCollapsed ? getThemeLabel() : undefined}
-            className={`flex items-center ${sidebarCollapsed ? 'justify-center' : 'gap-3'} px-3 py-2.5 rounded-lg text-muted-foreground hover:bg-primary/10 transition-colors w-full`}
+            className={`flex items-center ${sidebarCollapsed ? 'justify-center' : 'gap-3'} px-3 py-2.5 rounded-xl text-muted-foreground hover:text-foreground nav-item-hover transition-all w-full text-sm`}
           >
             <MaterialIcon name={getThemeIcon()} />
             {!sidebarCollapsed && <span>{getThemeLabel()}</span>}
@@ -154,7 +163,7 @@ export function Layout() {
           <button
             onClick={handleLogout}
             title={sidebarCollapsed ? t('common.logout') : undefined}
-            className={`flex items-center ${sidebarCollapsed ? 'justify-center' : 'gap-3'} px-3 py-2.5 rounded-lg text-muted-foreground hover:bg-primary/10 transition-colors w-full`}
+            className={`flex items-center ${sidebarCollapsed ? 'justify-center' : 'gap-3'} px-3 py-2.5 rounded-xl text-muted-foreground hover:text-red-400 nav-item-hover transition-all w-full text-sm`}
           >
             <MaterialIcon name="logout" />
             {!sidebarCollapsed && <span>{t('common.logout')}</span>}
@@ -162,13 +171,13 @@ export function Layout() {
 
           {/* ユーザープロフィール */}
           {user && (
-            <div className={`flex items-center ${sidebarCollapsed ? 'justify-center py-3' : 'gap-3 px-3 py-4'} mt-2 bg-black/20 rounded-xl`}>
-              <div className="size-10 rounded-full bg-primary/20 flex items-center justify-center border-2 border-primary/30 flex-shrink-0">
-                <MaterialIcon name="person" className="text-primary" />
+            <div className={`flex items-center ${sidebarCollapsed ? 'justify-center py-3' : 'gap-3 px-3 py-4'} mt-2 glass-subtle rounded-2xl`}>
+              <div className="size-10 rounded-full flex items-center justify-center flex-shrink-0 gradient-primary-subtle border border-indigo-400/20">
+                <MaterialIcon name="person" className="text-indigo-400" />
               </div>
               {!sidebarCollapsed && (
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold truncate uppercase">
+                  <p className="text-sm font-semibold truncate">
                     {user.last_name} {user.first_name}
                   </p>
                   <p className="text-xs text-muted-foreground truncate">
@@ -182,9 +191,9 @@ export function Layout() {
       </aside>
 
       {/* メインコンテンツ */}
-      <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <main className="flex-1 flex flex-col min-w-0 overflow-hidden relative z-10">
         {/* ヘッダー */}
-        <header className="h-16 flex items-center justify-between px-8 bg-card border-b border-border">
+        <header className="h-16 flex items-center justify-between px-8 glass border-b border-white/5">
           <div className="flex items-center gap-4 flex-1 max-w-xl">
             <div className="relative w-full">
               <MaterialIcon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -193,18 +202,18 @@ export function Layout() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={t('common.search')}
-                className="w-full bg-black/20 border-none rounded-lg pl-10 pr-4 py-2 focus:ring-2 focus:ring-primary text-sm placeholder:text-muted-foreground"
+                className="w-full glass-input rounded-xl pl-10 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground"
               />
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <button className="relative p-2 text-muted-foreground hover:bg-primary/10 rounded-full transition-colors">
+          <div className="flex items-center gap-3">
+            <button className="relative p-2.5 text-muted-foreground hover:text-foreground glass-subtle rounded-xl transition-all hover:shadow-glow-sm">
               <MaterialIcon name="notifications" />
-              <span className="absolute top-1.5 right-1.5 size-2.5 bg-destructive border-2 border-card rounded-full"></span>
+              <span className="absolute top-1.5 right-1.5 size-2.5 bg-emerald-400 rounded-full pulse-dot"></span>
             </button>
             <Link
               to="/attendance"
-              className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground font-bold text-sm rounded-lg hover:brightness-110 transition-all"
+              className="flex items-center gap-2 px-5 py-2.5 gradient-primary text-white font-semibold text-sm rounded-xl hover:shadow-glow-md transition-all duration-300"
             >
               <MaterialIcon name="add" className="text-lg" />
               {t('attendance.clockIn')}
@@ -213,7 +222,7 @@ export function Layout() {
         </header>
 
         {/* スクロール可能なコンテンツエリア */}
-        <div className="flex-1 overflow-y-auto p-8">
+        <div className="flex-1 overflow-y-auto p-8 scrollbar-thin">
           <Outlet />
         </div>
       </main>

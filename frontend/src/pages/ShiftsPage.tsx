@@ -27,11 +27,11 @@ interface User {
 }
 
 const SHIFT_TYPES: { value: ShiftType; labelKey: string; color: string; bgColor: string }[] = [
-  { value: 'morning', labelKey: 'shifts.types.morning', color: 'text-orange-800', bgColor: 'bg-orange-100' },
-  { value: 'day', labelKey: 'shifts.types.day', color: 'text-blue-800', bgColor: 'bg-blue-100' },
-  { value: 'evening', labelKey: 'shifts.types.evening', color: 'text-purple-800', bgColor: 'bg-purple-100' },
-  { value: 'night', labelKey: 'shifts.types.night', color: 'text-indigo-800', bgColor: 'bg-indigo-100' },
-  { value: 'off', labelKey: 'shifts.types.off', color: 'text-gray-800', bgColor: 'bg-gray-100' },
+  { value: 'morning', labelKey: 'shifts.types.morning', color: 'text-orange-400', bgColor: 'bg-orange-500/20' },
+  { value: 'day', labelKey: 'shifts.types.day', color: 'text-indigo-400', bgColor: 'bg-indigo-500/20' },
+  { value: 'evening', labelKey: 'shifts.types.evening', color: 'text-purple-400', bgColor: 'bg-purple-500/20' },
+  { value: 'night', labelKey: 'shifts.types.night', color: 'text-blue-400', bgColor: 'bg-blue-500/20' },
+  { value: 'off', labelKey: 'shifts.types.off', color: 'text-muted-foreground', bgColor: 'bg-white/10' },
 ];
 
 const getShiftStyle = (type: ShiftType) => {
@@ -144,10 +144,10 @@ export function ShiftsPage() {
   const displayUsers = isAdmin ? users : user ? [{ id: user.id, first_name: user.first_name, last_name: user.last_name, role: user.role }] : [];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold flex items-center gap-2">
-          <CalendarRange className="h-6 w-6" />
+          <CalendarRange className="h-6 w-6 text-indigo-400" />
           {t('shifts.title')}
         </h1>
 
@@ -155,7 +155,7 @@ export function ShiftsPage() {
         <div className="flex items-center gap-4">
           <button
             onClick={() => navigateWeek(-1)}
-            className="p-2 hover:bg-accent rounded-lg transition-colors"
+            className="p-2 hover:bg-white/5 rounded-xl transition-colors"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
@@ -164,13 +164,13 @@ export function ShiftsPage() {
           </span>
           <button
             onClick={() => navigateWeek(1)}
-            className="p-2 hover:bg-accent rounded-lg transition-colors"
+            className="p-2 hover:bg-white/5 rounded-xl transition-colors"
           >
             <ChevronRight className="h-5 w-5" />
           </button>
           <button
             onClick={() => setCurrentDate(new Date())}
-            className="px-3 py-1 text-sm bg-primary text-primary-foreground rounded-lg hover:opacity-90"
+            className="px-3 py-1 text-sm gradient-primary text-white rounded-xl hover:shadow-glow-sm transition-all"
           >
             {t('common.thisWeek')}
           </button>
@@ -189,11 +189,11 @@ export function ShiftsPage() {
       </div>
 
       {/* シフトカレンダー */}
-      <div className="bg-card border border-border rounded-lg overflow-hidden">
+      <div className="glass-card rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[800px]">
             <thead>
-              <tr className="border-b border-border bg-muted/50">
+              <tr className="border-b border-white/5 glass-subtle">
                 <th className="py-3 px-4 text-left font-medium w-32">{t('users.name')}</th>
                 {weekDays.map((date, i) => {
                   const { month, day, weekday } = formatDate(date);
@@ -213,7 +213,7 @@ export function ShiftsPage() {
             </thead>
             <tbody>
               {displayUsers.map((u) => (
-                <tr key={u.id} className="border-b border-border/50 hover:bg-accent/30">
+                <tr key={u.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                   <td className="py-2 px-4 font-medium">
                     {u.last_name} {u.first_name}
                   </td>
@@ -227,7 +227,7 @@ export function ShiftsPage() {
                       <td
                         key={i}
                         onClick={() => handleCellClick(u.id, dateStr)}
-                        className={`py-2 px-2 text-center ${isToday ? 'bg-primary/5' : ''} ${isAdmin ? 'cursor-pointer hover:bg-accent/50' : ''}`}
+                        className={`py-2 px-2 text-center ${isToday ? 'bg-indigo-500/5' : ''} ${isAdmin ? 'cursor-pointer hover:bg-white/5' : ''}`}
                       >
                         {shift && style && (
                           <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${style.bgColor} ${style.color}`}>
@@ -253,11 +253,11 @@ export function ShiftsPage() {
 
       {/* シフト作成モーダル */}
       {selectedCell && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-card border border-border rounded-lg p-6 w-full max-w-md">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="glass-card rounded-2xl p-6 w-full max-w-md animate-scale-in">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">{t('shifts.register')}</h2>
-              <button onClick={() => setSelectedCell(null)} className="p-1 hover:bg-accent rounded">
+              <button onClick={() => setSelectedCell(null)} className="p-1 hover:bg-white/10 rounded-lg transition-colors">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -275,9 +275,9 @@ export function ShiftsPage() {
                     <button
                       key={type.value}
                       onClick={() => setSelectedShiftType(type.value)}
-                      className={`px-3 py-2 rounded text-sm font-medium transition-all ${selectedShiftType === type.value
-                          ? `${type.bgColor} ${type.color} ring-2 ring-primary`
-                          : 'bg-muted hover:bg-accent'
+                      className={`px-3 py-2 rounded-xl text-sm font-medium transition-all ${selectedShiftType === type.value
+                          ? `${type.bgColor} ${type.color} ring-2 ring-indigo-400/50`
+                          : 'glass-subtle hover:bg-white/10'
                         }`}
                     >
                       {t(type.labelKey)}
@@ -289,14 +289,14 @@ export function ShiftsPage() {
               <div className="flex gap-2 pt-4">
                 <button
                   onClick={() => setSelectedCell(null)}
-                  className="flex-1 px-4 py-2 border border-border rounded-lg hover:bg-accent"
+                  className="flex-1 px-4 py-2.5 glass-input rounded-xl hover:bg-white/10 transition-all"
                 >
                   {t('common.cancel')}
                 </button>
                 <button
                   onClick={handleCreateShift}
                   disabled={createMutation.isPending}
-                  className="flex-1 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="flex-1 px-4 py-2.5 gradient-primary text-white rounded-xl hover:shadow-glow-md disabled:opacity-50 transition-all flex items-center justify-center gap-2"
                 >
                   <Plus className="h-4 w-4" />
                   {t('common.save')}

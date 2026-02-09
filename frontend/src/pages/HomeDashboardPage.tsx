@@ -57,54 +57,61 @@ export function HomeDashboardPage() {
   const attendanceStatus = todayAttendance as { clock_in_time?: string; clock_out_time?: string } | undefined;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 animate-fade-in">
       {/* ウェルカムヘッダー */}
-      <div className="bg-gradient-to-r from-primary to-primary/70 rounded-2xl p-8 text-primary-foreground">
-        <div className="flex items-center justify-between">
+      <div className="glass-card rounded-2xl p-8 relative overflow-hidden">
+        {/* 内部のAuroraエフェクト */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-1/2 -right-1/4 w-1/2 h-full bg-indigo-400/10 rounded-full blur-[80px]" />
+          <div className="absolute -bottom-1/2 -left-1/4 w-1/2 h-full bg-emerald-400/8 rounded-full blur-[100px]" />
+        </div>
+        <div className="flex items-center justify-between relative z-10">
           <div>
-            <p className="text-primary-foreground/80 text-sm">
+            <p className="text-muted-foreground text-sm">
               {format(today, i18n.language === 'ja' ? 'yyyy年M月d日 (EEEE)' : 'EEEE, MMMM d, yyyy', { locale: dateLocale })}
             </p>
-            <h1 className="text-3xl font-bold mt-1">
+            <h1 className="text-3xl font-bold mt-2 gradient-text">
               {greeting()}, {user?.first_name || 'User'}
             </h1>
-            <p className="text-primary-foreground/80 mt-2">{t('home.welcomeMessage')}</p>
+            <p className="text-muted-foreground mt-2">{t('home.welcomeMessage')}</p>
           </div>
           <div className="hidden md:block">
-            <MaterialIcon name="waving_hand" className="text-6xl opacity-80" />
+            <div className="size-20 rounded-2xl gradient-primary-subtle flex items-center justify-center">
+              <MaterialIcon name="waving_hand" className="text-5xl text-indigo-400" />
+            </div>
           </div>
         </div>
       </div>
 
       {/* クイックアクション */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {/* 出退勤状態 */}
-        <div className="bg-card border border-border rounded-xl p-6">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="size-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
-              <MaterialIcon name="schedule" className="text-blue-500" />
+        <div className="glass-card rounded-2xl p-6 stat-shimmer">
+          <div className="flex items-center gap-3 mb-5">
+            <div className="size-10 rounded-xl bg-indigo-400/10 flex items-center justify-center border border-indigo-400/20">
+              <MaterialIcon name="schedule" className="text-indigo-400" />
             </div>
             <h2 className="font-semibold">{t('home.todayStatus')}</h2>
           </div>
           {attendanceStatus?.clock_in_time ? (
-            <div className="space-y-2">
-              <div className="flex justify-between items-center">
+            <div className="space-y-3">
+              <div className="flex justify-between items-center py-2 border-b border-white/5">
                 <span className="text-muted-foreground text-sm">{t('attendance.clockIn')}</span>
-                <span className="font-mono font-semibold">
+                <span className="font-mono font-semibold text-emerald-400">
                   {new Date(attendanceStatus.clock_in_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>
               {attendanceStatus.clock_out_time ? (
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center py-2">
                   <span className="text-muted-foreground text-sm">{t('attendance.clockOut')}</span>
-                  <span className="font-mono font-semibold">
+                  <span className="font-mono font-semibold text-indigo-400">
                     {new Date(attendanceStatus.clock_out_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
                   </span>
                 </div>
               ) : (
                 <Link
                   to="/attendance"
-                  className="block w-full mt-3 px-4 py-2 bg-destructive text-destructive-foreground text-center rounded-lg hover:brightness-110 transition-all font-medium"
+                  className="block w-full mt-3 px-4 py-2.5 bg-red-500/10 text-red-400 border border-red-500/20 text-center rounded-xl hover:bg-red-500/20 transition-all font-medium text-sm"
                 >
                   {t('attendance.clockOut')}
                 </Link>
@@ -112,10 +119,10 @@ export function HomeDashboardPage() {
             </div>
           ) : (
             <div>
-              <p className="text-muted-foreground text-sm mb-3">{t('home.notClockedIn')}</p>
+              <p className="text-muted-foreground text-sm mb-4">{t('home.notClockedIn')}</p>
               <Link
                 to="/attendance"
-                className="block w-full px-4 py-2 bg-primary text-primary-foreground text-center rounded-lg hover:brightness-110 transition-all font-medium"
+                className="block w-full px-4 py-2.5 gradient-primary text-white text-center rounded-xl hover:shadow-glow-md transition-all font-medium text-sm"
               >
                 {t('attendance.clockIn')}
               </Link>
@@ -124,21 +131,21 @@ export function HomeDashboardPage() {
         </div>
 
         {/* 未読通知 */}
-        <div className="bg-card border border-border rounded-xl p-6">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="size-10 rounded-lg bg-amber-500/20 flex items-center justify-center">
-              <MaterialIcon name="notifications" className="text-amber-500" />
+        <div className="glass-card rounded-2xl p-6 stat-shimmer">
+          <div className="flex items-center gap-3 mb-5">
+            <div className="size-10 rounded-xl bg-amber-400/10 flex items-center justify-center border border-amber-400/20">
+              <MaterialIcon name="notifications" className="text-amber-400" />
             </div>
             <h2 className="font-semibold">{t('home.notifications')}</h2>
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-3xl font-bold">{unreadCount}</p>
-              <p className="text-muted-foreground text-sm">{t('home.unreadNotifications')}</p>
+              <p className="text-4xl font-bold gradient-text">{unreadCount}</p>
+              <p className="text-muted-foreground text-sm mt-1">{t('home.unreadNotifications')}</p>
             </div>
             <Link
               to="/notifications"
-              className="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors text-sm font-medium"
+              className="px-4 py-2 glass-input rounded-xl text-indigo-400 text-sm font-medium hover:border-indigo-400/30 transition-all"
             >
               {t('home.viewAll')}
             </Link>
@@ -147,21 +154,21 @@ export function HomeDashboardPage() {
 
         {/* 承認待ち（管理者のみ） */}
         {(user?.role === 'admin' || user?.role === 'manager') && (
-          <div className="bg-card border border-border rounded-xl p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="size-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                <MaterialIcon name="pending_actions" className="text-purple-500" />
+          <div className="glass-card rounded-2xl p-6 stat-shimmer">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="size-10 rounded-xl bg-purple-400/10 flex items-center justify-center border border-purple-400/20">
+                <MaterialIcon name="pending_actions" className="text-purple-400" />
               </div>
               <h2 className="font-semibold">{t('home.pendingApprovals')}</h2>
             </div>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-3xl font-bold">{pendingCount}</p>
-                <p className="text-muted-foreground text-sm">{t('home.awaitingReview')}</p>
+                <p className="text-4xl font-bold gradient-text">{pendingCount}</p>
+                <p className="text-muted-foreground text-sm mt-1">{t('home.awaitingReview')}</p>
               </div>
               <Link
                 to="/leaves"
-                className="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors text-sm font-medium"
+                className="px-4 py-2 glass-input rounded-xl text-indigo-400 text-sm font-medium hover:border-indigo-400/30 transition-all"
               >
                 {t('home.review')}
               </Link>
@@ -172,7 +179,7 @@ export function HomeDashboardPage() {
 
       {/* アプリ一覧 */}
       <div>
-        <h2 className="text-xl font-bold mb-4">{t('home.apps')}</h2>
+        <h2 className="text-xl font-bold mb-5">{t('home.apps')}</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {availableApps.map((app) => {
           const isClickable = app.enabled && !app.comingSoon;
@@ -181,9 +188,9 @@ export function HomeDashboardPage() {
               <Link
                 key={app.id}
                 to={app.basePath as '/'}
-                className="flex flex-col items-center gap-3 p-6 bg-card border border-border rounded-xl transition-all hover:border-primary hover:shadow-lg hover:shadow-primary/10 cursor-pointer"
+                className="group flex flex-col items-center gap-3 p-6 glass-card rounded-2xl transition-all hover:shadow-glow-sm cursor-pointer"
               >
-                <div className={`size-14 rounded-xl flex items-center justify-center text-white ${app.color}`}>
+                <div className={`size-14 rounded-xl flex items-center justify-center text-white ${app.color} group-hover:scale-110 transition-transform duration-300`}>
                   <MaterialIcon name={app.icon} className="text-2xl" />
                 </div>
                 <div className="text-center">
@@ -195,14 +202,14 @@ export function HomeDashboardPage() {
           return (
             <div
               key={app.id}
-              className="flex flex-col items-center gap-3 p-6 bg-card border border-border rounded-xl opacity-50 cursor-not-allowed"
+              className="flex flex-col items-center gap-3 p-6 glass-subtle rounded-2xl opacity-40 cursor-not-allowed"
             >
               <div className={`size-14 rounded-xl flex items-center justify-center text-white ${app.color}`}>
                 <MaterialIcon name={app.icon} className="text-2xl" />
               </div>
               <div className="text-center">
                 <p className="font-medium text-sm">{t(app.nameKey)}</p>
-                <span className="inline-block mt-1 px-2 py-0.5 bg-amber-500/20 text-amber-500 text-[10px] font-bold rounded-full">
+                <span className="inline-block mt-1 px-2 py-0.5 bg-amber-400/10 text-amber-400 text-[10px] font-bold rounded-full border border-amber-400/20">
                   {t('appSwitcher.comingSoon')}
                 </span>
               </div>
@@ -215,54 +222,54 @@ export function HomeDashboardPage() {
       {/* クイックリンク */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* よく使う機能 */}
-        <div className="bg-card border border-border rounded-xl p-6">
-          <h2 className="font-bold mb-4 flex items-center gap-2">
-            <MaterialIcon name="star" className="text-amber-500" />
+        <div className="glass-card rounded-2xl p-6">
+          <h2 className="font-bold mb-5 flex items-center gap-2">
+            <MaterialIcon name="star" className="text-amber-400" />
             {t('home.quickAccess')}
           </h2>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-2">
             <Link
               to="/leaves"
-              className="flex items-center gap-3 p-3 rounded-lg hover:bg-primary/10 transition-colors"
+              className="flex items-center gap-3 p-3 rounded-xl nav-item-hover transition-all"
             >
-              <MaterialIcon name="event_available" className="text-green-500" />
+              <MaterialIcon name="event_available" className="text-emerald-400" />
               <span className="text-sm font-medium">{t('nav.leaves')}</span>
             </Link>
             <Link
               to="/overtime"
-              className="flex items-center gap-3 p-3 rounded-lg hover:bg-primary/10 transition-colors"
+              className="flex items-center gap-3 p-3 rounded-xl nav-item-hover transition-all"
             >
-              <MaterialIcon name="more_time" className="text-orange-500" />
+              <MaterialIcon name="more_time" className="text-orange-400" />
               <span className="text-sm font-medium">{t('nav.overtime')}</span>
             </Link>
             <Link
               to="/projects"
-              className="flex items-center gap-3 p-3 rounded-lg hover:bg-primary/10 transition-colors"
+              className="flex items-center gap-3 p-3 rounded-xl nav-item-hover transition-all"
             >
-              <MaterialIcon name="folder_open" className="text-blue-500" />
+              <MaterialIcon name="folder_open" className="text-indigo-400" />
               <span className="text-sm font-medium">{t('nav.projects')}</span>
             </Link>
             <Link
               to="/holidays"
-              className="flex items-center gap-3 p-3 rounded-lg hover:bg-primary/10 transition-colors"
+              className="flex items-center gap-3 p-3 rounded-xl nav-item-hover transition-all"
             >
-              <MaterialIcon name="celebration" className="text-pink-500" />
+              <MaterialIcon name="celebration" className="text-pink-400" />
               <span className="text-sm font-medium">{t('nav.holidays')}</span>
             </Link>
           </div>
         </div>
 
         {/* 最近の通知 */}
-        <div className="bg-card border border-border rounded-xl p-6">
-          <h2 className="font-bold mb-4 flex items-center gap-2">
-            <MaterialIcon name="notifications_active" className="text-blue-500" />
+        <div className="glass-card rounded-2xl p-6">
+          <h2 className="font-bold mb-5 flex items-center gap-2">
+            <MaterialIcon name="notifications_active" className="text-indigo-400" />
             {t('home.recentNotifications')}
           </h2>
           <div className="space-y-3">
             {(notifications as { data?: { id: string; title: string; created_at: string; is_read: boolean }[] } | undefined)?.data?.slice(0, 3).map((n) => (
               <div
                 key={n.id}
-                className={`p-3 rounded-lg border ${n.is_read ? 'border-border bg-muted/30' : 'border-primary/30 bg-primary/5'}`}
+                className={`p-3 rounded-xl transition-all ${n.is_read ? 'glass-subtle' : 'glass-card border-indigo-400/20'}`}
               >
                 <p className="text-sm font-medium truncate">{n.title}</p>
                 <p className="text-xs text-muted-foreground mt-1">

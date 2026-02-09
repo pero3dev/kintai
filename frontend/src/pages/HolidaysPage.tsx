@@ -115,7 +115,7 @@ export function HolidaysPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Calendar className="h-6 w-6" />
@@ -124,7 +124,7 @@ export function HolidaysPage() {
         {isAdmin && (
           <button
             onClick={() => setShowForm(!showForm)}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+            className="flex items-center gap-2 px-4 py-2 gradient-primary text-white rounded-xl hover:shadow-glow-md transition-all"
           >
             <Plus className="h-4 w-4" />
             {t('holidays.add')}
@@ -134,23 +134,23 @@ export function HolidaysPage() {
 
       {/* 追加フォーム */}
       {showForm && (
-        <div className="bg-card border border-border rounded-lg p-6">
+        <div className="glass-card rounded-2xl p-6">
           <h2 className="text-lg font-semibold mb-4">{t('holidays.add')}</h2>
           <form onSubmit={handleSubmit((data) => createMutation.mutate(data))} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-1">{t('holidays.date')}</label>
-                <input type="date" {...register('date')} className="w-full px-3 py-2 border border-input rounded-md bg-background" />
-                {errors.date && <p className="text-sm text-destructive mt-1">{errors.date.message}</p>}
+                <input type="date" {...register('date')} className="w-full px-3 py-2 glass-input rounded-xl" />
+                {errors.date && <p className="text-sm text-red-400 mt-1">{errors.date.message}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">{t('holidays.name')}</label>
-                <input type="text" {...register('name')} className="w-full px-3 py-2 border border-input rounded-md bg-background" />
-                {errors.name && <p className="text-sm text-destructive mt-1">{errors.name.message}</p>}
+                <input type="text" {...register('name')} className="w-full px-3 py-2 glass-input rounded-xl" />
+                {errors.name && <p className="text-sm text-red-400 mt-1">{errors.name.message}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">{t('holidays.type')}</label>
-                <select {...register('holiday_type')} className="w-full px-3 py-2 border border-input rounded-md bg-background">
+                <select {...register('holiday_type')} className="w-full px-3 py-2 glass-input rounded-xl">
                   <option value="national">{t('holidays.types.national')}</option>
                   <option value="company">{t('holidays.types.company')}</option>
                   <option value="optional">{t('holidays.types.optional')}</option>
@@ -162,10 +162,10 @@ export function HolidaysPage() {
               </div>
             </div>
             <div className="flex gap-2">
-              <button type="submit" className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90">
+              <button type="submit" className="px-4 py-2 gradient-primary text-white rounded-xl hover:shadow-glow-md transition-all">
                 {t('common.create')}
               </button>
-              <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 border border-input rounded-md hover:bg-accent">
+              <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 glass-input rounded-xl hover:bg-white/10 transition-all">
                 {t('common.cancel')}
               </button>
             </div>
@@ -175,15 +175,15 @@ export function HolidaysPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Calendar */}
-        <div className="lg:col-span-2 bg-card border border-border rounded-lg p-6">
+        <div className="lg:col-span-2 glass-card rounded-2xl p-6">
           <div className="flex items-center justify-between mb-6">
-            <button onClick={prevMonth} className="p-2 hover:bg-accent rounded-md">
+            <button onClick={prevMonth} className="p-2 hover:bg-white/10 transition-colors rounded-md">
               <ChevronLeft className="h-5 w-5" />
             </button>
             <h2 className="text-lg font-semibold">
               {t('holidays.yearMonth', { year: currentYear, month: currentMonth })}
             </h2>
-            <button onClick={nextMonth} className="p-2 hover:bg-accent rounded-md">
+            <button onClick={nextMonth} className="p-2 hover:bg-white/10 transition-colors rounded-md">
               <ChevronRight className="h-5 w-5" />
             </button>
           </div>
@@ -212,7 +212,7 @@ export function HolidaysPage() {
                       ? 'bg-red-500/10 border border-red-500/20'
                       : isWeekend
                         ? 'bg-muted/50'
-                        : 'hover:bg-accent/50'
+                        : 'hover:bg-white/5 transition-colors'
                   }`}
                 >
                   <span className={`text-xs font-medium ${isHoliday || isWeekend ? 'text-red-400' : ''}`}>
@@ -252,11 +252,11 @@ export function HolidaysPage() {
         </div>
 
         {/* Holiday List */}
-        <div className="bg-card border border-border rounded-lg p-6">
+        <div className="glass-card rounded-2xl p-6">
           <h2 className="text-lg font-semibold mb-4">{t('holidays.yearHolidays', { year: currentYear })}</h2>
           <div className="space-y-3 max-h-[600px] overflow-y-auto">
             {(holidays as Record<string, unknown>[] | undefined)?.map((h: Record<string, unknown>) => (
-              <div key={h.id as string} className="flex items-center justify-between p-3 border border-border rounded-md">
+              <div key={h.id as string} className="flex items-center justify-between p-3 glass-subtle rounded-xl">
                 <div>
                   <p className="font-medium text-sm">{h.name as string}</p>
                   <p className="text-xs text-muted-foreground">{(h.date as string)?.slice(0, 10)}</p>

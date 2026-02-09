@@ -89,14 +89,14 @@ export function ExportPage() {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <h1 className="text-2xl font-bold flex items-center gap-2">
         <Download className="h-6 w-6" />
         {t('export.title')}
       </h1>
 
       {/* 期間設定 */}
-      <div className="bg-card border border-border rounded-lg p-6">
+      <div className="glass-card rounded-2xl p-6">
         <h2 className="text-lg font-semibold mb-4">{t('export.dateRange')}</h2>
         <div className="flex items-center gap-4">
           <div>
@@ -105,7 +105,7 @@ export function ExportPage() {
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="px-3 py-2 border border-input rounded-md bg-background"
+              className="px-3 py-2 glass-input rounded-xl"
             />
           </div>
           <span className="mt-6">〜</span>
@@ -115,7 +115,7 @@ export function ExportPage() {
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="px-3 py-2 border border-input rounded-md bg-background"
+              className="px-3 py-2 glass-input rounded-xl"
             />
           </div>
         </div>
@@ -124,7 +124,7 @@ export function ExportPage() {
       {/* エクスポート項目 */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {exportItems.map((item) => (
-          <div key={item.key} className="bg-card border border-border rounded-lg p-6 flex items-start justify-between">
+          <div key={item.key} className="glass-card rounded-2xl p-6 flex items-start justify-between">
             <div className="flex items-start gap-4">
               <span className="text-3xl">{item.icon}</span>
               <div>
@@ -135,7 +135,7 @@ export function ExportPage() {
             <button
               onClick={() => downloadCSV(item.key)}
               disabled={loading === item.key}
-              className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50 whitespace-nowrap"
+              className="flex items-center gap-2 px-4 py-2 gradient-primary text-white rounded-xl hover:shadow-glow-md transition-all disabled:opacity-50 whitespace-nowrap"
             >
               <Download className="h-4 w-4" />
               {loading === item.key ? t('common.downloading') : 'CSV'}
