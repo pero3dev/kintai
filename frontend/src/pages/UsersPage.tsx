@@ -139,26 +139,53 @@ export function UsersPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 animate-fade-in">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <h1 className="text-2xl font-bold flex items-center gap-2">
-          <Users className="h-6 w-6" />
+          <Users className="h-6 w-6 text-indigo-400" />
           {t('users.title')}
         </h1>
         <button
           onClick={() => { setShowCreateModal(true); setError(null); }}
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90"
+          className="flex items-center justify-center gap-2 px-4 py-2.5 gradient-primary text-white rounded-xl hover:shadow-glow-md transition-all"
         >
           <UserPlus className="h-4 w-4" />
           {t('users.addNew')}
         </button>
       </div>
 
-      <div className="bg-card border border-border rounded-lg p-6">
-        <div className="overflow-x-auto">
+      <div className="glass-card rounded-2xl p-4 sm:p-6">
+        {/* モバイルカードビュー */}
+        <div className="space-y-3 md:hidden">
+          {users.map((user) => (
+            <div key={user.id} className="glass-subtle rounded-xl p-4 space-y-3">
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="font-semibold">{user.last_name} {user.first_name}</p>
+                  <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                </div>
+                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${user.is_active ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'}`}>
+                  {user.is_active ? t('users.active') : t('users.inactive')}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                {roleBadge(user.role)}
+                <div className="flex gap-3">
+                  <button onClick={() => handleEdit(user)} className="text-sm text-indigo-400 py-1">{t('common.edit')}</button>
+                  <button onClick={() => handleDelete(user)} className="text-sm text-red-400 py-1">
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* デスクトップテーブルビュー */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-border">
+              <tr className="border-b border-white/5">
                 <th className="text-left py-2 px-4">{t('users.name')}</th>
                 <th className="text-left py-2 px-4">{t('common.email')}</th>
                 <th className="text-left py-2 px-4">{t('users.role')}</th>
@@ -168,12 +195,12 @@ export function UsersPage() {
             </thead>
             <tbody>
               {users.map((user) => (
-                <tr key={user.id} className="border-b border-border/50 hover:bg-accent/50">
+                <tr key={user.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                   <td className="py-2 px-4">{user.last_name} {user.first_name}</td>
                   <td className="py-2 px-4">{user.email}</td>
                   <td className="py-2 px-4">{roleBadge(user.role)}</td>
                   <td className="py-2 px-4">
-                    <span className={`px-2 py-1 rounded-full text-xs ${user.is_active ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
+                    <span className={`px-2 py-1 rounded-full text-xs ${user.is_active ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'}`}>
                       {user.is_active ? t('users.active') : t('users.inactive')}
                     </span>
                   </td>
@@ -181,13 +208,13 @@ export function UsersPage() {
                     <div className="flex items-center justify-end gap-2">
                       <button
                         onClick={() => handleEdit(user)}
-                        className="text-sm text-primary hover:text-primary/80"
+                        className="text-sm text-indigo-400 hover:text-indigo-300 transition-colors"
                       >
                         {t('common.edit')}
                       </button>
                       <button
                         onClick={() => handleDelete(user)}
-                        className="text-sm text-red-600 hover:text-red-800"
+                        className="text-sm text-red-400 hover:text-red-300 transition-colors"
                         title={t('common.delete')}
                       >
                         <Trash2 className="h-4 w-4" />
@@ -213,74 +240,74 @@ export function UsersPage() {
 
       {/* 新規作成モーダル */}
       {showCreateModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-card border border-border rounded-lg p-6 w-full max-w-md">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="glass-card rounded-2xl p-6 w-full max-w-md animate-scale-in">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold flex items-center gap-2">
-                <UserPlus className="h-5 w-5" />
+                <UserPlus className="h-5 w-5 text-indigo-400" />
                 {t('users.createNew')}
               </h2>
-              <button onClick={() => setShowCreateModal(false)} className="p-1 hover:bg-accent rounded">
+              <button onClick={() => setShowCreateModal(false)} className="p-1 hover:bg-white/10 rounded-lg transition-colors">
                 <X className="h-5 w-5" />
               </button>
             </div>
 
             {error && (
-              <div className="mb-4 p-3 bg-red-100 text-red-800 rounded-lg text-sm">
+              <div className="mb-4 p-3 bg-red-500/10 text-red-400 border border-red-500/20 rounded-xl text-sm">
                 {error}
               </div>
             )}
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-1">{t('common.email')} *</label>
+                <label className="block text-sm font-medium mb-1 text-foreground/80">{t('common.email')} *</label>
                 <input
                   type="email"
                   value={createData.email}
                   onChange={(e) => setCreateData({ ...createData, email: e.target.value })}
-                  className="w-full px-3 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-3 py-2.5 glass-input rounded-xl"
                   placeholder="user@example.com"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">{t('common.password')} *</label>
+                <label className="block text-sm font-medium mb-1 text-foreground/80">{t('common.password')} *</label>
                 <input
                   type="password"
                   value={createData.password}
                   onChange={(e) => setCreateData({ ...createData, password: e.target.value })}
-                  className="w-full px-3 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-3 py-2.5 glass-input rounded-xl"
                   placeholder={t('users.passwordRequirement')}
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1">{t('users.lastName')} *</label>
+                  <label className="block text-sm font-medium mb-1 text-foreground/80">{t('users.lastName')} *</label>
                   <input
                     type="text"
                     value={createData.last_name}
                     onChange={(e) => setCreateData({ ...createData, last_name: e.target.value })}
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-3 py-2.5 glass-input rounded-xl"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">{t('users.firstName')} *</label>
+                  <label className="block text-sm font-medium mb-1 text-foreground/80">{t('users.firstName')} *</label>
                   <input
                     type="text"
                     value={createData.first_name}
                     onChange={(e) => setCreateData({ ...createData, first_name: e.target.value })}
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-3 py-2.5 glass-input rounded-xl"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">{t('users.role')}</label>
+                <label className="block text-sm font-medium mb-1 text-foreground/80">{t('users.role')}</label>
                 <select
                   value={createData.role}
                   onChange={(e) => setCreateData({ ...createData, role: e.target.value as User['role'] })}
-                  className="w-full px-3 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-3 py-2.5 glass-input rounded-xl"
                 >
                   <option value="employee">{t('users.roles.employee')}</option>
                   <option value="manager">{t('users.roles.manager')}</option>
@@ -289,11 +316,11 @@ export function UsersPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">{t('users.department')}</label>
+                <label className="block text-sm font-medium mb-1 text-foreground/80">{t('users.department')}</label>
                 <select
                   value={createData.department_id || ''}
                   onChange={(e) => setCreateData({ ...createData, department_id: e.target.value || undefined })}
-                  className="w-full px-3 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-3 py-2.5 glass-input rounded-xl"
                 >
                   <option value="">{t('users.unassigned')}</option>
                   {departments.map((dept) => (
@@ -305,14 +332,14 @@ export function UsersPage() {
               <div className="flex gap-2 pt-4">
                 <button
                   onClick={() => setShowCreateModal(false)}
-                  className="flex-1 px-4 py-2 border border-border rounded-lg hover:bg-accent"
+                  className="flex-1 px-4 py-2.5 glass-input rounded-xl hover:bg-white/10 transition-all"
                 >
                   {t('common.cancel')}
                 </button>
                 <button
                   onClick={handleCreate}
                   disabled={createMutation.isPending}
-                  className="flex-1 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="flex-1 px-4 py-2.5 gradient-primary text-white rounded-xl hover:shadow-glow-md disabled:opacity-50 transition-all flex items-center justify-center gap-2"
                 >
                   <Plus className="h-4 w-4" />
                   {t('common.create')}
@@ -325,17 +352,17 @@ export function UsersPage() {
 
       {/* 編集モーダル */}
       {editingUser && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-card border border-border rounded-lg p-6 w-full max-w-md">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="glass-card rounded-2xl p-6 w-full max-w-md mx-4 animate-scale-in max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">{t('users.editUser')}</h2>
-              <button onClick={() => setEditingUser(null)} className="p-1 hover:bg-accent rounded">
+              <button onClick={() => setEditingUser(null)} className="p-1 hover:bg-white/10 rounded-lg transition-colors">
                 <X className="h-5 w-5" />
               </button>
             </div>
 
             {error && (
-              <div className="mb-4 p-3 bg-red-100 text-red-800 rounded-lg text-sm">
+              <div className="mb-4 p-3 bg-red-500/10 text-red-400 border border-red-500/20 rounded-xl text-sm">
                 {error}
               </div>
             )}
@@ -346,44 +373,44 @@ export function UsersPage() {
                 <div className="text-muted-foreground">{editingUser.email}</div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1">{t('users.lastName')}</label>
+                  <label className="block text-sm font-medium mb-1 text-foreground/80">{t('users.lastName')}</label>
                   <input
                     type="text"
                     value={formData.last_name || ''}
                     onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-3 py-2.5 glass-input rounded-xl"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">{t('users.firstName')}</label>
+                  <label className="block text-sm font-medium mb-1 text-foreground/80">{t('users.firstName')}</label>
                   <input
                     type="text"
                     value={formData.first_name || ''}
                     onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-3 py-2.5 glass-input rounded-xl"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">{t('users.newPassword')}</label>
+                <label className="block text-sm font-medium mb-1 text-foreground/80">{t('users.newPassword')}</label>
                 <input
                   type="password"
                   value={formData.password || ''}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="w-full px-3 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-3 py-2.5 glass-input rounded-xl"
                   placeholder={t('users.passwordPlaceholder')}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">{t('users.role')}</label>
+                <label className="block text-sm font-medium mb-1 text-foreground/80">{t('users.role')}</label>
                 <select
                   value={formData.role || 'employee'}
                   onChange={(e) => setFormData({ ...formData, role: e.target.value as User['role'] })}
-                  className="w-full px-3 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-3 py-2.5 glass-input rounded-xl"
                 >
                   <option value="employee">{t('users.roles.employee')}</option>
                   <option value="manager">{t('users.roles.manager')}</option>
@@ -392,11 +419,11 @@ export function UsersPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">{t('users.department')}</label>
+                <label className="block text-sm font-medium mb-1 text-foreground/80">{t('users.department')}</label>
                 <select
                   value={formData.department_id || ''}
                   onChange={(e) => setFormData({ ...formData, department_id: e.target.value || undefined })}
-                  className="w-full px-3 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-3 py-2.5 glass-input rounded-xl"
                 >
                   <option value="">{t('users.unassigned')}</option>
                   {departments.map((dept) => (
@@ -419,14 +446,14 @@ export function UsersPage() {
               <div className="flex gap-2 pt-4">
                 <button
                   onClick={() => setEditingUser(null)}
-                  className="flex-1 px-4 py-2 border border-border rounded-lg hover:bg-accent"
+                  className="flex-1 px-4 py-2.5 glass-input rounded-xl hover:bg-white/10 transition-all"
                 >
                   {t('common.cancel')}
                 </button>
                 <button
                   onClick={handleSave}
                   disabled={updateMutation.isPending}
-                  className="flex-1 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="flex-1 px-4 py-2.5 gradient-primary text-white rounded-xl hover:shadow-glow-md disabled:opacity-50 transition-all flex items-center justify-center gap-2"
                 >
                   <Save className="h-4 w-4" />
                   {t('common.save')}

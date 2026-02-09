@@ -47,38 +47,48 @@ export function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="w-full max-w-md p-8 bg-card rounded-xl border border-border shadow-lg">
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
+      {/* Aurora Background */}
+      <div className="aurora-bg">
+        <div className="aurora-orb-1" />
+        <div className="aurora-orb-2" />
+      </div>
+
+      {/* Noise Overlay */}
+      <div className="noise-overlay" />
+
+      {/* Login Card */}
+      <div className="w-full max-w-md mx-4 p-6 sm:p-8 glass-card rounded-2xl relative z-10 animate-scale-in">
         {/* ロゴ */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center size-16 bg-primary rounded-xl mb-4">
-            <MaterialIcon name="schedule" className="text-4xl text-primary-foreground" />
+          <div className="inline-flex items-center justify-center size-16 gradient-primary rounded-2xl mb-4 shadow-glow-md">
+            <MaterialIcon name="schedule" className="text-4xl text-white" />
           </div>
-          <h1 className="text-2xl font-bold">{t('common.appName')}</h1>
+          <h1 className="text-2xl font-bold gradient-text">{t('common.appName')}</h1>
           <p className="text-muted-foreground mt-2 text-sm">{t('auth.loginDescription')}</p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           {error && (
-            <div className="flex items-center gap-3 p-4 text-sm text-destructive bg-destructive/10 rounded-lg border border-destructive/20">
+            <div className="flex items-center gap-3 p-4 text-sm text-red-400 bg-red-500/10 rounded-xl border border-red-500/20">
               <MaterialIcon name="error" className="text-xl" />
               <span>{error}</span>
             </div>
           )}
 
           <div>
-            <label className="block text-sm font-medium mb-2">{t('common.email')}</label>
+            <label className="block text-sm font-medium mb-2 text-foreground/80">{t('common.email')}</label>
             <div className="relative">
               <MaterialIcon name="mail" className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
               <input
                 type="email"
                 {...register('email')}
-                className="w-full pl-10 pr-4 py-3 bg-black/20 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                className="w-full pl-10 pr-4 py-3 glass-input rounded-xl text-sm text-foreground placeholder:text-muted-foreground"
                 placeholder="user@example.com"
               />
             </div>
             {errors.email && (
-              <p className="text-sm text-destructive mt-2 flex items-center gap-1">
+              <p className="text-sm text-red-400 mt-2 flex items-center gap-1">
                 <MaterialIcon name="warning" className="text-sm" />
                 {errors.email.message}
               </p>
@@ -86,18 +96,18 @@ export function LoginPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">{t('common.password')}</label>
+            <label className="block text-sm font-medium mb-2 text-foreground/80">{t('common.password')}</label>
             <div className="relative">
               <MaterialIcon name="lock" className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
               <input
                 type="password"
                 {...register('password')}
-                className="w-full pl-10 pr-4 py-3 bg-black/20 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                className="w-full pl-10 pr-4 py-3 glass-input rounded-xl text-sm text-foreground placeholder:text-muted-foreground"
                 placeholder="••••••••"
               />
             </div>
             {errors.password && (
-              <p className="text-sm text-destructive mt-2 flex items-center gap-1">
+              <p className="text-sm text-red-400 mt-2 flex items-center gap-1">
                 <MaterialIcon name="warning" className="text-sm" />
                 {errors.password.message}
               </p>
@@ -107,7 +117,7 @@ export function LoginPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-3 px-4 bg-primary text-primary-foreground font-bold rounded-lg hover:brightness-110 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
+            className="w-full py-3 px-4 gradient-primary text-white font-semibold rounded-xl hover:shadow-glow-md disabled:opacity-50 transition-all duration-300 flex items-center justify-center gap-2"
           >
             {isSubmitting ? (
               <>
@@ -124,9 +134,9 @@ export function LoginPage() {
         </form>
 
         {/* Dev hint */}
-        <div className="mt-6 p-4 bg-primary/5 rounded-lg border border-primary/20">
+        <div className="mt-6 p-4 glass-subtle rounded-xl">
           <p className="text-xs text-muted-foreground text-center">
-            {t('auth.devEnvironment')}: <code className="text-primary">admin@example.com</code> / <code className="text-primary">password123</code>
+            {t('auth.devEnvironment')}: <code className="text-indigo-400">admin@example.com</code> / <code className="text-indigo-400">password123</code>
           </p>
         </div>
       </div>

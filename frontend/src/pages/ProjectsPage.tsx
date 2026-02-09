@@ -97,7 +97,7 @@ export function ProjectsPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <FolderKanban className="h-6 w-6" />
@@ -106,7 +106,7 @@ export function ProjectsPage() {
         <div className="flex gap-2">
           <button
             onClick={() => setShowTimeEntryForm(!showTimeEntryForm)}
-            className="flex items-center gap-2 px-4 py-2 border border-input rounded-md hover:bg-accent"
+            className="flex items-center gap-2 px-4 py-2 glass-input rounded-xl hover:bg-white/10 transition-all"
           >
             <Clock className="h-4 w-4" />
             {t('projects.logTime')}
@@ -114,7 +114,7 @@ export function ProjectsPage() {
           {isAdmin && (
             <button
               onClick={() => setShowProjectForm(!showProjectForm)}
-              className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+              className="flex items-center gap-2 px-4 py-2 gradient-primary text-white rounded-xl hover:shadow-glow-md transition-all"
             >
               <Plus className="h-4 w-4" />
               {t('projects.newProject')}
@@ -142,32 +142,32 @@ export function ProjectsPage() {
 
       {/* プロジェクト作成フォーム */}
       {showProjectForm && (
-        <div className="bg-card border border-border rounded-lg p-6">
+        <div className="glass-card rounded-2xl p-6">
           <h2 className="text-lg font-semibold mb-4">{t('projects.newProject')}</h2>
           <form onSubmit={projectForm.handleSubmit((data) => createProjectMutation.mutate(data))} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-1">{t('projects.name')}</label>
-                <input type="text" {...projectForm.register('name')} className="w-full px-3 py-2 border border-input rounded-md bg-background" />
+                <input type="text" {...projectForm.register('name')} className="w-full px-3 py-2 glass-input rounded-xl" />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">{t('projects.code')}</label>
-                <input type="text" {...projectForm.register('code')} placeholder="PRJ-001" className="w-full px-3 py-2 border border-input rounded-md bg-background" />
+                <input type="text" {...projectForm.register('code')} placeholder="PRJ-001" className="w-full px-3 py-2 glass-input rounded-xl" />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">{t('projects.description')}</label>
-                <input type="text" {...projectForm.register('description')} className="w-full px-3 py-2 border border-input rounded-md bg-background" />
+                <input type="text" {...projectForm.register('description')} className="w-full px-3 py-2 glass-input rounded-xl" />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">{t('projects.budgetHours')}</label>
-                <input type="number" {...projectForm.register('budget_hours')} className="w-full px-3 py-2 border border-input rounded-md bg-background" />
+                <input type="number" {...projectForm.register('budget_hours')} className="w-full px-3 py-2 glass-input rounded-xl" />
               </div>
             </div>
             <div className="flex gap-2">
-              <button type="submit" className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90">
+              <button type="submit" className="px-4 py-2 gradient-primary text-white rounded-xl hover:shadow-glow-md transition-all">
                 {t('common.create')}
               </button>
-              <button type="button" onClick={() => setShowProjectForm(false)} className="px-4 py-2 border border-input rounded-md hover:bg-accent">
+              <button type="button" onClick={() => setShowProjectForm(false)} className="px-4 py-2 glass-input rounded-xl hover:bg-white/10 transition-all">
                 {t('common.cancel')}
               </button>
             </div>
@@ -177,13 +177,13 @@ export function ProjectsPage() {
 
       {/* 工数記録フォーム */}
       {showTimeEntryForm && (
-        <div className="bg-card border border-border rounded-lg p-6">
+        <div className="glass-card rounded-2xl p-6">
           <h2 className="text-lg font-semibold mb-4">{t('projects.logTime')}</h2>
           <form onSubmit={timeEntryForm.handleSubmit((data) => createTimeEntryMutation.mutate(data))} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-1">{t('projects.project')}</label>
-                <select {...timeEntryForm.register('project_id')} className="w-full px-3 py-2 border border-input rounded-md bg-background">
+                <select {...timeEntryForm.register('project_id')} className="w-full px-3 py-2 glass-input rounded-xl">
                   <option value="">{t('common.selectPlaceholder')}</option>
                   {projects?.data?.map((p: Record<string, unknown>) => (
                     <option key={p.id as string} value={p.id as string}>{p.name as string}</option>
@@ -192,22 +192,22 @@ export function ProjectsPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">{t('projects.date')}</label>
-                <input type="date" {...timeEntryForm.register('date')} className="w-full px-3 py-2 border border-input rounded-md bg-background" />
+                <input type="date" {...timeEntryForm.register('date')} className="w-full px-3 py-2 glass-input rounded-xl" />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">{t('projects.minutes')}</label>
-                <input type="number" {...timeEntryForm.register('minutes')} placeholder="60" className="w-full px-3 py-2 border border-input rounded-md bg-background" />
+                <input type="number" {...timeEntryForm.register('minutes')} placeholder="60" className="w-full px-3 py-2 glass-input rounded-xl" />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">{t('projects.entryDescription')}</label>
-                <input type="text" {...timeEntryForm.register('description')} className="w-full px-3 py-2 border border-input rounded-md bg-background" />
+                <input type="text" {...timeEntryForm.register('description')} className="w-full px-3 py-2 glass-input rounded-xl" />
               </div>
             </div>
             <div className="flex gap-2">
-              <button type="submit" className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90">
+              <button type="submit" className="px-4 py-2 gradient-primary text-white rounded-xl hover:shadow-glow-md transition-all">
                 {t('common.submit')}
               </button>
-              <button type="button" onClick={() => setShowTimeEntryForm(false)} className="px-4 py-2 border border-input rounded-md hover:bg-accent">
+              <button type="button" onClick={() => setShowTimeEntryForm(false)} className="px-4 py-2 glass-input rounded-xl hover:bg-white/10 transition-all">
                 {t('common.cancel')}
               </button>
             </div>
@@ -255,11 +255,11 @@ export function ProjectsPage() {
 
       {/* 工数記録一覧 */}
       {activeTab === 'timeEntries' && (
-        <div className="bg-card border border-border rounded-lg p-6">
+        <div className="glass-card rounded-2xl p-6">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-border">
+                <tr className="border-b border-white/5">
                   <th className="text-left py-2 px-4">{t('projects.date')}</th>
                   <th className="text-left py-2 px-4">{t('projects.project')}</th>
                   <th className="text-left py-2 px-4">{t('projects.minutes')}</th>
@@ -269,7 +269,7 @@ export function ProjectsPage() {
               </thead>
               <tbody>
                 {timeEntries?.map?.((te: Record<string, unknown>) => (
-                  <tr key={te.id as string} className="border-b border-border/50">
+                  <tr key={te.id as string} className="border-b border-white/5">
                     <td className="py-2 px-4">{(te.date as string)?.slice(0, 10)}</td>
                     <td className="py-2 px-4">{(te.project as Record<string, string>)?.name || '-'}</td>
                     <td className="py-2 px-4">{te.minutes as number}{t('common.minutes')}</td>
@@ -295,12 +295,12 @@ export function ProjectsPage() {
 
       {/* サマリー */}
       {activeTab === 'summary' && isAdmin && (
-        <div className="bg-card border border-border rounded-lg p-6">
+        <div className="glass-card rounded-2xl p-6">
           <h2 className="text-lg font-semibold mb-4">{t('projects.summary')}</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-border">
+                <tr className="border-b border-white/5">
                   <th className="text-left py-2 px-4">{t('projects.code')}</th>
                   <th className="text-left py-2 px-4">{t('projects.name')}</th>
                   <th className="text-left py-2 px-4">{t('common.totalHours')}</th>
@@ -315,7 +315,7 @@ export function ProjectsPage() {
                   const budgetHours = s.budget_hours as number | null;
                   const progress = budgetHours ? Math.min(100, (totalHours / budgetHours) * 100) : 0;
                   return (
-                    <tr key={s.project_code as string} className="border-b border-border/50">
+                    <tr key={s.project_code as string} className="border-b border-white/5">
                       <td className="py-2 px-4 font-mono text-xs">{s.project_code as string}</td>
                       <td className="py-2 px-4">{s.project_name as string}</td>
                       <td className="py-2 px-4">{(s.total_hours as number).toFixed(1)}h</td>

@@ -25,6 +25,35 @@ type Repositories struct {
 	TimeEntry            TimeEntryRepository
 	Holiday              HolidayRepository
 	ApprovalFlow         ApprovalFlowRepository
+	// HR
+	HREmployee   HREmployeeRepository
+	HRDepartment HRDepartmentRepository
+	Evaluation   EvaluationRepository
+	Goal         GoalRepository
+	Training     TrainingRepository
+	Recruitment  RecruitmentRepository
+	Document     DocumentRepository
+	Announcement AnnouncementRepository
+	OneOnOne     OneOnOneRepository
+	Skill        SkillRepository
+	Salary       SalaryRepository
+	Onboarding   OnboardingRepository
+	Offboarding  OffboardingRepository
+	Survey       SurveyRepository
+	// Expense
+	Expense                    ExpenseRepository
+	ExpenseItem                ExpenseItemRepository
+	ExpenseComment             ExpenseCommentRepository
+	ExpenseHistory             ExpenseHistoryRepository
+	ExpenseTemplate            ExpenseTemplateRepository
+	ExpensePolicy              ExpensePolicyRepository
+	ExpenseBudget              ExpenseBudgetRepository
+	ExpenseNotification        ExpenseNotificationRepository
+	ExpenseReminder            ExpenseReminderRepository
+	ExpenseNotificationSetting ExpenseNotificationSettingRepository
+	ExpenseApprovalFlow        ExpenseApprovalFlowRepository
+	ExpenseDelegate            ExpenseDelegateRepository
+	ExpensePolicyViolation     ExpensePolicyViolationRepository
 }
 
 // NewRepositories は全リポジトリを初期化する
@@ -44,6 +73,35 @@ func NewRepositories(db *gorm.DB) *Repositories {
 		TimeEntry:            NewTimeEntryRepository(db),
 		Holiday:              NewHolidayRepository(db),
 		ApprovalFlow:         NewApprovalFlowRepository(db),
+		// HR
+		HREmployee:   NewHREmployeeRepository(db),
+		HRDepartment: NewHRDepartmentRepository(db),
+		Evaluation:   NewEvaluationRepository(db),
+		Goal:         NewGoalRepository(db),
+		Training:     NewTrainingRepository(db),
+		Recruitment:  NewRecruitmentRepository(db),
+		Document:     NewDocumentRepository(db),
+		Announcement: NewAnnouncementRepository(db),
+		OneOnOne:     NewOneOnOneRepository(db),
+		Skill:        NewSkillRepository(db),
+		Salary:       NewSalaryRepository(db),
+		Onboarding:   NewOnboardingRepository(db),
+		Offboarding:  NewOffboardingRepository(db),
+		Survey:       NewSurveyRepository(db),
+		// Expense
+		Expense:                    NewExpenseRepository(db),
+		ExpenseItem:                NewExpenseItemRepository(db),
+		ExpenseComment:             NewExpenseCommentRepository(db),
+		ExpenseHistory:             NewExpenseHistoryRepository(db),
+		ExpenseTemplate:            NewExpenseTemplateRepository(db),
+		ExpensePolicy:              NewExpensePolicyRepository(db),
+		ExpenseBudget:              NewExpenseBudgetRepository(db),
+		ExpenseNotification:        NewExpenseNotificationRepository(db),
+		ExpenseReminder:            NewExpenseReminderRepository(db),
+		ExpenseNotificationSetting: NewExpenseNotificationSettingRepository(db),
+		ExpenseApprovalFlow:        NewExpenseApprovalFlowRepository(db),
+		ExpenseDelegate:            NewExpenseDelegateRepository(db),
+		ExpensePolicyViolation:     NewExpensePolicyViolationRepository(db),
 	}
 }
 

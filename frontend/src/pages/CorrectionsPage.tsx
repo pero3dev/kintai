@@ -75,7 +75,7 @@ export function CorrectionsPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <FileEdit className="h-6 w-6" />
@@ -83,7 +83,7 @@ export function CorrectionsPage() {
         </h1>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+          className="flex items-center gap-2 px-4 py-2 gradient-primary text-white rounded-xl hover:shadow-glow-md transition-all"
         >
           <Plus className="h-4 w-4" />
           {t('corrections.newRequest')}
@@ -92,34 +92,34 @@ export function CorrectionsPage() {
 
       {/* 申請フォーム */}
       {showForm && (
-        <div className="bg-card border border-border rounded-lg p-6">
+        <div className="glass-card rounded-2xl p-6">
           <h2 className="text-lg font-semibold mb-4">{t('corrections.newRequest')}</h2>
           <form onSubmit={handleSubmit((data) => createMutation.mutate(data))} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-1">{t('corrections.date')}</label>
-                <input type="date" {...register('date')} className="w-full px-3 py-2 border border-input rounded-md bg-background" />
-                {errors.date && <p className="text-sm text-destructive mt-1">{errors.date.message}</p>}
+                <input type="date" {...register('date')} className="w-full px-3 py-2 glass-input rounded-xl" />
+                {errors.date && <p className="text-sm text-red-400 mt-1">{errors.date.message}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">{t('corrections.reason')}</label>
-                <input type="text" {...register('reason')} placeholder={t('common.forgotClockPlaceholder')} className="w-full px-3 py-2 border border-input rounded-md bg-background" />
-                {errors.reason && <p className="text-sm text-destructive mt-1">{errors.reason.message}</p>}
+                <input type="text" {...register('reason')} placeholder={t('common.forgotClockPlaceholder')} className="w-full px-3 py-2 glass-input rounded-xl" />
+                {errors.reason && <p className="text-sm text-red-400 mt-1">{errors.reason.message}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">{t('corrections.correctedClockIn')}</label>
-                <input type="time" {...register('corrected_clock_in')} className="w-full px-3 py-2 border border-input rounded-md bg-background" />
+                <input type="time" {...register('corrected_clock_in')} className="w-full px-3 py-2 glass-input rounded-xl" />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">{t('corrections.correctedClockOut')}</label>
-                <input type="time" {...register('corrected_clock_out')} className="w-full px-3 py-2 border border-input rounded-md bg-background" />
+                <input type="time" {...register('corrected_clock_out')} className="w-full px-3 py-2 glass-input rounded-xl" />
               </div>
             </div>
             <div className="flex gap-2">
-              <button type="submit" disabled={createMutation.isPending} className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50">
+              <button type="submit" disabled={createMutation.isPending} className="px-4 py-2 gradient-primary text-white rounded-xl hover:shadow-glow-md transition-all disabled:opacity-50">
                 {t('common.submit')}
               </button>
-              <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 border border-input rounded-md hover:bg-accent">
+              <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 glass-input rounded-xl hover:bg-white/10 transition-all">
                 {t('common.cancel')}
               </button>
             </div>
@@ -129,11 +129,11 @@ export function CorrectionsPage() {
 
       {/* 承認待ち一覧（管理者用） */}
       {isAdmin && pendingCorrections?.data?.length > 0 && (
-        <div className="bg-card border border-border rounded-lg p-6">
+        <div className="glass-card rounded-2xl p-6">
           <h2 className="text-lg font-semibold mb-4">{t('corrections.pending')}</h2>
           <div className="space-y-3">
             {pendingCorrections.data.map((c: Record<string, unknown>) => (
-              <div key={c.id as string} className="flex items-center justify-between p-4 border border-border rounded-md">
+              <div key={c.id as string} className="flex items-center justify-between p-4 glass-subtle rounded-xl">
                 <div>
                   <p className="font-medium">{(c.user as Record<string, string>)?.last_name} {(c.user as Record<string, string>)?.first_name}</p>
                   <p className="text-sm text-muted-foreground">
@@ -174,12 +174,12 @@ export function CorrectionsPage() {
       )}
 
       {/* 自分の申請一覧 */}
-      <div className="bg-card border border-border rounded-lg p-6">
+      <div className="glass-card rounded-2xl p-6">
         <h2 className="text-lg font-semibold mb-4">{t('corrections.history')}</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-border">
+              <tr className="border-b border-white/5">
                 <th className="text-left py-2 px-4">{t('corrections.date')}</th>
                 <th className="text-left py-2 px-4">{t('corrections.correctedClockIn')}</th>
                 <th className="text-left py-2 px-4">{t('corrections.correctedClockOut')}</th>
@@ -189,7 +189,7 @@ export function CorrectionsPage() {
             </thead>
             <tbody>
               {myCorrections?.data?.map((c: Record<string, unknown>) => (
-                <tr key={c.id as string} className="border-b border-border/50">
+                <tr key={c.id as string} className="border-b border-white/5">
                   <td className="py-2 px-4">{(c.date as string)?.slice(0, 10)}</td>
                   <td className="py-2 px-4">
                     {c.corrected_clock_in ? new Date(c.corrected_clock_in as string).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '-'}

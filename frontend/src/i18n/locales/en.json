@@ -44,6 +44,11 @@
     "forgotClockPlaceholder": "Forgot to clock in/out, etc.",
     "monthlyExceeded": "Monthly Exceeded",
     "yearlyExceeded": "Yearly Exceeded",
+    "submitting": "Submitting...",
+    "noPermission": "You don't have permission to access this feature",
+    "actions": "Actions",
+    "viewAll": "View All",
+    "more": "More",
     "weekdays": {
       "sun": "Sun",
       "mon": "Mon",
@@ -64,6 +69,7 @@
     "collapse": "Collapse"
   },
   "nav": {
+    "home": "Home",
     "dashboard": "Dashboard",
     "attendance": "Attendance",
     "leaves": "Leave Requests",
@@ -77,6 +83,23 @@
     "holidays": "Calendar",
     "export": "Export",
     "approvalFlows": "Approval Flows"
+  },
+  "home": {
+    "greetingMorning": "Good morning",
+    "greetingAfternoon": "Good afternoon",
+    "greetingEvening": "Good evening",
+    "welcomeMessage": "What would you like to do today?",
+    "todayStatus": "Today's Status",
+    "notClockedIn": "You haven't clocked in yet.",
+    "notifications": "Notifications",
+    "unreadNotifications": "unread notifications",
+    "pendingApprovals": "Pending Approvals",
+    "awaitingReview": "awaiting review",
+    "viewAll": "View All",
+    "review": "Review",
+    "apps": "Applications",
+    "quickAccess": "Quick Access",
+    "recentNotifications": "Recent Notifications"
   },
   "auth": {
     "loginTitle": "Login",
@@ -329,6 +352,866 @@
     "validation": {
       "nameRequired": "Please enter a name",
       "stepsRequired": "At least one step is required"
+    }
+  },
+  "appSwitcher": {
+    "title": "Applications",
+    "subtitle": "Switch between apps",
+    "currentApp": "Current App",
+    "comingSoon": "Coming Soon",
+    "moreApps": "More apps coming soon..."
+  },
+  "apps": {
+    "attendance": {
+      "name": "Attendance",
+      "description": "Clock in/out, leave requests, overtime management"
+    },
+    "expenses": {
+      "name": "Expenses",
+      "description": "Expense reports and reimbursements"
+    },
+    "hr": {
+      "name": "HR Management",
+      "description": "Employee info, evaluations, goals"
+    },
+    "wiki": {
+      "name": "Wiki",
+      "description": "Knowledge base and documentation"
+    },
+    "tasks": {
+      "name": "Tasks",
+      "description": "Project and task management"
+    },
+    "booking": {
+      "name": "Booking",
+      "description": "Room and resource reservations"
+    }
+  },
+  "expenses": {
+    "dashboard": {
+      "title": "Expense Reports",
+      "subtitle": "Submit and manage expense claims",
+      "quickActions": "Quick Actions",
+      "recentExpenses": "Recent Expenses",
+      "newExpenseDesc": "Submit a new expense claim",
+      "historyDesc": "View past expense reports",
+      "approveDesc": "Process pending expense claims",
+      "reportDesc": "View expense reports & analytics",
+      "templatesDesc": "Quickly create from templates"
+    },
+    "newExpense": "New Expense",
+    "new": {
+      "title": "New Expense Report",
+      "subtitle": "Enter the details of your expenses",
+      "basicInfo": "Basic Information",
+      "items": "Line Items",
+      "addItem": "Add Item",
+      "itemNumber": "Item #{{number}}"
+    },
+    "history": {
+      "title": "Expense History",
+      "subtitle": "Past expense reports"
+    },
+    "approve": {
+      "title": "Expense Approval",
+      "subtitle": "Process pending expense claims",
+      "noPending": "No pending expenses to approve",
+      "rejectReason": "Rejection reason"
+    },
+    "detail": {
+      "view": "View",
+      "itemCount": "Item Count",
+      "receipt": "Receipt",
+      "viewReceipt": "View Receipt",
+      "rejectionReason": "Rejection Reason",
+      "deleteConfirm": "Are you sure you want to delete this expense?",
+      "approvalAction": "Approval Action",
+      "confirmReject": "Reject",
+      "noComments": "No comments yet",
+      "noHistory": "No change history",
+      "commentPlaceholder": "Write a comment...",
+      "addComment": "Send",
+      "tabs": {
+        "details": "Details",
+        "comments": "Comments",
+        "history": "History"
+      }
+    },
+    "receipt": {
+      "label": "Receipt",
+      "dragOrTap": "Drag & drop or tap to upload",
+      "fromTemplate": "Add from template"
+    },
+    "report": {
+      "title": "Expense Report",
+      "subtitle": "Expense analytics and summaries",
+      "totalExpenses": "Total Expenses",
+      "approvedAmount": "Approved Amount",
+      "pendingAmount": "Pending Amount",
+      "totalCount": "Total Claims",
+      "claims": "claims",
+      "categoryBreakdown": "By Category",
+      "monthlyTrend": "Monthly Trend",
+      "departmentBreakdown": "By Department",
+      "statusSummary": "By Status",
+      "department": "Department",
+      "claimCount": "Claims",
+      "avgPerClaim": "Avg per Claim",
+      "ratio": "Ratio",
+      "period": {
+        "month": "Monthly",
+        "quarter": "Quarterly",
+        "year": "Yearly"
+      }
+    },
+    "templates": {
+      "title": "Expense Templates",
+      "subtitle": "Save common expense patterns for quick submission",
+      "create": "Create Template",
+      "edit": "Edit Template",
+      "templateName": "Template Name",
+      "templateNamePlaceholder": "e.g. Monthly Commute",
+      "recurring": "Set as recurring expense",
+      "recurringDesc": "Automatically create expense claims monthly",
+      "recurringDay": "Day of month to submit",
+      "dayOfMonth": "Day {{day}}",
+      "recurringTemplates": "Recurring Templates",
+      "savedTemplates": "Saved Templates",
+      "noTemplates": "No templates yet",
+      "useTemplate": "Use Template",
+      "deleteConfirm": "Are you sure you want to delete this template?",
+      "everyMonth": "Every {{day}}th"
+    },
+    "policy": {
+      "title": "Expense Policies & Limits",
+      "subtitle": "Manage category limits and auto-approval rules",
+      "addPolicy": "Add Policy",
+      "editPolicy": "Edit Policy",
+      "currentPolicies": "Current Policies",
+      "noPolicies": "No policies configured",
+      "monthlyLimit": "Monthly Limit",
+      "perClaimLimit": "Per-Claim Limit",
+      "autoApproveLimit": "Auto-Approve Limit",
+      "autoApproveDesc": "Claims below this amount are auto-approved",
+      "receiptRequired": "Receipt Required Amount",
+      "receiptRequiredDesc": "Receipt required for claims above this amount",
+      "description": "Description",
+      "descriptionPlaceholder": "Additional policy notes",
+      "active": "Active",
+      "inactive": "Inactive",
+      "deleteConfirm": "Are you sure you want to delete this policy?",
+      "budgetOverview": "Department Budget Overview",
+      "violations": "Policy Violations"
+    },
+    "notifications": {
+      "title": "Expense Notifications",
+      "unreadCount": "{{count}} unread notifications",
+      "allRead": "All caught up!",
+      "markAllRead": "Mark all as read",
+      "reminders": "Reminders",
+      "takeAction": "Take Action",
+      "empty": "No notifications",
+      "filter": {
+        "all": "All",
+        "unread": "Unread",
+        "action_required": "Action Required"
+      },
+      "settings": {
+        "title": "Notification Settings",
+        "onApproved": "When expense is approved",
+        "onRejected": "When expense is rejected",
+        "onComment": "When a comment is added",
+        "onReimbursed": "When expense is reimbursed",
+        "monthEnd": "End-of-month reminder",
+        "overdue": "Overdue processing alert"
+      }
+    },
+    "advancedApprove": {
+      "title": "Advanced Approval Workflow",
+      "subtitle": "Manage multi-step and delegated approvals",
+      "flowSteps": "Approval Flow",
+      "step": "Step {{num}}",
+      "currentStep": "Current Step",
+      "autoApprove": "Auto-Approve",
+      "finalApproval": "Final Approval",
+      "delegate": "Delegate Settings",
+      "setDelegate": "Set Delegate",
+      "delegateTo": "Delegate To",
+      "delegateStart": "Start Date",
+      "delegateEnd": "End Date",
+      "currentDelegates": "Current Delegates",
+      "return": "Return",
+      "returnReason": "Return Reason"
+    },
+    "fields": {
+      "title": "Title",
+      "date": "Date",
+      "category": "Category",
+      "description": "Description",
+      "amount": "Amount",
+      "totalAmount": "Total Amount",
+      "status": "Status",
+      "notes": "Notes",
+      "applicant": "Applicant"
+    },
+    "placeholders": {
+      "title": "e.g. February Business Trip",
+      "category": "Select a category",
+      "description": "e.g. Shinkansen Tokyo to Osaka",
+      "notes": "Add any additional notes"
+    },
+    "categories": {
+      "transportation": "Transportation",
+      "meals": "Meals",
+      "accommodation": "Accommodation",
+      "supplies": "Supplies",
+      "communication": "Communication",
+      "entertainment": "Entertainment",
+      "other": "Other"
+    },
+    "status": {
+      "draft": "Draft",
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "reimbursed": "Reimbursed"
+    },
+    "stats": {
+      "totalThisMonth": "Total This Month",
+      "pendingCount": "Pending Count",
+      "approvedThisMonth": "Approved This Month",
+      "reimbursedTotal": "Reimbursed Total"
+    },
+    "actions": {
+      "saveDraft": "Save Draft",
+      "submit": "Submit"
+    },
+    "filters": {
+      "allStatuses": "All Statuses",
+      "allCategories": "All Categories"
+    },
+    "validation": {
+      "titleRequired": "Title is required",
+      "dateRequired": "Date is required",
+      "categoryRequired": "Category is required",
+      "descriptionRequired": "Description is required",
+      "amountRequired": "Amount must be at least 1",
+      "itemsRequired": "At least one line item is required"
+    },
+    "nav": {
+      "dashboard": "Dashboard",
+      "newExpense": "New Expense",
+      "history": "History",
+      "approve": "Approval",
+      "report": "Report",
+      "templates": "Templates",
+      "notifications": "Notifications",
+      "advancedApprove": "Advanced Approval",
+      "policy": "Policies"
+    }
+  },
+  "hr": {
+    "dashboard": {
+      "title": "HR Management",
+      "subtitle": "Employee info, evaluations, and organization management",
+      "totalEmployees": "Total Employees",
+      "activeEmployees": "Active Employees",
+      "newHires": "New Hires",
+      "turnoverRate": "Turnover Rate",
+      "openPositions": "Open Positions",
+      "upcomingReviews": "Upcoming Reviews",
+      "trainingCompletion": "Training Completion",
+      "pendingDocuments": "Pending Documents",
+      "quickActions": "Quick Actions",
+      "recentActivities": "Recent Activities",
+      "addEmployeeDesc": "Register a new employee",
+      "startEvalDesc": "Start evaluation cycle",
+      "postAnnouncementDesc": "Post an announcement",
+      "viewReportsDesc": "View HR reports"
+    },
+    "employees": {
+      "title": "Employees",
+      "subtitle": "Search and manage employee information",
+      "addEmployee": "Add Employee",
+      "totalCount": "{{count}} employees",
+      "employeeId": "Employee ID",
+      "position": "Position",
+      "department": "Department",
+      "hireDate": "Hire Date",
+      "employmentType": "Employment Type",
+      "phoneNumber": "Phone Number",
+      "address": "Address",
+      "emergencyContact": "Emergency Contact",
+      "birthDate": "Date of Birth",
+      "gender": "Gender",
+      "types": {
+        "fullTime": "Full-time",
+        "partTime": "Part-time",
+        "contract": "Contract",
+        "intern": "Intern",
+        "temporary": "Temporary"
+      },
+      "genders": {
+        "male": "Male",
+        "female": "Female",
+        "other": "Other",
+        "preferNotToSay": "Prefer not to say"
+      },
+      "statuses": {
+        "active": "Active",
+        "onLeave": "On Leave",
+        "resigned": "Resigned",
+        "terminated": "Terminated"
+      }
+    },
+    "detail": {
+      "title": "Employee Detail",
+      "basicInfo": "Basic Information",
+      "contactInfo": "Contact Information",
+      "employment": "Employment Information",
+      "skills": "Skills & Certifications",
+      "history": "Work History",
+      "notes": "Notes",
+      "tabs": {
+        "profile": "Profile",
+        "evaluations": "Evaluations",
+        "goals": "Goals",
+        "training": "Training",
+        "documents": "Documents",
+        "history": "History"
+      },
+      "editProfile": "Edit Profile",
+      "salary": "Salary Information",
+      "bankAccount": "Bank Account",
+      "socialInsurance": "Social Insurance"
+    },
+    "departments": {
+      "title": "Departments",
+      "subtitle": "Organization structure and department info",
+      "addDepartment": "Add Department",
+      "editDepartment": "Edit Department",
+      "departmentName": "Department Name",
+      "manager": "Manager",
+      "parentDepartment": "Parent Department",
+      "memberCount": "Members",
+      "budget": "Budget",
+      "description": "Description",
+      "code": "Department Code",
+      "established": "Established",
+      "orgChart": "Org Chart",
+      "listView": "List View"
+    },
+    "evaluations": {
+      "title": "Evaluations",
+      "subtitle": "Performance review cycles and results",
+      "newCycle": "New Cycle",
+      "cycleName": "Cycle Name",
+      "period": "Review Period",
+      "status": "Status",
+      "selfEvaluation": "Self Evaluation",
+      "managerEvaluation": "Manager Evaluation",
+      "finalScore": "Final Score",
+      "grade": "Grade",
+      "comment": "Comment",
+      "submit": "Submit Evaluation",
+      "overallScore": "Overall Score",
+      "scores": {
+        "excellent": "S (Excellent)",
+        "good": "A (Good)",
+        "satisfactory": "B (Satisfactory)",
+        "needsImprovement": "C (Needs Improvement)",
+        "unsatisfactory": "D (Unsatisfactory)"
+      },
+      "criteria": {
+        "performance": "Performance",
+        "competency": "Competency",
+        "attitude": "Work Attitude",
+        "teamwork": "Teamwork",
+        "leadership": "Leadership"
+      },
+      "statuses": {
+        "draft": "Draft",
+        "selfReview": "Self Review",
+        "managerReview": "Manager Review",
+        "calibration": "Calibration",
+        "completed": "Completed",
+        "acknowledged": "Acknowledged"
+      }
+    },
+    "goals": {
+      "title": "Goals",
+      "subtitle": "OKR & MBO goal setting and progress tracking",
+      "addGoal": "Add Goal",
+      "editGoal": "Edit Goal",
+      "goalTitle": "Goal Title",
+      "description": "Description",
+      "keyResults": "Key Results",
+      "addKeyResult": "Add Key Result",
+      "progress": "Progress",
+      "weight": "Weight",
+      "dueDate": "Due Date",
+      "category": "Category",
+      "priority": "Priority",
+      "alignedTo": "Aligned To",
+      "overallProgress": "Overall Progress",
+      "categories": {
+        "business": "Business",
+        "personal": "Personal Growth",
+        "team": "Team",
+        "skill": "Skill Development"
+      },
+      "priorities": {
+        "high": "High",
+        "medium": "Medium",
+        "low": "Low"
+      },
+      "statuses": {
+        "notStarted": "Not Started",
+        "inProgress": "In Progress",
+        "atRisk": "At Risk",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      }
+    },
+    "training": {
+      "title": "Training",
+      "subtitle": "Training programs and certifications",
+      "addProgram": "Add Program",
+      "programName": "Program Name",
+      "instructor": "Instructor",
+      "duration": "Duration",
+      "capacity": "Capacity",
+      "enrolled": "Enrolled",
+      "location": "Location",
+      "online": "Online",
+      "inPerson": "In-person",
+      "hybrid": "Hybrid",
+      "schedule": "Schedule",
+      "materials": "Materials",
+      "certification": "Certification",
+      "expiryDate": "Expiry Date",
+      "mandatory": "Mandatory",
+      "optional": "Optional",
+      "completionRate": "Completion Rate",
+      "categories": {
+        "compliance": "Compliance",
+        "technical": "Technical",
+        "leadership": "Leadership",
+        "onboarding": "Onboarding",
+        "softSkills": "Soft Skills",
+        "safety": "Safety"
+      },
+      "statuses": {
+        "upcoming": "Upcoming",
+        "inProgress": "In Progress",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      }
+    },
+    "recruitment": {
+      "title": "Recruitment",
+      "subtitle": "Job postings and hiring pipeline",
+      "addPosition": "Add Position",
+      "positionTitle": "Position Title",
+      "department": "Department",
+      "employmentType": "Employment Type",
+      "salaryRange": "Salary Range",
+      "applicants": "Applicants",
+      "pipeline": "Pipeline",
+      "totalApplicants": "Total Applicants",
+      "stages": {
+        "applied": "Applied",
+        "screening": "Screening",
+        "interview1": "1st Interview",
+        "interview2": "2nd Interview",
+        "finalInterview": "Final Interview",
+        "offer": "Offer",
+        "hired": "Hired",
+        "rejected": "Rejected"
+      },
+      "applicant": {
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "resume": "Resume",
+        "coverLetter": "Cover Letter",
+        "source": "Source",
+        "notes": "Notes",
+        "moveToNext": "Move to Next Stage",
+        "reject": "Reject"
+      }
+    },
+    "documents": {
+      "title": "Documents",
+      "subtitle": "HR documents and certificates",
+      "upload": "Upload",
+      "documentName": "Document Name",
+      "documentType": "Document Type",
+      "employee": "Employee",
+      "uploadDate": "Upload Date",
+      "expiryDate": "Expiry Date",
+      "download": "Download",
+      "preview": "Preview",
+      "totalDocuments": "Total Documents",
+      "types": {
+        "contract": "Employment Contract",
+        "nda": "NDA",
+        "certificate": "Certificate",
+        "idDocument": "ID Document",
+        "taxForm": "Tax Form",
+        "insurance": "Insurance Card",
+        "evaluation": "Evaluation Report",
+        "other": "Other"
+      }
+    },
+    "announcements": {
+      "title": "Announcements",
+      "subtitle": "Company-wide announcements",
+      "addAnnouncement": "New Announcement",
+      "editAnnouncement": "Edit Announcement",
+      "announcementTitle": "Title",
+      "content": "Content",
+      "author": "Author",
+      "publishDate": "Publish Date",
+      "expiryDate": "Expiry Date",
+      "target": "Target",
+      "priority": "Priority",
+      "pinned": "Pinned",
+      "priorities": {
+        "urgent": "Urgent",
+        "high": "Important",
+        "normal": "Normal",
+        "low": "Info"
+      },
+      "targets": {
+        "all": "All Employees",
+        "department": "By Department",
+        "role": "By Role"
+      }
+    },
+    "attendanceIntegration": {
+      "title": "Attendance Integration",
+      "subtitle": "View employee attendance data and labor risk overview",
+      "lateRate": "Late Rate",
+      "overtimeHours": "Overtime Hours",
+      "paidLeaveUsage": "Paid Leave Usage",
+      "absentDays": "Absent Days",
+      "avgWorkHours": "Avg Work Hours",
+      "riskLevel": "Risk Level",
+      "riskLevels": {
+        "high": "High",
+        "medium": "Medium",
+        "low": "Low",
+        "none": "None"
+      },
+      "period": "Period",
+      "periods": {
+        "thisMonth": "This Month",
+        "lastMonth": "Last Month",
+        "last3Months": "Last 3 Months",
+        "last6Months": "Last 6 Months",
+        "thisYear": "This Year"
+      },
+      "totalOvertime": "Total Overtime",
+      "overtimeWarning": "Overtime Warning",
+      "leaveBalance": "Leave Balance",
+      "workLifeBalance": "Work-Life Balance",
+      "department": "Department",
+      "trend": "Trend",
+      "alerts": "Alerts",
+      "noAlerts": "No alerts",
+      "excessiveOvertime": "Excessive Overtime",
+      "lowLeaveUsage": "Low Leave Usage",
+      "frequentLate": "Frequent Tardiness"
+    },
+    "orgChart": {
+      "title": "Organization Chart",
+      "subtitle": "Interactive organization structure visualization",
+      "viewMode": "View Mode",
+      "tree": "Tree",
+      "flat": "Flat",
+      "zoomIn": "Zoom In",
+      "zoomOut": "Zoom Out",
+      "resetZoom": "Reset",
+      "members": "Members",
+      "directReports": "Direct Reports",
+      "headcount": "Headcount",
+      "expand": "Expand",
+      "collapse": "Collapse",
+      "simulationMode": "Simulation Mode",
+      "dragToReorganize": "Drag to simulate reorganization",
+      "saveChanges": "Save Changes",
+      "discardChanges": "Discard Changes"
+    },
+    "oneOnOne": {
+      "title": "1-on-1 Meetings",
+      "subtitle": "Regular meeting records between managers and reports",
+      "newMeeting": "New 1-on-1",
+      "editMeeting": "Edit 1-on-1",
+      "scheduledDate": "Scheduled Date",
+      "duration": "Duration",
+      "participant": "Participant",
+      "manager": "Manager",
+      "subordinate": "Team Member",
+      "agenda": "Agenda",
+      "notes": "Notes",
+      "actionItems": "Action Items",
+      "addActionItem": "Add Action Item",
+      "completed": "Completed",
+      "pending": "Pending",
+      "status": "Status",
+      "statuses": {
+        "scheduled": "Scheduled",
+        "in_progress": "In Progress",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      },
+      "frequency": "Frequency",
+      "frequencies": {
+        "weekly": "Weekly",
+        "biweekly": "Biweekly",
+        "monthly": "Monthly"
+      },
+      "mood": "Mood",
+      "moods": {
+        "great": "Great",
+        "good": "Good",
+        "neutral": "Neutral",
+        "concerned": "Concerned",
+        "struggling": "Struggling"
+      },
+      "totalMeetings": "Total Meetings",
+      "completionRate": "Completion Rate",
+      "openActions": "Open Actions",
+      "nextMeeting": "Next Meeting",
+      "talkingPoints": "Talking Points",
+      "privateNotes": "Private Notes"
+    },
+    "skillMap": {
+      "title": "Skill Map",
+      "subtitle": "Visualize employee skills and competencies",
+      "skillName": "Skill Name",
+      "level": "Level",
+      "levels": {
+        "beginner": "Beginner",
+        "intermediate": "Intermediate",
+        "advanced": "Advanced",
+        "expert": "Expert"
+      },
+      "category": "Category",
+      "categories": {
+        "technical": "Technical",
+        "business": "Business",
+        "leadership": "Leadership",
+        "communication": "Communication",
+        "management": "Management"
+      },
+      "addSkill": "Add Skill",
+      "editSkill": "Edit Skill",
+      "radarChart": "Radar Chart",
+      "gapAnalysis": "Gap Analysis",
+      "required": "Required Level",
+      "current": "Current Level",
+      "gap": "Gap",
+      "recommendedTraining": "Recommended Training",
+      "departmentAverage": "Department Average",
+      "teamSkills": "Team Skills",
+      "topSkills": "Top Skills",
+      "skillGaps": "Skill Gaps",
+      "endorsements": "Endorsements",
+      "lastUpdated": "Last Updated"
+    },
+    "salary": {
+      "title": "Salary Simulator",
+      "subtitle": "Salary simulation and budget management",
+      "currentSalary": "Current Salary",
+      "proposedSalary": "Proposed Salary",
+      "increaseRate": "Increase Rate",
+      "increaseAmount": "Increase Amount",
+      "grade": "Grade",
+      "position": "Position",
+      "department": "Department",
+      "simulation": "Simulation",
+      "simulate": "Run Simulation",
+      "budgetTotal": "Total Budget",
+      "budgetUsed": "Used",
+      "budgetRemaining": "Remaining",
+      "avgSalary": "Average Salary",
+      "medianSalary": "Median Salary",
+      "minSalary": "Min Salary",
+      "maxSalary": "Max Salary",
+      "salaryRange": "Salary Range",
+      "distribution": "Distribution",
+      "comparison": "Comparison",
+      "history": "History",
+      "effective_date": "Effective Date",
+      "reason": "Reason",
+      "reasons": {
+        "annual": "Annual Raise",
+        "promotion": "Promotion",
+        "performance": "Performance-based",
+        "market": "Market Adjustment",
+        "other": "Other"
+      },
+      "totalBudget": "Total Budget",
+      "departmentBudget": "Department Budget",
+      "forecast": "Forecast"
+    },
+    "onboarding": {
+      "title": "Onboarding",
+      "subtitle": "New employee onboarding checklist management",
+      "newChecklist": "New Checklist",
+      "editChecklist": "Edit Checklist",
+      "template": "Template",
+      "templates": "Templates",
+      "addTemplate": "Add Template",
+      "employee": "Employee",
+      "startDate": "Start Date",
+      "mentor": "Mentor",
+      "progress": "Progress",
+      "dueDate": "Due Date",
+      "task": "Task",
+      "tasks": "Tasks",
+      "addTask": "Add Task",
+      "categories": {
+        "documents": "Document Submission",
+        "account": "Account Setup",
+        "training": "Training",
+        "equipment": "Equipment",
+        "introductions": "Introductions",
+        "other": "Other"
+      },
+      "statuses": {
+        "not_started": "Not Started",
+        "in_progress": "In Progress",
+        "completed": "Completed",
+        "overdue": "Overdue"
+      },
+      "totalTasks": "Total Tasks",
+      "completedTasks": "Completed Tasks",
+      "overdueTasks": "Overdue Tasks",
+      "activeOnboardings": "Active Onboardings",
+      "timeline": "Timeline",
+      "assignee": "Assignee",
+      "day": "Day"
+    },
+    "offboarding": {
+      "title": "Offboarding",
+      "subtitle": "Offboarding procedures and turnover analysis",
+      "newOffboarding": "Start Offboarding",
+      "employee": "Employee",
+      "lastDay": "Last Working Day",
+      "resignationDate": "Resignation Date",
+      "exitInterview": "Exit Interview",
+      "reason": "Reason",
+      "reasons": {
+        "personal": "Personal Reasons",
+        "career": "Career Growth",
+        "compensation": "Compensation",
+        "worklife": "Work-Life Balance",
+        "relocation": "Relocation",
+        "health": "Health",
+        "management": "Management",
+        "culture": "Company Culture",
+        "other": "Other"
+      },
+      "handover": "Handover",
+      "handoverTasks": "Handover Tasks",
+      "addHandoverTask": "Add Handover Task",
+      "successor": "Successor",
+      "checklist": "Checklist",
+      "checklistItems": {
+        "exitInterview": "Exit Interview",
+        "equipmentReturn": "Equipment Return",
+        "accessRevoke": "Access Revocation",
+        "knowledgeTransfer": "Knowledge Transfer",
+        "farewell": "Farewell Event",
+        "certificate": "Separation Certificate",
+        "insurance": "Insurance Procedures"
+      },
+      "turnoverRate": "Turnover Rate",
+      "avgTenure": "Average Tenure",
+      "monthlyTurnover": "Monthly Turnover",
+      "reasonAnalysis": "Reason Analysis",
+      "departmentAnalysis": "Department Analysis",
+      "retentionRisk": "Retention Risk",
+      "statuses": {
+        "pending": "Pending",
+        "in_progress": "In Progress",
+        "completed": "Completed"
+      }
+    },
+    "survey": {
+      "title": "Employee Survey",
+      "subtitle": "Engagement surveys and pulse checks",
+      "newSurvey": "New Survey",
+      "editSurvey": "Edit Survey",
+      "surveyName": "Survey Name",
+      "description": "Description",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "anonymous": "Anonymous",
+      "status": "Status",
+      "statuses": {
+        "draft": "Draft",
+        "active": "Active",
+        "closed": "Closed",
+        "archived": "Archived"
+      },
+      "types": {
+        "engagement": "Engagement",
+        "pulse": "Pulse",
+        "satisfaction": "Satisfaction",
+        "360feedback": "360 Feedback",
+        "onboarding": "Onboarding",
+        "exit": "Exit"
+      },
+      "questions": "Questions",
+      "addQuestion": "Add Question",
+      "questionTypes": {
+        "rating": "Rating (1-5)",
+        "text": "Free Text",
+        "choice": "Multiple Choice",
+        "nps": "NPS"
+      },
+      "responses": "Responses",
+      "responseRate": "Response Rate",
+      "enps": "eNPS",
+      "avgScore": "Avg Score",
+      "trend": "Trend",
+      "results": "Results",
+      "viewResults": "View Results",
+      "publish": "Publish",
+      "close": "Close",
+      "totalSurveys": "Total Surveys",
+      "activeSurveys": "Active",
+      "categories": {
+        "work_environment": "Work Environment",
+        "management": "Management",
+        "growth": "Growth & Career",
+        "compensation": "Compensation & Benefits",
+        "teamwork": "Teamwork",
+        "communication": "Communication"
+      }
+    },
+    "nav": {
+      "dashboard": "Dashboard",
+      "employees": "Employees",
+      "departments": "Departments",
+      "evaluations": "Evaluations",
+      "goals": "Goals",
+      "training": "Training",
+      "recruitment": "Recruitment",
+      "documents": "Documents",
+      "announcements": "Announcements",
+      "attendanceIntegration": "Attendance",
+      "orgChart": "Org Chart",
+      "oneOnOne": "1-on-1",
+      "skillMap": "Skill Map",
+      "salary": "Salary Simulator",
+      "onboarding": "Onboarding",
+      "offboarding": "Offboarding",
+      "survey": "Surveys"
     }
   }
 }

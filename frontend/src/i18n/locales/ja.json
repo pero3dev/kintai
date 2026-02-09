@@ -44,6 +44,11 @@
     "forgotClockPlaceholder": "打刻忘れ等",
     "monthlyExceeded": "月間超過",
     "yearlyExceeded": "年間超過",
+    "submitting": "送信中...",
+    "noPermission": "この機能にアクセスする権限がありません",
+    "actions": "操作",
+    "viewAll": "すべて見る",
+    "more": "その他",
     "weekdays": {
       "sun": "日",
       "mon": "月",
@@ -64,8 +69,9 @@
     "collapse": "折り畳み"
   },
   "nav": {
+    "home": "ホーム",
     "dashboard": "ダッシュボード",
-    "attendance": "勤怠管理",
+    "attendance": "勤怠",
     "leaves": "休暇申請",
     "shifts": "シフト管理",
     "users": "ユーザー管理",
@@ -77,6 +83,23 @@
     "holidays": "カレンダー",
     "export": "エクスポート",
     "approvalFlows": "承認フロー"
+  },
+  "home": {
+    "greetingMorning": "おはようございます",
+    "greetingAfternoon": "こんにちは",
+    "greetingEvening": "お疲れ様です",
+    "welcomeMessage": "今日は何をしますか？",
+    "todayStatus": "今日の状態",
+    "notClockedIn": "まだ出勤していません。",
+    "notifications": "通知",
+    "unreadNotifications": "件の未読通知",
+    "pendingApprovals": "承認待ち",
+    "awaitingReview": "件が承認待ち",
+    "viewAll": "すべて見る",
+    "review": "確認する",
+    "apps": "アプリケーション",
+    "quickAccess": "クイックアクセス",
+    "recentNotifications": "最近の通知"
   },
   "auth": {
     "loginTitle": "ログイン",
@@ -329,6 +352,866 @@
     "validation": {
       "nameRequired": "名前を入力してください",
       "stepsRequired": "少なくとも1つのステップが必要です"
+    }
+  },
+  "appSwitcher": {
+    "title": "アプリケーション",
+    "subtitle": "アプリを切り替える",
+    "currentApp": "現在のアプリ",
+    "comingSoon": "近日公開",
+    "moreApps": "他のアプリも近日追加予定..."
+  },
+  "apps": {
+    "attendance": {
+      "name": "勤怠管理",
+      "description": "出退勤、休暇申請、残業管理"
+    },
+    "expenses": {
+      "name": "経費精算",
+      "description": "経費申請と精算管理"
+    },
+    "hr": {
+      "name": "人事管理",
+      "description": "社員情報、評価、目標管理"
+    },
+    "wiki": {
+      "name": "社内Wiki",
+      "description": "ナレッジベースとドキュメント"
+    },
+    "tasks": {
+      "name": "タスク管理",
+      "description": "プロジェクトとタスク管理"
+    },
+    "booking": {
+      "name": "予約管理",
+      "description": "会議室・備品の予約"
+    }
+  },
+  "expenses": {
+    "dashboard": {
+      "title": "経費精算",
+      "subtitle": "経費の申請・管理を行います",
+      "quickActions": "クイックアクション",
+      "recentExpenses": "最近の経費",
+      "newExpenseDesc": "新しい経費精算を申請",
+      "historyDesc": "過去の経費精算を確認",
+      "approveDesc": "承認待ちの経費を処理",
+      "reportDesc": "経費レポート・分析を確認",
+      "templatesDesc": "テンプレートから素早く作成"
+    },
+    "newExpense": "新規申請",
+    "new": {
+      "title": "経費精算申請",
+      "subtitle": "経費の詳細を入力してください",
+      "basicInfo": "基本情報",
+      "items": "明細",
+      "addItem": "明細を追加",
+      "itemNumber": "明細 #{{number}}"
+    },
+    "history": {
+      "title": "経費精算履歴",
+      "subtitle": "過去の経費精算一覧"
+    },
+    "approve": {
+      "title": "経費承認",
+      "subtitle": "承認待ちの経費精算を処理します",
+      "noPending": "承認待ちの経費はありません",
+      "rejectReason": "却下理由"
+    },
+    "detail": {
+      "view": "詳細",
+      "itemCount": "明細件数",
+      "receipt": "領収書",
+      "viewReceipt": "領収書を表示",
+      "rejectionReason": "却下理由",
+      "deleteConfirm": "この経費精算を削除しますか？",
+      "approvalAction": "承認アクション",
+      "confirmReject": "却下する",
+      "noComments": "コメントはまだありません",
+      "noHistory": "変更履歴はありません",
+      "commentPlaceholder": "コメントを入力...",
+      "addComment": "送信",
+      "tabs": {
+        "details": "明細",
+        "comments": "コメント",
+        "history": "変更履歴"
+      }
+    },
+    "receipt": {
+      "label": "領収書",
+      "dragOrTap": "ドラッグ＆ドロップまたはタップ",
+      "fromTemplate": "テンプレートから追加"
+    },
+    "report": {
+      "title": "経費レポート",
+      "subtitle": "経費の分析・集計を確認",
+      "totalExpenses": "合計経費",
+      "approvedAmount": "承認済み金額",
+      "pendingAmount": "承認待ち金額",
+      "totalCount": "申請件数",
+      "claims": "件",
+      "categoryBreakdown": "カテゴリ別内訳",
+      "monthlyTrend": "月次推移",
+      "departmentBreakdown": "部門別内訳",
+      "statusSummary": "ステータス別集計",
+      "department": "部門",
+      "claimCount": "件数",
+      "avgPerClaim": "平均単価",
+      "ratio": "構成比",
+      "period": {
+        "month": "月次",
+        "quarter": "四半期",
+        "year": "年次"
+      }
+    },
+    "templates": {
+      "title": "経費テンプレート",
+      "subtitle": "よく使う経費パターンを保存して素早く申請",
+      "create": "テンプレート作成",
+      "edit": "テンプレート編集",
+      "templateName": "テンプレート名",
+      "templateNamePlaceholder": "例：毎月の定期代",
+      "recurring": "定期経費として設定",
+      "recurringDesc": "毎月自動で経費申請を作成します",
+      "recurringDay": "毎月の申請日",
+      "dayOfMonth": "{{day}}日",
+      "recurringTemplates": "定期経費テンプレート",
+      "savedTemplates": "保存済みテンプレート",
+      "noTemplates": "テンプレートはまだありません",
+      "useTemplate": "テンプレートを使用",
+      "deleteConfirm": "このテンプレートを削除しますか？",
+      "everyMonth": "毎月{{day}}日"
+    },
+    "policy": {
+      "title": "経費ポリシー・上限管理",
+      "subtitle": "カテゴリごとの利用上限と自動承認ルールを管理",
+      "addPolicy": "ポリシー追加",
+      "editPolicy": "ポリシー編集",
+      "currentPolicies": "現在のポリシー",
+      "noPolicies": "ポリシーは設定されていません",
+      "monthlyLimit": "月間上限",
+      "perClaimLimit": "1件あたり上限",
+      "autoApproveLimit": "自動承認上限",
+      "autoApproveDesc": "この金額以下は自動承認",
+      "receiptRequired": "領収書必須金額",
+      "receiptRequiredDesc": "この金額以上は領収書添付必須",
+      "description": "説明",
+      "descriptionPlaceholder": "ポリシーの補足説明",
+      "active": "有効",
+      "inactive": "無効",
+      "deleteConfirm": "このポリシーを削除しますか？",
+      "budgetOverview": "部門別予算状況",
+      "violations": "ポリシー違反"
+    },
+    "notifications": {
+      "title": "経費通知",
+      "unreadCount": "{{count}}件の未読通知",
+      "allRead": "すべて既読済みです",
+      "markAllRead": "すべて既読にする",
+      "reminders": "リマインダー",
+      "takeAction": "対応する",
+      "empty": "通知はありません",
+      "filter": {
+        "all": "すべて",
+        "unread": "未読",
+        "action_required": "要対応"
+      },
+      "settings": {
+        "title": "通知設定",
+        "onApproved": "経費が承認されたとき",
+        "onRejected": "経費が却下されたとき",
+        "onComment": "コメントが追加されたとき",
+        "onReimbursed": "経費が精算されたとき",
+        "monthEnd": "月末の未申請リマインド",
+        "overdue": "長期間未処理のアラート"
+      }
+    },
+    "advancedApprove": {
+      "title": "高度な承認ワークフロー",
+      "subtitle": "多段階承認・代理承認の管理",
+      "flowSteps": "承認フロー",
+      "step": "ステップ {{num}}",
+      "currentStep": "現在のステップ",
+      "autoApprove": "自動承認",
+      "finalApproval": "最終承認",
+      "delegate": "代理承認設定",
+      "setDelegate": "代理承認者を設定",
+      "delegateTo": "代理承認者",
+      "delegateStart": "開始日",
+      "delegateEnd": "終了日",
+      "currentDelegates": "現在の代理設定",
+      "return": "差し戻し",
+      "returnReason": "差し戻し理由"
+    },
+    "fields": {
+      "title": "件名",
+      "date": "利用日",
+      "category": "カテゴリ",
+      "description": "摘要",
+      "amount": "金額",
+      "totalAmount": "合計金額",
+      "status": "ステータス",
+      "notes": "備考",
+      "applicant": "申請者"
+    },
+    "placeholders": {
+      "title": "例：2月出張経費",
+      "category": "カテゴリを選択",
+      "description": "例：新幹線 東京→大阪",
+      "notes": "補足事項があれば入力"
+    },
+    "categories": {
+      "transportation": "交通費",
+      "meals": "飲食費",
+      "accommodation": "宿泊費",
+      "supplies": "消耗品費",
+      "communication": "通信費",
+      "entertainment": "交際費",
+      "other": "その他"
+    },
+    "status": {
+      "draft": "下書き",
+      "pending": "承認待ち",
+      "approved": "承認済み",
+      "rejected": "却下",
+      "reimbursed": "精算済み"
+    },
+    "stats": {
+      "totalThisMonth": "今月の申請額",
+      "pendingCount": "承認待ち件数",
+      "approvedThisMonth": "今月の承認額",
+      "reimbursedTotal": "精算済み金額"
+    },
+    "actions": {
+      "saveDraft": "下書き保存",
+      "submit": "申請する"
+    },
+    "filters": {
+      "allStatuses": "すべてのステータス",
+      "allCategories": "すべてのカテゴリ"
+    },
+    "validation": {
+      "titleRequired": "件名を入力してください",
+      "dateRequired": "利用日を選択してください",
+      "categoryRequired": "カテゴリを選択してください",
+      "descriptionRequired": "摘要を入力してください",
+      "amountRequired": "1円以上の金額を入力してください",
+      "itemsRequired": "明細を1件以上追加してください"
+    },
+    "nav": {
+      "dashboard": "ダッシュボード",
+      "newExpense": "新規申請",
+      "history": "履歴",
+      "approve": "承認",
+      "report": "レポート",
+      "templates": "テンプレート",
+      "notifications": "通知",
+      "advancedApprove": "高度な承認",
+      "policy": "ポリシー"
+    }
+  },
+  "hr": {
+    "dashboard": {
+      "title": "人事管理",
+      "subtitle": "社員情報、評価、組織管理",
+      "totalEmployees": "総社員数",
+      "activeEmployees": "在籍社員",
+      "newHires": "新規入社",
+      "turnoverRate": "離職率",
+      "openPositions": "募集中",
+      "upcomingReviews": "評価予定",
+      "trainingCompletion": "研修完了率",
+      "pendingDocuments": "未処理書類",
+      "quickActions": "クイックアクション",
+      "recentActivities": "最近の活動",
+      "addEmployeeDesc": "新しい社員を登録",
+      "startEvalDesc": "評価サイクルを開始",
+      "postAnnouncementDesc": "お知らせを投稿",
+      "viewReportsDesc": "人事レポートを確認"
+    },
+    "employees": {
+      "title": "社員一覧",
+      "subtitle": "社員情報の検索・管理",
+      "addEmployee": "社員追加",
+      "totalCount": "{{count}}名",
+      "employeeId": "社員番号",
+      "position": "役職",
+      "department": "部門",
+      "hireDate": "入社日",
+      "employmentType": "雇用形態",
+      "phoneNumber": "電話番号",
+      "address": "住所",
+      "emergencyContact": "緊急連絡先",
+      "birthDate": "生年月日",
+      "gender": "性別",
+      "types": {
+        "fullTime": "正社員",
+        "partTime": "パートタイム",
+        "contract": "契約社員",
+        "intern": "インターン",
+        "temporary": "派遣社員"
+      },
+      "genders": {
+        "male": "男性",
+        "female": "女性",
+        "other": "その他",
+        "preferNotToSay": "回答しない"
+      },
+      "statuses": {
+        "active": "在籍",
+        "onLeave": "休職中",
+        "resigned": "退職",
+        "terminated": "解雇"
+      }
+    },
+    "detail": {
+      "title": "社員詳細",
+      "basicInfo": "基本情報",
+      "contactInfo": "連絡先情報",
+      "employment": "雇用情報",
+      "skills": "スキル・資格",
+      "history": "職歴",
+      "notes": "メモ",
+      "tabs": {
+        "profile": "プロフィール",
+        "evaluations": "評価",
+        "goals": "目標",
+        "training": "研修",
+        "documents": "書類",
+        "history": "履歴"
+      },
+      "editProfile": "プロフィール編集",
+      "salary": "給与情報",
+      "bankAccount": "振込先口座",
+      "socialInsurance": "社会保険"
+    },
+    "departments": {
+      "title": "部門管理",
+      "subtitle": "組織構造と部門情報",
+      "addDepartment": "部門追加",
+      "editDepartment": "部門編集",
+      "departmentName": "部門名",
+      "manager": "部門長",
+      "parentDepartment": "上位部門",
+      "memberCount": "所属人数",
+      "budget": "予算",
+      "description": "説明",
+      "code": "部門コード",
+      "established": "設立日",
+      "orgChart": "組織図",
+      "listView": "リスト表示"
+    },
+    "evaluations": {
+      "title": "人事評価",
+      "subtitle": "評価サイクルと実績管理",
+      "newCycle": "新規サイクル",
+      "cycleName": "サイクル名",
+      "period": "評価期間",
+      "status": "ステータス",
+      "selfEvaluation": "自己評価",
+      "managerEvaluation": "上司評価",
+      "finalScore": "最終スコア",
+      "grade": "評価グレード",
+      "comment": "コメント",
+      "submit": "評価を提出",
+      "overallScore": "総合スコア",
+      "scores": {
+        "excellent": "S (卓越)",
+        "good": "A (優秀)",
+        "satisfactory": "B (良好)",
+        "needsImprovement": "C (改善要)",
+        "unsatisfactory": "D (不十分)"
+      },
+      "criteria": {
+        "performance": "業績",
+        "competency": "能力",
+        "attitude": "勤務態度",
+        "teamwork": "チームワーク",
+        "leadership": "リーダーシップ"
+      },
+      "statuses": {
+        "draft": "下書き",
+        "selfReview": "自己評価中",
+        "managerReview": "上司評価中",
+        "calibration": "調整中",
+        "completed": "完了",
+        "acknowledged": "確認済み"
+      }
+    },
+    "goals": {
+      "title": "目標管理",
+      "subtitle": "OKR・MBO目標の設定と進捗管理",
+      "addGoal": "目標追加",
+      "editGoal": "目標編集",
+      "goalTitle": "目標タイトル",
+      "description": "説明",
+      "keyResults": "主要な成果指標",
+      "addKeyResult": "成果指標を追加",
+      "progress": "進捗",
+      "weight": "ウェイト",
+      "dueDate": "期限",
+      "category": "カテゴリ",
+      "priority": "優先度",
+      "alignedTo": "上位目標",
+      "overallProgress": "全体進捗",
+      "categories": {
+        "business": "事業目標",
+        "personal": "個人成長",
+        "team": "チーム目標",
+        "skill": "スキル開発"
+      },
+      "priorities": {
+        "high": "高",
+        "medium": "中",
+        "low": "低"
+      },
+      "statuses": {
+        "notStarted": "未着手",
+        "inProgress": "進行中",
+        "atRisk": "リスクあり",
+        "completed": "達成",
+        "cancelled": "中止"
+      }
+    },
+    "training": {
+      "title": "研修管理",
+      "subtitle": "研修プログラムと資格管理",
+      "addProgram": "研修追加",
+      "programName": "研修名",
+      "instructor": "講師",
+      "duration": "期間",
+      "capacity": "定員",
+      "enrolled": "受講者数",
+      "location": "開催場所",
+      "online": "オンライン",
+      "inPerson": "対面",
+      "hybrid": "ハイブリッド",
+      "schedule": "スケジュール",
+      "materials": "教材",
+      "certification": "資格・認定",
+      "expiryDate": "有効期限",
+      "mandatory": "必須研修",
+      "optional": "任意研修",
+      "completionRate": "修了率",
+      "categories": {
+        "compliance": "コンプライアンス",
+        "technical": "技術研修",
+        "leadership": "リーダーシップ",
+        "onboarding": "オンボーディング",
+        "softSkills": "ソフトスキル",
+        "safety": "安全研修"
+      },
+      "statuses": {
+        "upcoming": "開催予定",
+        "inProgress": "実施中",
+        "completed": "終了",
+        "cancelled": "中止"
+      }
+    },
+    "recruitment": {
+      "title": "採用管理",
+      "subtitle": "求人と採用パイプライン",
+      "addPosition": "求人追加",
+      "positionTitle": "求人タイトル",
+      "department": "部門",
+      "employmentType": "雇用形態",
+      "salaryRange": "想定年収",
+      "applicants": "応募者",
+      "pipeline": "パイプライン",
+      "totalApplicants": "応募者数",
+      "stages": {
+        "applied": "応募",
+        "screening": "書類選考",
+        "interview1": "一次面接",
+        "interview2": "二次面接",
+        "finalInterview": "最終面接",
+        "offer": "内定",
+        "hired": "採用",
+        "rejected": "不採用"
+      },
+      "applicant": {
+        "name": "氏名",
+        "email": "メール",
+        "phone": "電話番号",
+        "resume": "履歴書",
+        "coverLetter": "志望動機",
+        "source": "応募経路",
+        "notes": "メモ",
+        "moveToNext": "次のステージへ",
+        "reject": "不採用にする"
+      }
+    },
+    "documents": {
+      "title": "書類管理",
+      "subtitle": "人事書類と証明書の管理",
+      "upload": "アップロード",
+      "documentName": "書類名",
+      "documentType": "書類種別",
+      "employee": "対象社員",
+      "uploadDate": "アップロード日",
+      "expiryDate": "有効期限",
+      "download": "ダウンロード",
+      "preview": "プレビュー",
+      "totalDocuments": "総書類数",
+      "types": {
+        "contract": "雇用契約書",
+        "nda": "秘密保持契約",
+        "certificate": "資格証明書",
+        "idDocument": "身分証明書",
+        "taxForm": "税務書類",
+        "insurance": "保険証",
+        "evaluation": "評価書",
+        "other": "その他"
+      }
+    },
+    "announcements": {
+      "title": "お知らせ",
+      "subtitle": "全社アナウンスメント",
+      "addAnnouncement": "お知らせ作成",
+      "editAnnouncement": "お知らせ編集",
+      "announcementTitle": "タイトル",
+      "content": "内容",
+      "author": "投稿者",
+      "publishDate": "公開日",
+      "expiryDate": "掲載終了日",
+      "target": "対象",
+      "priority": "重要度",
+      "pinned": "ピン留め",
+      "priorities": {
+        "urgent": "緊急",
+        "high": "重要",
+        "normal": "通常",
+        "low": "参考"
+      },
+      "targets": {
+        "all": "全社員",
+        "department": "部門指定",
+        "role": "役職指定"
+      }
+    },
+    "attendanceIntegration": {
+      "title": "勤怠連携",
+      "subtitle": "社員の勤怠データと労務リスクを一覧表示",
+      "lateRate": "遅刻率",
+      "overtimeHours": "残業時間",
+      "paidLeaveUsage": "有給消化率",
+      "absentDays": "欠勤日数",
+      "avgWorkHours": "平均稼働時間",
+      "riskLevel": "リスクレベル",
+      "riskLevels": {
+        "high": "高",
+        "medium": "中",
+        "low": "低",
+        "none": "なし"
+      },
+      "period": "期間",
+      "periods": {
+        "thisMonth": "今月",
+        "lastMonth": "先月",
+        "last3Months": "過去3ヶ月",
+        "last6Months": "過去6ヶ月",
+        "thisYear": "今年"
+      },
+      "totalOvertime": "総残業時間",
+      "overtimeWarning": "残業警告",
+      "leaveBalance": "休暇残日数",
+      "workLifeBalance": "ワークライフバランス",
+      "department": "部門",
+      "trend": "推移",
+      "alerts": "アラート",
+      "noAlerts": "アラートはありません",
+      "excessiveOvertime": "過度な残業",
+      "lowLeaveUsage": "有給消化率低下",
+      "frequentLate": "遅刻頻発"
+    },
+    "orgChart": {
+      "title": "組織図",
+      "subtitle": "インタラクティブな組織構造の可視化",
+      "viewMode": "表示モード",
+      "tree": "ツリー",
+      "flat": "フラット",
+      "zoomIn": "拡大",
+      "zoomOut": "縮小",
+      "resetZoom": "リセット",
+      "members": "メンバー",
+      "directReports": "直属の部下",
+      "headcount": "人数",
+      "expand": "展開",
+      "collapse": "折りたたむ",
+      "simulationMode": "シミュレーションモード",
+      "dragToReorganize": "ドラッグして組織変更をシミュレーション",
+      "saveChanges": "変更を保存",
+      "discardChanges": "変更を破棄"
+    },
+    "oneOnOne": {
+      "title": "1on1ミーティング",
+      "subtitle": "上司と部下の定期面談記録",
+      "newMeeting": "新規1on1",
+      "editMeeting": "1on1を編集",
+      "scheduledDate": "予定日",
+      "duration": "所要時間",
+      "participant": "参加者",
+      "manager": "マネージャー",
+      "subordinate": "メンバー",
+      "agenda": "議題",
+      "notes": "メモ",
+      "actionItems": "アクションアイテム",
+      "addActionItem": "アクション追加",
+      "completed": "完了",
+      "pending": "未完了",
+      "status": "ステータス",
+      "statuses": {
+        "scheduled": "予定",
+        "in_progress": "実施中",
+        "completed": "完了",
+        "cancelled": "キャンセル"
+      },
+      "frequency": "頻度",
+      "frequencies": {
+        "weekly": "毎週",
+        "biweekly": "隔週",
+        "monthly": "月1回"
+      },
+      "mood": "コンディション",
+      "moods": {
+        "great": "とても良い",
+        "good": "良い",
+        "neutral": "普通",
+        "concerned": "やや心配",
+        "struggling": "困難"
+      },
+      "totalMeetings": "ミーティング数",
+      "completionRate": "完了率",
+      "openActions": "未完了アクション",
+      "nextMeeting": "次回予定",
+      "talkingPoints": "トーキングポイント",
+      "privateNotes": "プライベートメモ"
+    },
+    "skillMap": {
+      "title": "スキルマップ",
+      "subtitle": "社員のスキルとコンピテンシーの可視化",
+      "skillName": "スキル名",
+      "level": "レベル",
+      "levels": {
+        "beginner": "初級",
+        "intermediate": "中級",
+        "advanced": "上級",
+        "expert": "エキスパート"
+      },
+      "category": "カテゴリー",
+      "categories": {
+        "technical": "テクニカル",
+        "business": "ビジネス",
+        "leadership": "リーダーシップ",
+        "communication": "コミュニケーション",
+        "management": "マネジメント"
+      },
+      "addSkill": "スキル追加",
+      "editSkill": "スキル編集",
+      "radarChart": "レーダーチャート",
+      "gapAnalysis": "ギャップ分析",
+      "required": "必要レベル",
+      "current": "現在レベル",
+      "gap": "ギャップ",
+      "recommendedTraining": "推奨研修",
+      "departmentAverage": "部門平均",
+      "teamSkills": "チームスキル",
+      "topSkills": "上位スキル",
+      "skillGaps": "スキルギャップ",
+      "endorsements": "推薦数",
+      "lastUpdated": "最終更新"
+    },
+    "salary": {
+      "title": "給与シミュレーター",
+      "subtitle": "給与・報酬のシミュレーションと予算管理",
+      "currentSalary": "現在の年収",
+      "proposedSalary": "提案年収",
+      "increaseRate": "昇給率",
+      "increaseAmount": "昇給額",
+      "grade": "等級",
+      "position": "役職",
+      "department": "部門",
+      "simulation": "シミュレーション",
+      "simulate": "シミュレーション実行",
+      "budgetTotal": "人件費予算",
+      "budgetUsed": "使用済み",
+      "budgetRemaining": "残り予算",
+      "avgSalary": "平均年収",
+      "medianSalary": "中央値年収",
+      "minSalary": "最低年収",
+      "maxSalary": "最高年収",
+      "salaryRange": "給与レンジ",
+      "distribution": "分布",
+      "comparison": "比較",
+      "history": "履歴",
+      "effective_date": "適用日",
+      "reason": "理由",
+      "reasons": {
+        "annual": "定期昇給",
+        "promotion": "昇進",
+        "performance": "業績連動",
+        "market": "市場調整",
+        "other": "その他"
+      },
+      "totalBudget": "総予算",
+      "departmentBudget": "部門別予算",
+      "forecast": "予測"
+    },
+    "onboarding": {
+      "title": "オンボーディング",
+      "subtitle": "新入社員の受入れチェックリスト管理",
+      "newChecklist": "チェックリスト作成",
+      "editChecklist": "チェックリスト編集",
+      "template": "テンプレート",
+      "templates": "テンプレート一覧",
+      "addTemplate": "テンプレート追加",
+      "employee": "対象社員",
+      "startDate": "入社日",
+      "mentor": "メンター",
+      "progress": "進捗",
+      "dueDate": "期限",
+      "task": "タスク",
+      "tasks": "タスク一覧",
+      "addTask": "タスク追加",
+      "categories": {
+        "documents": "書類提出",
+        "account": "アカウント発行",
+        "training": "研修受講",
+        "equipment": "備品準備",
+        "introductions": "紹介・挨拶",
+        "other": "その他"
+      },
+      "statuses": {
+        "not_started": "未着手",
+        "in_progress": "進行中",
+        "completed": "完了",
+        "overdue": "期限超過"
+      },
+      "totalTasks": "総タスク数",
+      "completedTasks": "完了タスク",
+      "overdueTasks": "期限超過タスク",
+      "activeOnboardings": "進行中のオンボーディング",
+      "timeline": "タイムライン",
+      "assignee": "担当者",
+      "day": "日目"
+    },
+    "offboarding": {
+      "title": "退職管理",
+      "subtitle": "退職手続きと離職分析",
+      "newOffboarding": "退職手続き開始",
+      "employee": "退職者",
+      "lastDay": "最終出社日",
+      "resignationDate": "退職届提出日",
+      "exitInterview": "退職面談",
+      "reason": "退職理由",
+      "reasons": {
+        "personal": "一身上の都合",
+        "career": "キャリアアップ",
+        "compensation": "待遇面",
+        "worklife": "ワークライフバランス",
+        "relocation": "転居",
+        "health": "健康上の理由",
+        "management": "マネジメント",
+        "culture": "社風",
+        "other": "その他"
+      },
+      "handover": "引き継ぎ",
+      "handoverTasks": "引き継ぎタスク",
+      "addHandoverTask": "引き継ぎタスク追加",
+      "successor": "後任者",
+      "checklist": "退職チェックリスト",
+      "checklistItems": {
+        "exitInterview": "退職面談実施",
+        "equipmentReturn": "備品返却",
+        "accessRevoke": "アクセス権限削除",
+        "knowledgeTransfer": "ナレッジ移管",
+        "farewell": "送別会",
+        "certificate": "離職票発行",
+        "insurance": "社会保険手続き"
+      },
+      "turnoverRate": "離職率",
+      "avgTenure": "平均在籍期間",
+      "monthlyTurnover": "月別離職数",
+      "reasonAnalysis": "退職理由分析",
+      "departmentAnalysis": "部門別分析",
+      "retentionRisk": "離職リスク",
+      "statuses": {
+        "pending": "手続き中",
+        "in_progress": "進行中",
+        "completed": "完了"
+      }
+    },
+    "survey": {
+      "title": "従業員サーベイ",
+      "subtitle": "エンゲージメント調査とパルスサーベイ",
+      "newSurvey": "サーベイ作成",
+      "editSurvey": "サーベイ編集",
+      "surveyName": "サーベイ名",
+      "description": "説明",
+      "startDate": "開始日",
+      "endDate": "終了日",
+      "anonymous": "匿名",
+      "status": "ステータス",
+      "statuses": {
+        "draft": "下書き",
+        "active": "実施中",
+        "closed": "終了",
+        "archived": "アーカイブ"
+      },
+      "types": {
+        "engagement": "エンゲージメント",
+        "pulse": "パルス",
+        "satisfaction": "満足度",
+        "360feedback": "360度フィードバック",
+        "onboarding": "入社後",
+        "exit": "退職時"
+      },
+      "questions": "質問",
+      "addQuestion": "質問追加",
+      "questionTypes": {
+        "rating": "評点 (1-5)",
+        "text": "自由記述",
+        "choice": "選択式",
+        "nps": "NPS"
+      },
+      "responses": "回答数",
+      "responseRate": "回答率",
+      "enps": "eNPS",
+      "avgScore": "平均スコア",
+      "trend": "推移",
+      "results": "結果",
+      "viewResults": "結果を見る",
+      "publish": "公開",
+      "close": "終了する",
+      "totalSurveys": "総サーベイ数",
+      "activeSurveys": "実施中",
+      "categories": {
+        "work_environment": "職場環境",
+        "management": "マネジメント",
+        "growth": "成長・キャリア",
+        "compensation": "報酬・福利厚生",
+        "teamwork": "チームワーク",
+        "communication": "コミュニケーション"
+      }
+    },
+    "nav": {
+      "dashboard": "ダッシュボード",
+      "employees": "社員一覧",
+      "departments": "部門管理",
+      "evaluations": "人事評価",
+      "goals": "目標管理",
+      "training": "研修管理",
+      "recruitment": "採用管理",
+      "documents": "書類管理",
+      "announcements": "お知らせ",
+      "attendanceIntegration": "勤怠連携",
+      "orgChart": "組織図",
+      "oneOnOne": "1on1",
+      "skillMap": "スキルマップ",
+      "salary": "給与シミュレーター",
+      "onboarding": "オンボーディング",
+      "offboarding": "退職管理",
+      "survey": "サーベイ"
     }
   }
 }

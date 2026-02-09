@@ -83,7 +83,7 @@ export function ApprovalFlowsPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <GitBranch className="h-6 w-6" />
@@ -91,7 +91,7 @@ export function ApprovalFlowsPage() {
         </h1>
         <button
           onClick={() => { setShowForm(!showForm); setEditingId(null); }}
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+          className="flex items-center gap-2 px-4 py-2 gradient-primary text-white rounded-xl hover:shadow-glow-md transition-all"
         >
           <Plus className="h-4 w-4" />
           {t('approvalFlows.create')}
@@ -100,18 +100,18 @@ export function ApprovalFlowsPage() {
 
       {/* 作成フォーム */}
       {showForm && (
-        <div className="bg-card border border-border rounded-lg p-6">
+        <div className="glass-card rounded-2xl p-6">
           <h2 className="text-lg font-semibold mb-4">{t('approvalFlows.create')}</h2>
           <form onSubmit={handleSubmit((data) => createMutation.mutate(data))} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-1">{t('approvalFlows.name')}</label>
-                <input type="text" {...register('name')} placeholder={t('approvalFlows.placeholder')} className="w-full px-3 py-2 border border-input rounded-md bg-background" />
-                {errors.name && <p className="text-sm text-destructive mt-1">{errors.name.message}</p>}
+                <input type="text" {...register('name')} placeholder={t('approvalFlows.placeholder')} className="w-full px-3 py-2 glass-input rounded-xl" />
+                {errors.name && <p className="text-sm text-red-400 mt-1">{errors.name.message}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">{t('approvalFlows.flowType')}</label>
-                <select {...register('flow_type')} className="w-full px-3 py-2 border border-input rounded-md bg-background">
+                <select {...register('flow_type')} className="w-full px-3 py-2 glass-input rounded-xl">
                   <option value="leave">{t('approvalFlows.flowTypes.leave')}</option>
                   <option value="overtime">{t('approvalFlows.flowTypes.overtime')}</option>
                   <option value="correction">{t('approvalFlows.flowTypes.correction')}</option>
@@ -132,12 +132,12 @@ export function ApprovalFlowsPage() {
               </div>
               <div className="space-y-3">
                 {fields.map((field, index) => (
-                  <div key={field.id} className="flex items-center gap-3 p-3 border border-border rounded-md">
+                  <div key={field.id} className="flex items-center gap-3 p-3 glass-subtle rounded-xl">
                     <span className="text-sm font-bold text-muted-foreground w-8">#{index + 1}</span>
                     <input type="hidden" {...register(`steps.${index}.step_order`)} value={index + 1} />
                     <select
                       {...register(`steps.${index}.step_type`)}
-                      className="px-3 py-2 border border-input rounded-md bg-background text-sm"
+                      className="px-3 py-2 glass-input rounded-xl text-sm"
                     >
                       <option value="role">{t('approvalFlows.stepTypes.role')}</option>
                       <option value="specific_user">{t('approvalFlows.stepTypes.specificUser')}</option>
@@ -146,7 +146,7 @@ export function ApprovalFlowsPage() {
                       type="text"
                       {...register(`steps.${index}.approver_role`)}
                       placeholder="manager / admin"
-                      className="flex-1 px-3 py-2 border border-input rounded-md bg-background text-sm"
+                      className="flex-1 px-3 py-2 glass-input rounded-xl text-sm"
                     />
                     {fields.length > 1 && (
                       <button type="button" onClick={() => remove(index)} className="p-1 text-destructive hover:bg-destructive/10 rounded">
@@ -159,10 +159,10 @@ export function ApprovalFlowsPage() {
             </div>
 
             <div className="flex gap-2">
-              <button type="submit" className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90">
+              <button type="submit" className="px-4 py-2 gradient-primary text-white rounded-xl hover:shadow-glow-md transition-all">
                 {t('common.create')}
               </button>
-              <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 border border-input rounded-md hover:bg-accent">
+              <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 glass-input rounded-xl hover:bg-white/10 transition-all">
                 {t('common.cancel')}
               </button>
             </div>
@@ -173,7 +173,7 @@ export function ApprovalFlowsPage() {
       {/* フロー一覧 */}
       <div className="space-y-4">
         {(flows as Record<string, unknown>[] | undefined)?.map((flow: Record<string, unknown>) => (
-          <div key={flow.id as string} className="bg-card border border-border rounded-lg p-6">
+          <div key={flow.id as string} className="glass-card rounded-2xl p-6">
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h3 className="font-semibold text-lg">{flow.name as string}</h3>
@@ -192,7 +192,7 @@ export function ApprovalFlowsPage() {
                     id: flow.id as string,
                     data: { is_active: !flow.is_active },
                   })}
-                  className="px-3 py-1 border border-input rounded text-sm hover:bg-accent"
+                  className="px-3 py-1 border border-input rounded text-sm hover:bg-white/10"
                 >
                   {flow.is_active ? t('approvalFlows.disable') : t('approvalFlows.enable')}
                 </button>
