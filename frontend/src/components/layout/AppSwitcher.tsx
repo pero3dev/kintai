@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate, useLocation } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { getActiveApp, getAvailableApps, AppDefinition } from '@/config/apps';
@@ -19,21 +20,51 @@ export function AppSwitcher({ collapsed = false }: AppSwitcherProps) {
   const location = useLocation();
   const { user } = useAuthStore();
   const [isOpen, setIsOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0 });
 
   const activeApp = getActiveApp(location.pathname);
   const availableApps = getAvailableApps(user?.role);
 
+  // ドロップダウンの位置を計算
+  const updatePosition = useCallback(() => {
+    if (!triggerRef.current) return;
+    const rect = triggerRef.current.getBoundingClientRect();
+    if (collapsed) {
+      // サイドバー折り畳み時: ボタンの右側に表示
+      setDropdownPos({ top: rect.top, left: rect.right + 8 });
+    } else {
+      // 通常時: ボタンの下に表示
+      setDropdownPos({ top: rect.bottom + 8, left: rect.left });
+    }
+  }, [collapsed]);
+
   // 外側クリックで閉じる
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current && !dropdownRef.current.contains(event.target as Node) &&
+        triggerRef.current && !triggerRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // 開いたとき位置を更新 + スクロール/リサイズ追従
+  useEffect(() => {
+    if (!isOpen) return;
+    updatePosition();
+    window.addEventListener('resize', updatePosition);
+    window.addEventListener('scroll', updatePosition, true);
+    return () => {
+      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener('scroll', updatePosition, true);
+    };
+  }, [isOpen, updatePosition]);
 
   const handleAppSelect = (app: AppDefinition) => {
     if (app.enabled && !app.comingSoon) {
@@ -43,9 +74,10 @@ export function AppSwitcher({ collapsed = false }: AppSwitcherProps) {
   };
 
   return (
-    <div ref={dropdownRef} className="relative">
+    <div className="relative">
       {/* トリガーボタン */}
       <button
+        ref={triggerRef}
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center gap-2 w-full rounded-xl transition-all duration-200 nav-item-hover ${
           collapsed ? 'justify-center p-2' : 'px-3 py-2'
@@ -71,11 +103,13 @@ export function AppSwitcher({ collapsed = false }: AppSwitcherProps) {
         )}
       </button>
 
-      {/* ドロップダウンメニュー */}
-      {isOpen && (
-        <div className={`absolute z-50 mt-2 glass rounded-2xl shadow-2xl overflow-hidden ${
-          collapsed ? 'left-full ml-2 top-0' : 'left-0 right-0'
-        }`} style={{ minWidth: '280px' }}>
+      {/* ドロップダウンメニュー（Portal で body 直下に描画） */}
+      {isOpen && createPortal(
+        <div
+          ref={dropdownRef}
+          className="fixed z-[9999] glass rounded-2xl shadow-2xl overflow-hidden animate-scale-in"
+          style={{ top: dropdownPos.top, left: dropdownPos.left, minWidth: '280px' }}
+        >
           {/* ヘッダー */}
           <div className="px-4 py-3 border-b border-white/5">
             <p className="font-semibold text-sm">{t('appSwitcher.title')}</p>
@@ -116,7 +150,8 @@ export function AppSwitcher({ collapsed = false }: AppSwitcherProps) {
               {t('appSwitcher.moreApps')}
             </p>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
