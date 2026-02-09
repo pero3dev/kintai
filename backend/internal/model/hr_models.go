@@ -87,19 +87,19 @@ type EvaluationCycle struct {
 
 type Evaluation struct {
 	BaseModel
-	EmployeeID  uuid.UUID        `gorm:"type:uuid;not null;index" json:"employee_id"`
-	CycleID     uuid.UUID        `gorm:"type:uuid;not null;index" json:"cycle_id"`
-	ReviewerID  *uuid.UUID       `gorm:"type:uuid" json:"reviewer_id"`
-	Status      EvaluationStatus `gorm:"size:20;not null;default:'draft'" json:"status"`
-	SelfScore   *float64         `json:"self_score"`
-	ManagerScore *float64        `json:"manager_score"`
-	FinalScore  *float64         `json:"final_score"`
-	SelfComment string           `gorm:"type:text" json:"self_comment"`
-	ManagerComment string        `gorm:"type:text" json:"manager_comment"`
-	Goals       string           `gorm:"type:text" json:"goals"`
+	EmployeeID     uuid.UUID        `gorm:"type:uuid;not null;index" json:"employee_id"`
+	CycleID        uuid.UUID        `gorm:"type:uuid;not null;index" json:"cycle_id"`
+	ReviewerID     *uuid.UUID       `gorm:"type:uuid" json:"reviewer_id"`
+	Status         EvaluationStatus `gorm:"size:20;not null;default:'draft'" json:"status"`
+	SelfScore      *float64         `json:"self_score"`
+	ManagerScore   *float64         `json:"manager_score"`
+	FinalScore     *float64         `json:"final_score"`
+	SelfComment    string           `gorm:"type:text" json:"self_comment"`
+	ManagerComment string           `gorm:"type:text" json:"manager_comment"`
+	Goals          string           `gorm:"type:text" json:"goals"`
 
 	Employee *HREmployee      `gorm:"foreignKey:EmployeeID" json:"employee,omitempty"`
-	Cycle    *EvaluationCycle  `gorm:"foreignKey:CycleID" json:"cycle,omitempty"`
+	Cycle    *EvaluationCycle `gorm:"foreignKey:CycleID" json:"cycle,omitempty"`
 	Reviewer *HREmployee      `gorm:"foreignKey:ReviewerID" json:"reviewer,omitempty"`
 }
 
@@ -150,16 +150,16 @@ const (
 
 type TrainingProgram struct {
 	BaseModel
-	Title          string         `gorm:"size:200;not null" json:"title"`
-	Description    string         `gorm:"type:text" json:"description"`
-	Category       string         `gorm:"size:50" json:"category"`
-	InstructorName string         `gorm:"size:100" json:"instructor_name"`
-	Status         TrainingStatus `gorm:"size:20;not null;default:'scheduled'" json:"status"`
-	StartDate      *time.Time     `gorm:"type:date" json:"start_date"`
-	EndDate        *time.Time     `gorm:"type:date" json:"end_date"`
-	MaxParticipants int           `gorm:"default:0" json:"max_participants"`
-	Location       string         `gorm:"size:200" json:"location"`
-	IsOnline       bool           `gorm:"default:false" json:"is_online"`
+	Title           string         `gorm:"size:200;not null" json:"title"`
+	Description     string         `gorm:"type:text" json:"description"`
+	Category        string         `gorm:"size:50" json:"category"`
+	InstructorName  string         `gorm:"size:100" json:"instructor_name"`
+	Status          TrainingStatus `gorm:"size:20;not null;default:'scheduled'" json:"status"`
+	StartDate       *time.Time     `gorm:"type:date" json:"start_date"`
+	EndDate         *time.Time     `gorm:"type:date" json:"end_date"`
+	MaxParticipants int            `gorm:"default:0" json:"max_participants"`
+	Location        string         `gorm:"size:200" json:"location"`
+	IsOnline        bool           `gorm:"default:false" json:"is_online"`
 
 	Enrollments []TrainingEnrollment `gorm:"foreignKey:ProgramID" json:"enrollments,omitempty"`
 }
@@ -258,13 +258,13 @@ const (
 
 type HRAnnouncement struct {
 	BaseModel
-	Title     string               `gorm:"size:200;not null" json:"title"`
-	Content   string               `gorm:"type:text;not null" json:"content"`
-	Priority  AnnouncementPriority `gorm:"size:20;not null;default:'normal'" json:"priority"`
-	AuthorID  uuid.UUID            `gorm:"type:uuid;not null" json:"author_id"`
-	IsPublished bool               `gorm:"default:false" json:"is_published"`
-	PublishedAt *time.Time         `json:"published_at"`
-	ExpiresAt  *time.Time          `json:"expires_at"`
+	Title       string               `gorm:"size:200;not null" json:"title"`
+	Content     string               `gorm:"type:text;not null" json:"content"`
+	Priority    AnnouncementPriority `gorm:"size:20;not null;default:'normal'" json:"priority"`
+	AuthorID    uuid.UUID            `gorm:"type:uuid;not null" json:"author_id"`
+	IsPublished bool                 `gorm:"default:false" json:"is_published"`
+	PublishedAt *time.Time           `json:"published_at"`
+	ExpiresAt   *time.Time           `json:"expires_at"`
 
 	Author *HREmployee `gorm:"foreignKey:AuthorID" json:"author,omitempty"`
 }
@@ -273,14 +273,14 @@ type HRAnnouncement struct {
 
 type OneOnOneMeeting struct {
 	BaseModel
-	ManagerID     uuid.UUID  `gorm:"type:uuid;not null;index" json:"manager_id"`
-	EmployeeID    uuid.UUID  `gorm:"type:uuid;not null;index" json:"employee_id"`
-	ScheduledDate time.Time  `gorm:"not null" json:"scheduled_date"`
-	Status        string     `gorm:"size:20;not null;default:'scheduled'" json:"status"`
-	Frequency     string     `gorm:"size:20;not null;default:'biweekly'" json:"frequency"`
-	Agenda        string     `gorm:"type:text" json:"agenda"`
-	Notes         string     `gorm:"type:text" json:"notes"`
-	Mood          string     `gorm:"size:20" json:"mood"`
+	ManagerID     uuid.UUID      `gorm:"type:uuid;not null;index" json:"manager_id"`
+	EmployeeID    uuid.UUID      `gorm:"type:uuid;not null;index" json:"employee_id"`
+	ScheduledDate time.Time      `gorm:"not null" json:"scheduled_date"`
+	Status        string         `gorm:"size:20;not null;default:'scheduled'" json:"status"`
+	Frequency     string         `gorm:"size:20;not null;default:'biweekly'" json:"frequency"`
+	Agenda        string         `gorm:"type:text" json:"agenda"`
+	Notes         string         `gorm:"type:text" json:"notes"`
+	Mood          string         `gorm:"size:20" json:"mood"`
 	ActionItems   datatypes.JSON `gorm:"type:jsonb" json:"action_items"`
 
 	Manager  *HREmployee `gorm:"foreignKey:ManagerID" json:"manager,omitempty"`
@@ -303,13 +303,13 @@ type EmployeeSkill struct {
 
 type SalaryRecord struct {
 	BaseModel
-	EmployeeID  uuid.UUID `gorm:"type:uuid;not null;index" json:"employee_id"`
-	BaseSalary  float64   `gorm:"not null" json:"base_salary"`
-	Allowances  float64   `gorm:"default:0" json:"allowances"`
-	Deductions  float64   `gorm:"default:0" json:"deductions"`
-	NetSalary   float64   `gorm:"not null" json:"net_salary"`
+	EmployeeID    uuid.UUID `gorm:"type:uuid;not null;index" json:"employee_id"`
+	BaseSalary    float64   `gorm:"not null" json:"base_salary"`
+	Allowances    float64   `gorm:"default:0" json:"allowances"`
+	Deductions    float64   `gorm:"default:0" json:"deductions"`
+	NetSalary     float64   `gorm:"not null" json:"net_salary"`
 	EffectiveDate time.Time `gorm:"type:date;not null" json:"effective_date"`
-	Reason      string    `gorm:"size:200" json:"reason"`
+	Reason        string    `gorm:"size:200" json:"reason"`
 
 	Employee *HREmployee `gorm:"foreignKey:EmployeeID" json:"employee,omitempty"`
 }

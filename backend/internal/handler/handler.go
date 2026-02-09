@@ -32,32 +32,32 @@ type Handlers struct {
 	ApprovalFlow         *ApprovalFlowHandler
 	Export               *ExportHandler
 	// HR
-	HREmployee               *HREmployeeHandler
-	HRDepartment             *HRDepartmentHandler
-	Evaluation               *EvaluationHandler
-	Goal                     *GoalHandler
-	Training                 *TrainingHandler
-	Recruitment              *RecruitmentHandler
-	Document                 *DocumentHandler
-	Announcement             *AnnouncementHandler
-	HRDashboard              *HRDashboardHandler
-	AttendanceIntegration    *AttendanceIntegrationHandler
-	OrgChart                 *OrgChartHandler
-	OneOnOne                 *OneOnOneHandler
-	Skill                    *SkillHandler
-	Salary                   *SalaryHandler
-	Onboarding               *OnboardingHandler
-	Offboarding              *OffboardingHandler
-	Survey                   *SurveyHandler
+	HREmployee            *HREmployeeHandler
+	HRDepartment          *HRDepartmentHandler
+	Evaluation            *EvaluationHandler
+	Goal                  *GoalHandler
+	Training              *TrainingHandler
+	Recruitment           *RecruitmentHandler
+	Document              *DocumentHandler
+	Announcement          *AnnouncementHandler
+	HRDashboard           *HRDashboardHandler
+	AttendanceIntegration *AttendanceIntegrationHandler
+	OrgChart              *OrgChartHandler
+	OneOnOne              *OneOnOneHandler
+	Skill                 *SkillHandler
+	Salary                *SalaryHandler
+	Onboarding            *OnboardingHandler
+	Offboarding           *OffboardingHandler
+	Survey                *SurveyHandler
 	// Expense
-	Expense              *ExpenseHandler
-	ExpenseComment       *ExpenseCommentHandler
-	ExpenseHistory       *ExpenseHistoryHandler
-	ExpenseReceipt       *ExpenseReceiptHandler
-	ExpenseTemplate      *ExpenseTemplateHandler
-	ExpensePolicy        *ExpensePolicyHandler
-	ExpenseNotification  *ExpenseNotificationHandler
-	ExpenseApprovalFlow  *ExpenseApprovalFlowHandler
+	Expense             *ExpenseHandler
+	ExpenseComment      *ExpenseCommentHandler
+	ExpenseHistory      *ExpenseHistoryHandler
+	ExpenseReceipt      *ExpenseReceiptHandler
+	ExpenseTemplate     *ExpenseTemplateHandler
+	ExpensePolicy       *ExpensePolicyHandler
+	ExpenseNotification *ExpenseNotificationHandler
+	ExpenseApprovalFlow *ExpenseApprovalFlowHandler
 }
 
 // NewHandlers は全ハンドラーを初期化する

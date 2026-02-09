@@ -89,12 +89,12 @@ type ExpenseComment struct {
 // ExpenseHistory は経費変更履歴モデル
 type ExpenseHistory struct {
 	BaseModel
-	ExpenseID  uuid.UUID `gorm:"type:uuid;not null;index" json:"expense_id"`
-	UserID     uuid.UUID `gorm:"type:uuid;not null" json:"user_id"`
-	Action     string    `gorm:"size:100;not null" json:"action"`
-	OldValue   string    `gorm:"size:2000" json:"old_value"`
-	NewValue   string    `gorm:"size:2000" json:"new_value"`
-	ChangedBy  string    `gorm:"size:200" json:"changed_by"`
+	ExpenseID uuid.UUID `gorm:"type:uuid;not null;index" json:"expense_id"`
+	UserID    uuid.UUID `gorm:"type:uuid;not null" json:"user_id"`
+	Action    string    `gorm:"size:100;not null" json:"action"`
+	OldValue  string    `gorm:"size:2000" json:"old_value"`
+	NewValue  string    `gorm:"size:2000" json:"new_value"`
+	ChangedBy string    `gorm:"size:200" json:"changed_by"`
 
 	Expense *Expense `gorm:"foreignKey:ExpenseID" json:"-"`
 	User    *User    `gorm:"foreignKey:UserID" json:"user,omitempty"`
@@ -122,13 +122,13 @@ type ExpenseTemplate struct {
 // ExpensePolicy は経費ポリシーモデル
 type ExpensePolicy struct {
 	BaseModel
-	Category            ExpenseCategory `gorm:"size:30;not null" json:"category"`
-	MonthlyLimit        float64         `gorm:"default:0" json:"monthly_limit"`
-	PerClaimLimit       float64         `gorm:"default:0" json:"per_claim_limit"`
-	AutoApproveLimit    float64         `gorm:"default:0" json:"auto_approve_limit"`
-	RequiresReceiptAbove float64        `gorm:"default:0" json:"requires_receipt_above"`
-	Description         string          `gorm:"size:500" json:"description"`
-	IsActive            bool            `gorm:"default:true" json:"is_active"`
+	Category             ExpenseCategory `gorm:"size:30;not null" json:"category"`
+	MonthlyLimit         float64         `gorm:"default:0" json:"monthly_limit"`
+	PerClaimLimit        float64         `gorm:"default:0" json:"per_claim_limit"`
+	AutoApproveLimit     float64         `gorm:"default:0" json:"auto_approve_limit"`
+	RequiresReceiptAbove float64         `gorm:"default:0" json:"requires_receipt_above"`
+	Description          string          `gorm:"size:500" json:"description"`
+	IsActive             bool            `gorm:"default:true" json:"is_active"`
 }
 
 // ===== 経費予算 =====
@@ -178,13 +178,13 @@ type ExpenseReminder struct {
 // ExpenseNotificationSetting は経費通知設定モデル
 type ExpenseNotificationSetting struct {
 	BaseModel
-	UserID            uuid.UUID `gorm:"type:uuid;not null;uniqueIndex" json:"user_id"`
-	EmailEnabled      bool      `gorm:"default:true" json:"email_enabled"`
-	PushEnabled       bool      `gorm:"default:true" json:"push_enabled"`
-	ApprovalAlerts    bool      `gorm:"default:true" json:"approval_alerts"`
-	ReimbursementAlerts bool    `gorm:"default:true" json:"reimbursement_alerts"`
-	PolicyAlerts      bool      `gorm:"default:true" json:"policy_alerts"`
-	WeeklyDigest      bool      `gorm:"default:false" json:"weekly_digest"`
+	UserID              uuid.UUID `gorm:"type:uuid;not null;uniqueIndex" json:"user_id"`
+	EmailEnabled        bool      `gorm:"default:true" json:"email_enabled"`
+	PushEnabled         bool      `gorm:"default:true" json:"push_enabled"`
+	ApprovalAlerts      bool      `gorm:"default:true" json:"approval_alerts"`
+	ReimbursementAlerts bool      `gorm:"default:true" json:"reimbursement_alerts"`
+	PolicyAlerts        bool      `gorm:"default:true" json:"policy_alerts"`
+	WeeklyDigest        bool      `gorm:"default:false" json:"weekly_digest"`
 
 	User *User `gorm:"foreignKey:UserID" json:"user,omitempty"`
 }
@@ -194,11 +194,11 @@ type ExpenseNotificationSetting struct {
 // ExpenseApprovalFlow は経費承認フロー設定モデル
 type ExpenseApprovalFlow struct {
 	BaseModel
-	Name            string `gorm:"size:200;not null" json:"name"`
-	MinAmount       float64 `gorm:"default:0" json:"min_amount"`
-	MaxAmount       float64 `gorm:"default:0" json:"max_amount"`
-	RequiredSteps   int     `gorm:"default:1" json:"required_steps"`
-	IsActive        bool    `gorm:"default:true" json:"is_active"`
+	Name             string  `gorm:"size:200;not null" json:"name"`
+	MinAmount        float64 `gorm:"default:0" json:"min_amount"`
+	MaxAmount        float64 `gorm:"default:0" json:"max_amount"`
+	RequiredSteps    int     `gorm:"default:1" json:"required_steps"`
+	IsActive         bool    `gorm:"default:true" json:"is_active"`
 	AutoApproveBelow float64 `gorm:"default:0" json:"auto_approve_below"`
 }
 
@@ -228,9 +228,9 @@ type ExpensePolicyViolation struct {
 	Reason    string    `gorm:"size:500;not null" json:"reason"`
 	Severity  string    `gorm:"size:20;not null;default:'warning'" json:"severity"`
 
-	Expense *Expense        `gorm:"foreignKey:ExpenseID" json:"expense,omitempty"`
-	Policy  *ExpensePolicy  `gorm:"foreignKey:PolicyID" json:"policy,omitempty"`
-	User    *User           `gorm:"foreignKey:UserID" json:"user,omitempty"`
+	Expense *Expense       `gorm:"foreignKey:ExpenseID" json:"expense,omitempty"`
+	Policy  *ExpensePolicy `gorm:"foreignKey:PolicyID" json:"policy,omitempty"`
+	User    *User          `gorm:"foreignKey:UserID" json:"user,omitempty"`
 }
 
 // ExpenseAutoMigrate は経費関連テーブルのマイグレーションを実行する

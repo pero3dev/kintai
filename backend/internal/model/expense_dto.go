@@ -60,10 +60,10 @@ type ExpenseStatsResponse struct {
 
 // ExpenseReportResponse は経費レポートレスポンス
 type ExpenseReportResponse struct {
-	TotalAmount         float64                    `json:"total_amount"`
-	CategoryBreakdown   []CategoryBreakdownItem    `json:"category_breakdown"`
-	DepartmentBreakdown []DepartmentBreakdownItem  `json:"department_breakdown"`
-	StatusSummary       ExpenseStatusSummary       `json:"status_summary"`
+	TotalAmount         float64                   `json:"total_amount"`
+	CategoryBreakdown   []CategoryBreakdownItem   `json:"category_breakdown"`
+	DepartmentBreakdown []DepartmentBreakdownItem `json:"department_breakdown"`
+	StatusSummary       ExpenseStatusSummary      `json:"status_summary"`
 }
 
 // CategoryBreakdownItem はカテゴリ内訳

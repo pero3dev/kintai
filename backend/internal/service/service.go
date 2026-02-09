@@ -56,32 +56,32 @@ type Services struct {
 	ApprovalFlow         ApprovalFlowService
 	Export               ExportService
 	// HR
-	HREmployee               HREmployeeService
-	HRDepartment             HRDepartmentService
-	Evaluation               EvaluationService
-	Goal                     GoalService
-	Training                 TrainingService
-	Recruitment              RecruitmentService
-	Document                 DocumentService
-	Announcement             AnnouncementService
-	HRDashboard              HRDashboardService
-	AttendanceIntegration    AttendanceIntegrationService
-	OrgChart                 OrgChartService
-	OneOnOne                 OneOnOneService
-	Skill                    SkillService
-	Salary                   SalaryService
-	Onboarding               OnboardingService
-	Offboarding              OffboardingService
-	Survey                   SurveyService
+	HREmployee            HREmployeeService
+	HRDepartment          HRDepartmentService
+	Evaluation            EvaluationService
+	Goal                  GoalService
+	Training              TrainingService
+	Recruitment           RecruitmentService
+	Document              DocumentService
+	Announcement          AnnouncementService
+	HRDashboard           HRDashboardService
+	AttendanceIntegration AttendanceIntegrationService
+	OrgChart              OrgChartService
+	OneOnOne              OneOnOneService
+	Skill                 SkillService
+	Salary                SalaryService
+	Onboarding            OnboardingService
+	Offboarding           OffboardingService
+	Survey                SurveyService
 	// Expense
-	Expense              ExpenseService
-	ExpenseComment       ExpenseCommentService
-	ExpenseHistory       ExpenseHistoryService
-	ExpenseReceipt       ExpenseReceiptService
-	ExpenseTemplate      ExpenseTemplateService
-	ExpensePolicy        ExpensePolicyService
-	ExpenseNotification  ExpenseNotificationService
-	ExpenseApprovalFlow  ExpenseApprovalFlowService
+	Expense             ExpenseService
+	ExpenseComment      ExpenseCommentService
+	ExpenseHistory      ExpenseHistoryService
+	ExpenseReceipt      ExpenseReceiptService
+	ExpenseTemplate     ExpenseTemplateService
+	ExpensePolicy       ExpensePolicyService
+	ExpenseNotification ExpenseNotificationService
+	ExpenseApprovalFlow ExpenseApprovalFlowService
 }
 
 // NewServices は全サービスを初期化する

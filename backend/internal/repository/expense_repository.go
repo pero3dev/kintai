@@ -83,10 +83,10 @@ func (r *expenseRepository) FindAll(ctx context.Context, page, pageSize int, sta
 	}
 	q.Count(&total)
 	err := r.db.WithContext(ctx).Preload("Items").Preload("User").
-		Order("created_at DESC").Offset((page-1)*pageSize).Limit(pageSize).Find(&expenses).Error
+		Order("created_at DESC").Offset((page - 1) * pageSize).Limit(pageSize).Find(&expenses).Error
 	if status != "" {
 		err = r.db.WithContext(ctx).Preload("Items").Preload("User").Where("status = ?", status).
-			Order("created_at DESC").Offset((page-1)*pageSize).Limit(pageSize).Find(&expenses).Error
+			Order("created_at DESC").Offset((page - 1) * pageSize).Limit(pageSize).Find(&expenses).Error
 	}
 	return expenses, total, err
 }
@@ -519,11 +519,11 @@ func (r *expenseApprovalFlowRepository) FindActive(ctx context.Context) (*model.
 	err := r.db.WithContext(ctx).Where("is_active = true").First(&flow).Error
 	if err == gorm.ErrRecordNotFound {
 		return &model.ExpenseApprovalFlow{
-			Name:            "デフォルト承認フロー",
-			MinAmount:       0,
-			MaxAmount:       0,
-			RequiredSteps:   1,
-			IsActive:        true,
+			Name:             "デフォルト承認フロー",
+			MinAmount:        0,
+			MaxAmount:        0,
+			RequiredSteps:    1,
+			IsActive:         true,
 			AutoApproveBelow: 1000,
 		}, nil
 	}

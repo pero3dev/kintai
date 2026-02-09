@@ -196,7 +196,7 @@ type OneOnOneCreateRequest struct {
 }
 
 type OneOnOneUpdateRequest struct {
-	Status string `json:"status"`
+	Status string  `json:"status"`
 	Agenda *string `json:"agenda"`
 	Notes  *string `json:"notes"`
 	Mood   *string `json:"mood"`
@@ -222,10 +222,10 @@ type SkillUpdateRequest struct {
 // ===== 給与 =====
 
 type SalarySimulateRequest struct {
-	Grade           string  `json:"grade"`
-	Position        string  `json:"position"`
-	EvaluationScore string  `json:"evaluation_score"`
-	YearsOfService  string  `json:"years_of_service"`
+	Grade           string `json:"grade"`
+	Position        string `json:"position"`
+	EvaluationScore string `json:"evaluation_score"`
+	YearsOfService  string `json:"years_of_service"`
 }
 
 // ===== オンボーディング =====

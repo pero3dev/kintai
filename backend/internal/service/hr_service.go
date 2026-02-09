@@ -1113,12 +1113,12 @@ func (s *salaryService) GetBudget(ctx context.Context, department string) (map[s
 	totalPayroll, _ := overview["total_payroll"].(float64)
 	headcount, _ := overview["headcount"].(int64)
 	return map[string]interface{}{
-		"total_budget":    totalPayroll * 12 * 1.3,
-		"used_budget":     totalPayroll * 12,
-		"remaining":       totalPayroll * 12 * 0.3,
-		"utilization":     76.9,
-		"headcount":       headcount,
-		"avg_cost":        totalPayroll / float64(max(headcount, 1)),
+		"total_budget": totalPayroll * 12 * 1.3,
+		"used_budget":  totalPayroll * 12,
+		"remaining":    totalPayroll * 12 * 0.3,
+		"utilization":  76.9,
+		"headcount":    headcount,
+		"avg_cost":     totalPayroll / float64(max(headcount, 1)),
 	}, nil
 }
 
