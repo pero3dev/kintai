@@ -64,6 +64,7 @@
     "collapse": "Collapse"
   },
   "nav": {
+    "home": "Home",
     "dashboard": "Dashboard",
     "attendance": "Attendance",
     "leaves": "Leave Requests",
@@ -77,6 +78,23 @@
     "holidays": "Calendar",
     "export": "Export",
     "approvalFlows": "Approval Flows"
+  },
+  "home": {
+    "greetingMorning": "Good morning",
+    "greetingAfternoon": "Good afternoon",
+    "greetingEvening": "Good evening",
+    "welcomeMessage": "What would you like to do today?",
+    "todayStatus": "Today's Status",
+    "notClockedIn": "You haven't clocked in yet.",
+    "notifications": "Notifications",
+    "unreadNotifications": "unread notifications",
+    "pendingApprovals": "Pending Approvals",
+    "awaitingReview": "awaiting review",
+    "viewAll": "View All",
+    "review": "Review",
+    "apps": "Applications",
+    "quickAccess": "Quick Access",
+    "recentNotifications": "Recent Notifications"
   },
   "auth": {
     "loginTitle": "Login",
@@ -329,6 +347,39 @@
     "validation": {
       "nameRequired": "Please enter a name",
       "stepsRequired": "At least one step is required"
+    }
+  },
+  "appSwitcher": {
+    "title": "Applications",
+    "subtitle": "Switch between apps",
+    "currentApp": "Current App",
+    "comingSoon": "Coming Soon",
+    "moreApps": "More apps coming soon..."
+  },
+  "apps": {
+    "attendance": {
+      "name": "Attendance",
+      "description": "Clock in/out, leave requests, overtime management"
+    },
+    "expenses": {
+      "name": "Expenses",
+      "description": "Expense reports and reimbursements"
+    },
+    "hr": {
+      "name": "HR Management",
+      "description": "Employee info, evaluations, goals"
+    },
+    "wiki": {
+      "name": "Wiki",
+      "description": "Knowledge base and documentation"
+    },
+    "tasks": {
+      "name": "Tasks",
+      "description": "Project and task management"
+    },
+    "booking": {
+      "name": "Booking",
+      "description": "Room and resource reservations"
     }
   }
 }

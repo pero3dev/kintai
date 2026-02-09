@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '@/stores/authStore';
 import { useThemeStore, applyTheme } from '@/stores/themeStore';
 import { useState, useEffect } from 'react';
+import { AppSwitcher } from './AppSwitcher';
 
 // Material Symbols icon component
 function MaterialIcon({ name, className = '' }: { name: string; className?: string }) {
@@ -57,7 +58,7 @@ export function Layout() {
   };
 
   const navItems = [
-    { to: '/' as const, icon: 'dashboard', label: t('nav.dashboard') },
+    { to: '/' as const, icon: 'home', label: t('nav.home') },
     { to: '/attendance' as const, icon: 'schedule', label: t('nav.attendance') },
     { to: '/leaves' as const, icon: 'event_available', label: t('nav.leaves') },
     { to: '/overtime' as const, icon: 'more_time', label: t('nav.overtime') },
@@ -68,6 +69,7 @@ export function Layout() {
     { to: '/notifications' as const, icon: 'notifications', label: t('nav.notifications') },
     ...(user?.role === 'admin' || user?.role === 'manager'
       ? [
+          { to: '/dashboard' as const, icon: 'dashboard', label: t('nav.dashboard') },
           { to: '/users' as const, icon: 'group', label: t('nav.users') },
           { to: '/export' as const, icon: 'download', label: t('nav.export') },
           { to: '/approval-flows' as const, icon: 'account_tree', label: t('nav.approvalFlows') },
@@ -95,6 +97,11 @@ export function Layout() {
               <p className="text-xs text-primary/70">{t('common.subtitle')}</p>
             </div>
           )}
+        </div>
+
+        {/* アプリスイッチャー */}
+        <div className={`${sidebarCollapsed ? 'px-2' : 'px-4'} mb-2`}>
+          <AppSwitcher collapsed={sidebarCollapsed} />
         </div>
 
         {/* 折り畳みトグルボタン */}

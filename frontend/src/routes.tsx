@@ -5,6 +5,7 @@ import {
 } from '@tanstack/react-router';
 import { Layout } from './components/layout/Layout';
 import { LoginPage } from './pages/LoginPage';
+import { HomeDashboardPage } from './pages/HomeDashboardPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { AttendancePage } from './pages/AttendancePage';
 import { LeavesPage } from './pages/LeavesPage';
@@ -37,10 +38,17 @@ const layoutRoute = createRoute({
   component: Layout,
 });
 
-// ダッシュボード
-const dashboardRoute = createRoute({
+// ホーム
+const homeRoute = createRoute({
   getParentRoute: () => layoutRoute,
   path: '/',
+  component: HomeDashboardPage,
+});
+
+// 管理者ダッシュボード
+const dashboardRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/dashboard',
   component: DashboardPage,
 });
 
@@ -125,6 +133,7 @@ const approvalFlowsRoute = createRoute({
 export const routeTree = rootRoute.addChildren([
   loginRoute,
   layoutRoute.addChildren([
+    homeRoute,
     dashboardRoute,
     attendanceRoute,
     leavesRoute,

@@ -64,8 +64,9 @@
     "collapse": "折り畳み"
   },
   "nav": {
+    "home": "ホーム",
     "dashboard": "ダッシュボード",
-    "attendance": "勤怠管理",
+    "attendance": "勤怠",
     "leaves": "休暇申請",
     "shifts": "シフト管理",
     "users": "ユーザー管理",
@@ -77,6 +78,23 @@
     "holidays": "カレンダー",
     "export": "エクスポート",
     "approvalFlows": "承認フロー"
+  },
+  "home": {
+    "greetingMorning": "おはようございます",
+    "greetingAfternoon": "こんにちは",
+    "greetingEvening": "お疲れ様です",
+    "welcomeMessage": "今日は何をしますか？",
+    "todayStatus": "今日の状態",
+    "notClockedIn": "まだ出勤していません。",
+    "notifications": "通知",
+    "unreadNotifications": "件の未読通知",
+    "pendingApprovals": "承認待ち",
+    "awaitingReview": "件が承認待ち",
+    "viewAll": "すべて見る",
+    "review": "確認する",
+    "apps": "アプリケーション",
+    "quickAccess": "クイックアクセス",
+    "recentNotifications": "最近の通知"
   },
   "auth": {
     "loginTitle": "ログイン",
@@ -329,6 +347,39 @@
     "validation": {
       "nameRequired": "名前を入力してください",
       "stepsRequired": "少なくとも1つのステップが必要です"
+    }
+  },
+  "appSwitcher": {
+    "title": "アプリケーション",
+    "subtitle": "アプリを切り替える",
+    "currentApp": "現在のアプリ",
+    "comingSoon": "近日公開",
+    "moreApps": "他のアプリも近日追加予定..."
+  },
+  "apps": {
+    "attendance": {
+      "name": "勤怠管理",
+      "description": "出退勤、休暇申請、残業管理"
+    },
+    "expenses": {
+      "name": "経費精算",
+      "description": "経費申請と精算管理"
+    },
+    "hr": {
+      "name": "人事管理",
+      "description": "社員情報、評価、目標管理"
+    },
+    "wiki": {
+      "name": "社内Wiki",
+      "description": "ナレッジベースとドキュメント"
+    },
+    "tasks": {
+      "name": "タスク管理",
+      "description": "プロジェクトとタスク管理"
+    },
+    "booking": {
+      "name": "予約管理",
+      "description": "会議室・備品の予約"
     }
   }
 }
