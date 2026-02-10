@@ -5,10 +5,11 @@ describe('apps config', () => {
   it('returns the most specific enabled app for a pathname', () => {
     expect(getActiveApp('/expenses/reports/2026')?.id).toBe('expenses');
     expect(getActiveApp('/hr/employees')?.id).toBe('hr');
+    expect(getActiveApp('/wiki/testing')?.id).toBe('wiki');
   });
 
   it('ignores disabled apps and falls back to the root app', () => {
-    expect(getActiveApp('/wiki/pages/1')?.id).toBe('attendance');
+    expect(getActiveApp('/tasks/board')?.id).toBe('attendance');
   });
 
   it('returns undefined when pathname does not match any base path', () => {

@@ -46,6 +46,7 @@ import { HRSalarySimulatorPage } from './pages/hr/HRSalarySimulatorPage';
 import { HROnboardingPage } from './pages/hr/HROnboardingPage';
 import { HROffboardingPage } from './pages/hr/HROffboardingPage';
 import { HRSurveyPage } from './pages/hr/HRSurveyPage';
+import { WikiPage } from './pages/wiki/WikiPage';
 
 // ルートルート
 const rootRoute = createRootRoute({
@@ -327,6 +328,43 @@ const hrSurveyRoute = createRoute({
   component: HRSurveyPage,
 });
 
+// 社内Wiki
+const wikiHomeRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/wiki',
+  component: WikiPage,
+});
+
+const wikiArchitectureRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/wiki/architecture',
+  component: WikiPage,
+});
+
+const wikiBackendRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/wiki/backend',
+  component: WikiPage,
+});
+
+const wikiFrontendRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/wiki/frontend',
+  component: WikiPage,
+});
+
+const wikiInfrastructureRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/wiki/infrastructure',
+  component: WikiPage,
+});
+
+const wikiTestingRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/wiki/testing',
+  component: WikiPage,
+});
+
 // ルートツリー
 export const routeTree = rootRoute.addChildren([
   loginRoute,
@@ -372,5 +410,11 @@ export const routeTree = rootRoute.addChildren([
     hrOnboardingRoute,
     hrOffboardingRoute,
     hrSurveyRoute,
+    wikiHomeRoute,
+    wikiArchitectureRoute,
+    wikiBackendRoute,
+    wikiFrontendRoute,
+    wikiInfrastructureRoute,
+    wikiTestingRoute,
   ]),
 ]);

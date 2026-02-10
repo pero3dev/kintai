@@ -49,8 +49,7 @@ export const apps: AppDefinition[] = [
     icon: 'menu_book',
     color: 'bg-amber-500',
     basePath: '/wiki',
-    enabled: false,
-    comingSoon: true,
+    enabled: true,
   },
   {
     id: 'tasks',

@@ -79,7 +79,7 @@ vi.mock('./AppSwitcher', () => ({
   ),
 }));
 
-function setActiveApp(id?: 'attendance' | 'expenses' | 'hr') {
+function setActiveApp(id?: 'attendance' | 'expenses' | 'hr' | 'wiki') {
   if (!id) {
     mocks.getActiveApp.mockReturnValue(undefined);
     return;
@@ -192,6 +192,35 @@ describe('Layout', () => {
     expect(screen.getAllByText('hr.nav.dashboard').length).toBeGreaterThan(0);
     expect(screen.getAllByText('hr.nav.employees').length).toBeGreaterThan(0);
     expect(screen.getAllByText('hr.nav.survey').length).toBeGreaterThan(0);
+  });
+
+  it('renders wiki navigation items in Japanese when Wiki app is active', () => {
+    mocks.pathname = '/wiki/backend';
+    mocks.language = 'ja';
+    setActiveApp('wiki');
+
+    renderLayout();
+
+    expect(screen.getAllByText('概要').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('アーキテクチャ').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('バックエンド').length).toBeGreaterThan(0);
+    expect(
+      screen
+        .getAllByRole('link')
+        .some((l) => l.getAttribute('data-to') === '/wiki/backend' && l.className.includes('nav-item-active')),
+    ).toBe(true);
+  });
+
+  it('renders wiki navigation items in English when locale is en', () => {
+    mocks.pathname = '/wiki/backend';
+    mocks.language = 'en';
+    setActiveApp('wiki');
+
+    renderLayout();
+
+    expect(screen.getAllByText('Overview').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Architecture').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Backend').length).toBeGreaterThan(0);
   });
 
   it('uses sidebarCollapsed value from localStorage and toggles it', () => {
