@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"gorm.io/gorm"
 )
 
 // ===== 経費申請ステータス =====
@@ -233,36 +232,3 @@ type ExpensePolicyViolation struct {
 	User    *User          `gorm:"foreignKey:UserID" json:"user,omitempty"`
 }
 
-// ExpenseAutoMigrate は経費関連テーブルのマイグレーションを実行する
-func ExpenseAutoMigrate(db *gorm.DB) error {
-	// FK制約の自動生成を無効化してマイグレーション
-	prev := db.Config.DisableForeignKeyConstraintWhenMigrating
-	db.Config.DisableForeignKeyConstraintWhenMigrating = true
-	defer func() { db.Config.DisableForeignKeyConstraintWhenMigrating = prev }()
-
-	models := []interface{}{
-		&Expense{},
-		&ExpenseItem{},
-		&ExpenseComment{},
-		&ExpenseHistory{},
-		&ExpenseTemplate{},
-		&ExpensePolicy{},
-		&ExpenseBudget{},
-		&ExpenseNotification{},
-		&ExpenseReminder{},
-		&ExpenseNotificationSetting{},
-		&ExpenseApprovalFlow{},
-		&ExpenseDelegate{},
-		&ExpensePolicyViolation{},
-	}
-
-	m := db.Migrator()
-	for _, model := range models {
-		if !m.HasTable(model) {
-			if err := m.CreateTable(model); err != nil {
-				return err
-			}
-		}
-	}
-	return nil
-}

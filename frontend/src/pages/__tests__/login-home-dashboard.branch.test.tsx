@@ -1,9 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
-import { LoginPage } from './LoginPage';
-import { HomeDashboardPage } from './HomeDashboardPage';
-import { DashboardPage } from './DashboardPage';
+import { LoginPage } from '../LoginPage';
+import { HomeDashboardPage } from '../HomeDashboardPage';
+import { DashboardPage } from '../DashboardPage';
 
 const state = vi.hoisted(() => ({
   queryData: new Map<string, unknown>(),

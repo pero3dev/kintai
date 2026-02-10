@@ -1,10 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { AttendancePage } from './AttendancePage';
-import { LeavesPage } from './LeavesPage';
-import { OvertimePage } from './OvertimePage';
-import { CorrectionsPage } from './CorrectionsPage';
-import { NotificationsPage } from './NotificationsPage';
+import { AttendancePage } from '../AttendancePage';
+import { LeavesPage } from '../LeavesPage';
+import { OvertimePage } from '../OvertimePage';
+import { CorrectionsPage } from '../CorrectionsPage';
+import { NotificationsPage } from '../NotificationsPage';
 
 const state = vi.hoisted(() => ({
   queryData: new Map<string, unknown>(),

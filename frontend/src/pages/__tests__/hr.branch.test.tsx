@@ -1,24 +1,24 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
-import { HRDashboardPage } from './hr/HRDashboardPage';
-import { HREmployeesPage } from './hr/HREmployeesPage';
-import { HREmployeeDetailPage } from './hr/HREmployeeDetailPage';
-import { HRDepartmentsPage } from './hr/HRDepartmentsPage';
-import { HREvaluationsPage } from './hr/HREvaluationsPage';
-import { HRGoalsPage } from './hr/HRGoalsPage';
-import { HRTrainingPage } from './hr/HRTrainingPage';
-import { HRRecruitmentPage } from './hr/HRRecruitmentPage';
-import { HRDocumentsPage } from './hr/HRDocumentsPage';
-import { HRAnnouncementsPage } from './hr/HRAnnouncementsPage';
-import { HRAttendanceIntegrationPage } from './hr/HRAttendanceIntegrationPage';
-import { HROrgChartPage } from './hr/HROrgChartPage';
-import { HROneOnOnePage } from './hr/HROneOnOnePage';
-import { HRSkillMapPage } from './hr/HRSkillMapPage';
-import { HRSalarySimulatorPage } from './hr/HRSalarySimulatorPage';
-import { HROnboardingPage } from './hr/HROnboardingPage';
-import { HROffboardingPage } from './hr/HROffboardingPage';
-import { HRSurveyPage } from './hr/HRSurveyPage';
+import { HRDashboardPage } from '../hr/HRDashboardPage';
+import { HREmployeesPage } from '../hr/HREmployeesPage';
+import { HREmployeeDetailPage } from '../hr/HREmployeeDetailPage';
+import { HRDepartmentsPage } from '../hr/HRDepartmentsPage';
+import { HREvaluationsPage } from '../hr/HREvaluationsPage';
+import { HRGoalsPage } from '../hr/HRGoalsPage';
+import { HRTrainingPage } from '../hr/HRTrainingPage';
+import { HRRecruitmentPage } from '../hr/HRRecruitmentPage';
+import { HRDocumentsPage } from '../hr/HRDocumentsPage';
+import { HRAnnouncementsPage } from '../hr/HRAnnouncementsPage';
+import { HRAttendanceIntegrationPage } from '../hr/HRAttendanceIntegrationPage';
+import { HROrgChartPage } from '../hr/HROrgChartPage';
+import { HROneOnOnePage } from '../hr/HROneOnOnePage';
+import { HRSkillMapPage } from '../hr/HRSkillMapPage';
+import { HRSalarySimulatorPage } from '../hr/HRSalarySimulatorPage';
+import { HROnboardingPage } from '../hr/HROnboardingPage';
+import { HROffboardingPage } from '../hr/HROffboardingPage';
+import { HRSurveyPage } from '../hr/HRSurveyPage';
 
 const state = vi.hoisted(() => ({
   queryData: new Map<string, unknown>(),

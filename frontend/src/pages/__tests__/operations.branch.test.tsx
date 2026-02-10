@@ -1,11 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { ShiftsPage } from './ShiftsPage';
-import { UsersPage } from './UsersPage';
-import { ProjectsPage } from './ProjectsPage';
-import { HolidaysPage } from './HolidaysPage';
-import { ExportPage } from './ExportPage';
-import { ApprovalFlowsPage } from './ApprovalFlowsPage';
+import { ShiftsPage } from '../ShiftsPage';
+import { UsersPage } from '../UsersPage';
+import { ProjectsPage } from '../ProjectsPage';
+import { HolidaysPage } from '../HolidaysPage';
+import { ExportPage } from '../ExportPage';
+import { ApprovalFlowsPage } from '../ApprovalFlowsPage';
 
 const state = vi.hoisted(() => ({
   queryData: new Map<string, unknown>(),

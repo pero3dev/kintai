@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi, type Mock } from 'vitest';
 
-type ClientModule = typeof import('./client');
+type ClientModule = typeof import('../client');
 type Middleware = {
   onRequest: (ctx: { request: Request }) => Promise<Request>;
   onResponse: (ctx: { request: Request; response: Response }) => Promise<Response>;
@@ -52,7 +52,7 @@ async function loadClientWithMockedOpenAPIFetch(): Promise<{
     })),
   }));
 
-  const mod = await import('./client');
+  const mod = await import('../client');
   const { useAuthStore } = await import('@/stores/authStore');
   if (!capturedMiddleware) {
     throw new Error('middleware was not registered');

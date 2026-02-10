@@ -1,16 +1,16 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
-import { ExpenseDashboardPage } from './expenses/ExpenseDashboardPage';
-import { ExpenseNewPage } from './expenses/ExpenseNewPage';
-import { ExpenseHistoryPage } from './expenses/ExpenseHistoryPage';
-import { ExpenseApprovePage } from './expenses/ExpenseApprovePage';
-import { ExpenseDetailPage } from './expenses/ExpenseDetailPage';
-import { ExpenseReportPage } from './expenses/ExpenseReportPage';
-import { ExpenseTemplatesPage } from './expenses/ExpenseTemplatesPage';
-import { ExpensePolicyPage } from './expenses/ExpensePolicyPage';
-import { ExpenseNotificationsPage } from './expenses/ExpenseNotificationsPage';
-import { ExpenseAdvancedApprovePage } from './expenses/ExpenseAdvancedApprovePage';
+import { ExpenseDashboardPage } from '../expenses/ExpenseDashboardPage';
+import { ExpenseNewPage } from '../expenses/ExpenseNewPage';
+import { ExpenseHistoryPage } from '../expenses/ExpenseHistoryPage';
+import { ExpenseApprovePage } from '../expenses/ExpenseApprovePage';
+import { ExpenseDetailPage } from '../expenses/ExpenseDetailPage';
+import { ExpenseReportPage } from '../expenses/ExpenseReportPage';
+import { ExpenseTemplatesPage } from '../expenses/ExpenseTemplatesPage';
+import { ExpensePolicyPage } from '../expenses/ExpensePolicyPage';
+import { ExpenseNotificationsPage } from '../expenses/ExpenseNotificationsPage';
+import { ExpenseAdvancedApprovePage } from '../expenses/ExpenseAdvancedApprovePage';
 
 type Role = 'admin' | 'manager' | 'employee';
 type MockUser = {
