@@ -234,7 +234,7 @@ func TestDashboardService_GetStats_WithData(t *testing.T) {
 	userID := uuid.New()
 	userRepo.Users[userID] = &model.User{
 		BaseModel: model.BaseModel{ID: userID},
-		Email: "test@example.com", FirstName: "Test", LastName: "User",
+		Email:     "test@example.com", FirstName: "Test", LastName: "User",
 	}
 
 	// 今日の出勤データを追加
@@ -242,7 +242,7 @@ func TestDashboardService_GetStats_WithData(t *testing.T) {
 	clockIn := time.Now()
 	attRepo.Attendances[uuid.New()] = &model.Attendance{
 		BaseModel: model.BaseModel{ID: uuid.New()},
-		UserID: userID, Date: today,
+		UserID:    userID, Date: today,
 		ClockIn: &clockIn, Status: model.AttendanceStatusPresent,
 	}
 	attRepo.UserDateIndex[userID.String()+today.Format("2006-01-02")] = attRepo.Attendances[uuid.New()]
@@ -290,14 +290,14 @@ func TestDashboardService_GetStats_HighPresent(t *testing.T) {
 	userID := uuid.New()
 	userRepo.Users[userID] = &model.User{
 		BaseModel: model.BaseModel{ID: userID},
-		Email: "a@test.com", FirstName: "A", LastName: "B",
+		Email:     "a@test.com", FirstName: "A", LastName: "B",
 	}
 
 	clockIn := time.Now()
 	attID := uuid.New()
 	attRepo.Attendances[attID] = &model.Attendance{
 		BaseModel: model.BaseModel{ID: attID},
-		UserID: userID, Date: today,
+		UserID:    userID, Date: today,
 		ClockIn: &clockIn, Status: model.AttendanceStatusPresent,
 	}
 	attRepo.UserDateIndex[userID.String()+today.Format("2006-01-02")] = attRepo.Attendances[attID]
@@ -406,7 +406,7 @@ func TestAttendanceCorrectionService_Approve_WithOnlyCorrectedClockIn(t *testing
 	clockIn := time.Date(2024, 1, 15, 9, 0, 0, 0, time.UTC)
 	// CorrectedClockOutだけnilのケース
 	acRepo.corrections[cID] = &model.AttendanceCorrection{
-		BaseModel:        model.BaseModel{ID: cID}, UserID: uuid.New(),
+		BaseModel: model.BaseModel{ID: cID}, UserID: uuid.New(),
 		AttendanceID:     &attID,
 		Status:           model.CorrectionStatusPending,
 		Date:             time.Date(2024, 1, 15, 0, 0, 0, 0, time.UTC),
@@ -446,7 +446,7 @@ func TestAttendanceCorrectionService_Approve_NoOvertime(t *testing.T) {
 	clockIn := time.Date(2024, 1, 15, 9, 0, 0, 0, time.UTC)
 	clockOut := time.Date(2024, 1, 15, 15, 0, 0, 0, time.UTC) // 6h
 	acRepo.corrections[cID] = &model.AttendanceCorrection{
-		BaseModel:         model.BaseModel{ID: cID}, UserID: uuid.New(),
+		BaseModel: model.BaseModel{ID: cID}, UserID: uuid.New(),
 		AttendanceID:      &attID,
 		Status:            model.CorrectionStatusPending,
 		Date:              time.Date(2024, 1, 15, 0, 0, 0, 0, time.UTC),
@@ -487,7 +487,7 @@ func TestAttendanceCorrectionService_Approve_NewAttendanceNoOvertime(t *testing.
 	clockIn := time.Date(2024, 1, 15, 9, 0, 0, 0, time.UTC)
 	clockOut := time.Date(2024, 1, 15, 15, 0, 0, 0, time.UTC)
 	acRepo.corrections[cID] = &model.AttendanceCorrection{
-		BaseModel:         model.BaseModel{ID: cID}, UserID: uuid.New(),
+		BaseModel: model.BaseModel{ID: cID}, UserID: uuid.New(),
 		Status:            model.CorrectionStatusPending,
 		Date:              time.Date(2024, 1, 15, 0, 0, 0, 0, time.UTC),
 		CorrectedClockIn:  &clockIn,
@@ -515,7 +515,7 @@ func TestAttendanceCorrectionService_Approve_NewAttendanceClockInOnly(t *testing
 	cID := uuid.New()
 	clockIn := time.Date(2024, 1, 15, 9, 0, 0, 0, time.UTC)
 	acRepo.corrections[cID] = &model.AttendanceCorrection{
-		BaseModel:        model.BaseModel{ID: cID}, UserID: uuid.New(),
+		BaseModel: model.BaseModel{ID: cID}, UserID: uuid.New(),
 		Status:           model.CorrectionStatusPending,
 		Date:             time.Date(2024, 1, 15, 0, 0, 0, 0, time.UTC),
 		CorrectedClockIn: &clockIn,
@@ -543,7 +543,7 @@ func TestProjectService_Update_AllFields(t *testing.T) {
 	pID := uuid.New()
 	pRepo.projects[pID] = &model.Project{
 		BaseModel: model.BaseModel{ID: pID},
-		Name: "Old", Description: "Old desc", Status: model.ProjectStatusActive,
+		Name:      "Old", Description: "Old desc", Status: model.ProjectStatusActive,
 	}
 
 	newName := "Updated"
@@ -989,7 +989,7 @@ func TestExportService_ExportAttendanceCSV_AllUsers_WithNilUser(t *testing.T) {
 	clockOut := time.Date(2024, 1, 15, 18, 0, 0, 0, time.UTC)
 	attRepo.Attendances[attID] = &model.Attendance{
 		BaseModel: model.BaseModel{ID: attID}, UserID: uuid.New(),
-		Date: time.Date(2024, 1, 15, 0, 0, 0, 0, time.UTC),
+		Date:    time.Date(2024, 1, 15, 0, 0, 0, 0, time.UTC),
 		ClockIn: &clockIn, ClockOut: &clockOut,
 		Status: model.AttendanceStatusPresent, User: nil,
 	}

@@ -464,7 +464,7 @@ func TestAttendanceCorrectionService_Approve_Success(t *testing.T) {
 	origOut := time.Date(2024, 1, 15, 17, 0, 0, 0, time.UTC)
 	attRepo.Attendances[attID] = &model.Attendance{
 		BaseModel: model.BaseModel{ID: attID},
-		ClockIn: &origIn, ClockOut: &origOut,
+		ClockIn:   &origIn, ClockOut: &origOut,
 	}
 
 	result, err := svc.Approve(context.Background(), cID, uuid.New(), &model.AttendanceCorrectionApproval{
@@ -581,7 +581,7 @@ func TestAttendanceCorrectionService_Approve_OvertimeCalculation(t *testing.T) {
 	clockIn := time.Date(2024, 1, 15, 8, 0, 0, 0, time.UTC)
 	clockOut := time.Date(2024, 1, 15, 18, 0, 0, 0, time.UTC)
 	acRepo.corrections[cID] = &model.AttendanceCorrection{
-		BaseModel:         model.BaseModel{ID: cID}, UserID: uuid.New(),
+		BaseModel: model.BaseModel{ID: cID}, UserID: uuid.New(),
 		AttendanceID:      &attID,
 		Status:            model.CorrectionStatusPending,
 		Date:              time.Date(2024, 1, 15, 0, 0, 0, 0, time.UTC),
@@ -594,7 +594,7 @@ func TestAttendanceCorrectionService_Approve_OvertimeCalculation(t *testing.T) {
 	origOut := time.Date(2024, 1, 15, 17, 0, 0, 0, time.UTC)
 	attRepo.Attendances[attID] = &model.Attendance{
 		BaseModel: model.BaseModel{ID: attID},
-		ClockIn: &origIn, ClockOut: &origOut, BreakMinutes: 0,
+		ClockIn:   &origIn, ClockOut: &origOut, BreakMinutes: 0,
 	}
 
 	_, err := svc.Approve(context.Background(), cID, uuid.New(), &model.AttendanceCorrectionApproval{
@@ -667,9 +667,9 @@ func TestExportService_ExportAttendanceCSV_WithUserID(t *testing.T) {
 	clockIn := time.Date(2024, 1, 15, 9, 0, 0, 0, time.UTC)
 	clockOut := time.Date(2024, 1, 15, 18, 0, 0, 0, time.UTC)
 	attRepo.Attendances[uuid.New()] = &model.Attendance{
-		BaseModel:   model.BaseModel{ID: uuid.New()}, UserID: userID,
-		Date:        time.Date(2024, 1, 15, 0, 0, 0, 0, time.UTC),
-		ClockIn:     &clockIn, ClockOut: &clockOut,
+		BaseModel: model.BaseModel{ID: uuid.New()}, UserID: userID,
+		Date:    time.Date(2024, 1, 15, 0, 0, 0, 0, time.UTC),
+		ClockIn: &clockIn, ClockOut: &clockOut,
 		WorkMinutes: 540, OvertimeMinutes: 60,
 		Status: model.AttendanceStatusPresent,
 	}

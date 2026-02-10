@@ -11,11 +11,11 @@ import (
 // ===== MockHREmployeeService =====
 
 type MockHREmployeeService struct {
-	CreateFunc  func(ctx context.Context, req model.HREmployeeCreateRequest) (*model.HREmployee, error)
+	CreateFunc   func(ctx context.Context, req model.HREmployeeCreateRequest) (*model.HREmployee, error)
 	FindByIDFunc func(ctx context.Context, id uuid.UUID) (*model.HREmployee, error)
-	FindAllFunc func(ctx context.Context, page, pageSize int, department, status, employmentType, search string) ([]model.HREmployee, int64, error)
-	UpdateFunc  func(ctx context.Context, id uuid.UUID, req model.HREmployeeUpdateRequest) (*model.HREmployee, error)
-	DeleteFunc  func(ctx context.Context, id uuid.UUID) error
+	FindAllFunc  func(ctx context.Context, page, pageSize int, department, status, employmentType, search string) ([]model.HREmployee, int64, error)
+	UpdateFunc   func(ctx context.Context, id uuid.UUID, req model.HREmployeeUpdateRequest) (*model.HREmployee, error)
+	DeleteFunc   func(ctx context.Context, id uuid.UUID) error
 }
 
 func (m *MockHREmployeeService) Create(ctx context.Context, req model.HREmployeeCreateRequest) (*model.HREmployee, error) {
@@ -56,11 +56,11 @@ func (m *MockHREmployeeService) Delete(ctx context.Context, id uuid.UUID) error 
 // ===== MockHRDepartmentService =====
 
 type MockHRDepartmentService struct {
-	CreateFunc  func(ctx context.Context, req model.HRDepartmentCreateRequest) (*model.HRDepartment, error)
+	CreateFunc   func(ctx context.Context, req model.HRDepartmentCreateRequest) (*model.HRDepartment, error)
 	FindByIDFunc func(ctx context.Context, id uuid.UUID) (*model.HRDepartment, error)
-	FindAllFunc func(ctx context.Context) ([]model.HRDepartment, error)
-	UpdateFunc  func(ctx context.Context, id uuid.UUID, req model.HRDepartmentUpdateRequest) (*model.HRDepartment, error)
-	DeleteFunc  func(ctx context.Context, id uuid.UUID) error
+	FindAllFunc  func(ctx context.Context) ([]model.HRDepartment, error)
+	UpdateFunc   func(ctx context.Context, id uuid.UUID, req model.HRDepartmentUpdateRequest) (*model.HRDepartment, error)
+	DeleteFunc   func(ctx context.Context, id uuid.UUID) error
 }
 
 func (m *MockHRDepartmentService) Create(ctx context.Context, req model.HRDepartmentCreateRequest) (*model.HRDepartment, error) {
@@ -276,12 +276,12 @@ func (m *MockTrainingService) Complete(ctx context.Context, programID, employeeI
 // ===== MockRecruitmentService =====
 
 type MockRecruitmentService struct {
-	CreatePositionFunc      func(ctx context.Context, req model.PositionCreateRequest) (*model.RecruitmentPosition, error)
-	FindPositionByIDFunc    func(ctx context.Context, id uuid.UUID) (*model.RecruitmentPosition, error)
-	FindAllPositionsFunc    func(ctx context.Context, page, pageSize int, status, department string) ([]model.RecruitmentPosition, int64, error)
-	UpdatePositionFunc      func(ctx context.Context, id uuid.UUID, req model.PositionUpdateRequest) (*model.RecruitmentPosition, error)
-	CreateApplicantFunc     func(ctx context.Context, req model.ApplicantCreateRequest) (*model.Applicant, error)
-	FindAllApplicantsFunc   func(ctx context.Context, positionID, stage string) ([]model.Applicant, error)
+	CreatePositionFunc       func(ctx context.Context, req model.PositionCreateRequest) (*model.RecruitmentPosition, error)
+	FindPositionByIDFunc     func(ctx context.Context, id uuid.UUID) (*model.RecruitmentPosition, error)
+	FindAllPositionsFunc     func(ctx context.Context, page, pageSize int, status, department string) ([]model.RecruitmentPosition, int64, error)
+	UpdatePositionFunc       func(ctx context.Context, id uuid.UUID, req model.PositionUpdateRequest) (*model.RecruitmentPosition, error)
+	CreateApplicantFunc      func(ctx context.Context, req model.ApplicantCreateRequest) (*model.Applicant, error)
+	FindAllApplicantsFunc    func(ctx context.Context, positionID, stage string) ([]model.Applicant, error)
 	UpdateApplicantStageFunc func(ctx context.Context, id uuid.UUID, stage string) (*model.Applicant, error)
 }
 
@@ -419,8 +419,8 @@ func (m *MockAnnouncementService) Delete(ctx context.Context, id uuid.UUID) erro
 // ===== MockHRDashboardService =====
 
 type MockHRDashboardService struct {
-	GetStatsFunc             func(ctx context.Context) (map[string]interface{}, error)
-	GetRecentActivitiesFunc  func(ctx context.Context) ([]map[string]interface{}, error)
+	GetStatsFunc            func(ctx context.Context) (map[string]interface{}, error)
+	GetRecentActivitiesFunc func(ctx context.Context) ([]map[string]interface{}, error)
 }
 
 func (m *MockHRDashboardService) GetStats(ctx context.Context) (map[string]interface{}, error) {
@@ -1168,10 +1168,10 @@ func (m *MockExpenseApprovalFlowService) RemoveDelegate(ctx context.Context, id 
 // ===== MockOvertimeRequestService =====
 
 type MockOvertimeRequestService struct {
-	CreateFunc           func(ctx context.Context, userID uuid.UUID, req *model.OvertimeRequestCreate) (*model.OvertimeRequest, error)
-	ApproveFunc          func(ctx context.Context, id uuid.UUID, approverID uuid.UUID, req *model.OvertimeRequestApproval) (*model.OvertimeRequest, error)
-	GetByUserFunc        func(ctx context.Context, userID uuid.UUID, page, pageSize int) ([]model.OvertimeRequest, int64, error)
-	GetPendingFunc       func(ctx context.Context, page, pageSize int) ([]model.OvertimeRequest, int64, error)
+	CreateFunc            func(ctx context.Context, userID uuid.UUID, req *model.OvertimeRequestCreate) (*model.OvertimeRequest, error)
+	ApproveFunc           func(ctx context.Context, id uuid.UUID, approverID uuid.UUID, req *model.OvertimeRequestApproval) (*model.OvertimeRequest, error)
+	GetByUserFunc         func(ctx context.Context, userID uuid.UUID, page, pageSize int) ([]model.OvertimeRequest, int64, error)
+	GetPendingFunc        func(ctx context.Context, page, pageSize int) ([]model.OvertimeRequest, int64, error)
 	GetOvertimeAlertsFunc func(ctx context.Context) ([]model.OvertimeAlert, error)
 }
 
@@ -1446,12 +1446,12 @@ func (m *MockHolidayService) GetWorkingDays(ctx context.Context, start, end time
 // ===== MockApprovalFlowService =====
 
 type MockApprovalFlowService struct {
-	CreateFunc  func(ctx context.Context, req *model.ApprovalFlowCreateRequest) (*model.ApprovalFlow, error)
-	GetAllFunc  func(ctx context.Context) ([]model.ApprovalFlow, error)
-	GetByIDFunc func(ctx context.Context, id uuid.UUID) (*model.ApprovalFlow, error)
+	CreateFunc    func(ctx context.Context, req *model.ApprovalFlowCreateRequest) (*model.ApprovalFlow, error)
+	GetAllFunc    func(ctx context.Context) ([]model.ApprovalFlow, error)
+	GetByIDFunc   func(ctx context.Context, id uuid.UUID) (*model.ApprovalFlow, error)
 	GetByTypeFunc func(ctx context.Context, flowType model.ApprovalFlowType) ([]model.ApprovalFlow, error)
-	UpdateFunc  func(ctx context.Context, id uuid.UUID, req *model.ApprovalFlowUpdateRequest) (*model.ApprovalFlow, error)
-	DeleteFunc  func(ctx context.Context, id uuid.UUID) error
+	UpdateFunc    func(ctx context.Context, id uuid.UUID, req *model.ApprovalFlowUpdateRequest) (*model.ApprovalFlow, error)
+	DeleteFunc    func(ctx context.Context, id uuid.UUID) error
 }
 
 func (m *MockApprovalFlowService) Create(ctx context.Context, req *model.ApprovalFlowCreateRequest) (*model.ApprovalFlow, error) {

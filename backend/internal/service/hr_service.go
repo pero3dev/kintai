@@ -1411,12 +1411,12 @@ func (s *salaryService) Simulate(ctx context.Context, req model.SalarySimulateRe
 
 	projected := baseSalary + positionAdjustment + seniority + evalBonus
 	return map[string]interface{}{
-		"base_salary":          math.Round(baseSalary*100) / 100,
-		"position_adjustment":  math.Round(positionAdjustment*100) / 100,
-		"seniority_bonus":      math.Round(seniority*100) / 100,
-		"evaluation_bonus":     math.Round(evalBonus*100) / 100,
-		"projected_salary":     math.Round(projected*100) / 100,
-		"annual_salary":        math.Round(projected*12*100) / 100,
+		"base_salary":         math.Round(baseSalary*100) / 100,
+		"position_adjustment": math.Round(positionAdjustment*100) / 100,
+		"seniority_bonus":     math.Round(seniority*100) / 100,
+		"evaluation_bonus":    math.Round(evalBonus*100) / 100,
+		"projected_salary":    math.Round(projected*100) / 100,
+		"annual_salary":       math.Round(projected*12*100) / 100,
 	}, nil
 }
 

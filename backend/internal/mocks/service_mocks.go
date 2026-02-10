@@ -278,12 +278,12 @@ func (m *MockDashboardService) GetStats(ctx context.Context) (*model.DashboardSt
 // ===== MockNotificationService =====
 
 type MockNotificationService struct {
-	SendFunc          func(ctx context.Context, userID uuid.UUID, notifType model.NotificationType, title, message string) error
-	GetByUserFunc     func(ctx context.Context, userID uuid.UUID, isRead *bool, page, pageSize int) ([]model.Notification, int64, error)
-	MarkAsReadFunc    func(ctx context.Context, id uuid.UUID) error
-	MarkAllAsReadFunc func(ctx context.Context, userID uuid.UUID) error
+	SendFunc           func(ctx context.Context, userID uuid.UUID, notifType model.NotificationType, title, message string) error
+	GetByUserFunc      func(ctx context.Context, userID uuid.UUID, isRead *bool, page, pageSize int) ([]model.Notification, int64, error)
+	MarkAsReadFunc     func(ctx context.Context, id uuid.UUID) error
+	MarkAllAsReadFunc  func(ctx context.Context, userID uuid.UUID) error
 	GetUnreadCountFunc func(ctx context.Context, userID uuid.UUID) (int64, error)
-	DeleteFunc        func(ctx context.Context, id uuid.UUID) error
+	DeleteFunc         func(ctx context.Context, id uuid.UUID) error
 }
 
 func (m *MockNotificationService) Send(ctx context.Context, userID uuid.UUID, notifType model.NotificationType, title, message string) error {
@@ -327,5 +327,3 @@ func (m *MockNotificationService) Delete(ctx context.Context, id uuid.UUID) erro
 	}
 	return nil
 }
-
-

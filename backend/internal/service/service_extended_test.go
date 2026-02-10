@@ -17,12 +17,12 @@ import (
 
 // --- OvertimeRequestRepository mock ---
 type mockOvertimeRequestRepo struct {
-	requests         map[uuid.UUID]*model.OvertimeRequest
-	createErr        error
-	findByIDErr      error
-	updateErr        error
-	monthlyOvertime  map[uuid.UUID]int64
-	yearlyOvertime   map[uuid.UUID]int64
+	requests        map[uuid.UUID]*model.OvertimeRequest
+	createErr       error
+	findByIDErr     error
+	updateErr       error
+	monthlyOvertime map[uuid.UUID]int64
+	yearlyOvertime  map[uuid.UUID]int64
 }
 
 func newMockOvertimeRequestRepo() *mockOvertimeRequestRepo {
@@ -34,23 +34,33 @@ func newMockOvertimeRequestRepo() *mockOvertimeRequestRepo {
 }
 
 func (m *mockOvertimeRequestRepo) Create(ctx context.Context, req *model.OvertimeRequest) error {
-	if m.createErr != nil { return m.createErr }
-	if req.ID == uuid.Nil { req.ID = uuid.New() }
+	if m.createErr != nil {
+		return m.createErr
+	}
+	if req.ID == uuid.Nil {
+		req.ID = uuid.New()
+	}
 	m.requests[req.ID] = req
 	return nil
 }
 
 func (m *mockOvertimeRequestRepo) FindByID(ctx context.Context, id uuid.UUID) (*model.OvertimeRequest, error) {
-	if m.findByIDErr != nil { return nil, m.findByIDErr }
+	if m.findByIDErr != nil {
+		return nil, m.findByIDErr
+	}
 	r, ok := m.requests[id]
-	if !ok { return nil, errors.New("not found") }
+	if !ok {
+		return nil, errors.New("not found")
+	}
 	return r, nil
 }
 
 func (m *mockOvertimeRequestRepo) FindByUserID(ctx context.Context, userID uuid.UUID, page, pageSize int) ([]model.OvertimeRequest, int64, error) {
 	var result []model.OvertimeRequest
 	for _, r := range m.requests {
-		if r.UserID == userID { result = append(result, *r) }
+		if r.UserID == userID {
+			result = append(result, *r)
+		}
 	}
 	return result, int64(len(result)), nil
 }
@@ -58,13 +68,17 @@ func (m *mockOvertimeRequestRepo) FindByUserID(ctx context.Context, userID uuid.
 func (m *mockOvertimeRequestRepo) FindPending(ctx context.Context, page, pageSize int) ([]model.OvertimeRequest, int64, error) {
 	var result []model.OvertimeRequest
 	for _, r := range m.requests {
-		if r.Status == model.OvertimeStatusPending { result = append(result, *r) }
+		if r.Status == model.OvertimeStatusPending {
+			result = append(result, *r)
+		}
 	}
 	return result, int64(len(result)), nil
 }
 
 func (m *mockOvertimeRequestRepo) Update(ctx context.Context, req *model.OvertimeRequest) error {
-	if m.updateErr != nil { return m.updateErr }
+	if m.updateErr != nil {
+		return m.updateErr
+	}
 	m.requests[req.ID] = req
 	return nil
 }
@@ -72,7 +86,9 @@ func (m *mockOvertimeRequestRepo) Update(ctx context.Context, req *model.Overtim
 func (m *mockOvertimeRequestRepo) CountPending(ctx context.Context) (int64, error) {
 	var count int64
 	for _, r := range m.requests {
-		if r.Status == model.OvertimeStatusPending { count++ }
+		if r.Status == model.OvertimeStatusPending {
+			count++
+		}
 	}
 	return count, nil
 }
@@ -87,11 +103,11 @@ func (m *mockOvertimeRequestRepo) GetUserYearlyOvertime(ctx context.Context, use
 
 // --- LeaveBalanceRepository mock ---
 type mockLeaveBalanceRepo struct {
-	balances    map[string]*model.LeaveBalance // key: userID-year-type
-	createErr   error
-	updateErr   error
-	upsertErr   error
-	findErr     error
+	balances  map[string]*model.LeaveBalance // key: userID-year-type
+	createErr error
+	updateErr error
+	upsertErr error
+	findErr   error
 }
 
 func newMockLeaveBalanceRepo() *mockLeaveBalanceRepo {
@@ -103,14 +119,18 @@ func (m *mockLeaveBalanceRepo) key(userID uuid.UUID, year int, lt model.LeaveTyp
 }
 
 func (m *mockLeaveBalanceRepo) Create(ctx context.Context, balance *model.LeaveBalance) error {
-	if m.createErr != nil { return m.createErr }
+	if m.createErr != nil {
+		return m.createErr
+	}
 	k := m.key(balance.UserID, balance.FiscalYear, balance.LeaveType)
 	m.balances[k] = balance
 	return nil
 }
 
 func (m *mockLeaveBalanceRepo) FindByUserAndYear(ctx context.Context, userID uuid.UUID, fiscalYear int) ([]model.LeaveBalance, error) {
-	if m.findErr != nil { return nil, m.findErr }
+	if m.findErr != nil {
+		return nil, m.findErr
+	}
 	var result []model.LeaveBalance
 	for _, b := range m.balances {
 		if b.UserID == userID && b.FiscalYear == fiscalYear {
@@ -121,7 +141,9 @@ func (m *mockLeaveBalanceRepo) FindByUserAndYear(ctx context.Context, userID uui
 }
 
 func (m *mockLeaveBalanceRepo) FindByUserYearAndType(ctx context.Context, userID uuid.UUID, fiscalYear int, leaveType model.LeaveType) (*model.LeaveBalance, error) {
-	if m.findErr != nil { return nil, m.findErr }
+	if m.findErr != nil {
+		return nil, m.findErr
+	}
 	for _, b := range m.balances {
 		if b.UserID == userID && b.FiscalYear == fiscalYear && b.LeaveType == leaveType {
 			return b, nil
@@ -131,14 +153,18 @@ func (m *mockLeaveBalanceRepo) FindByUserYearAndType(ctx context.Context, userID
 }
 
 func (m *mockLeaveBalanceRepo) Update(ctx context.Context, balance *model.LeaveBalance) error {
-	if m.updateErr != nil { return m.updateErr }
+	if m.updateErr != nil {
+		return m.updateErr
+	}
 	k := m.key(balance.UserID, balance.FiscalYear, balance.LeaveType)
 	m.balances[k] = balance
 	return nil
 }
 
 func (m *mockLeaveBalanceRepo) Upsert(ctx context.Context, balance *model.LeaveBalance) error {
-	if m.upsertErr != nil { return m.upsertErr }
+	if m.upsertErr != nil {
+		return m.upsertErr
+	}
 	k := m.key(balance.UserID, balance.FiscalYear, balance.LeaveType)
 	m.balances[k] = balance
 	return nil
@@ -157,23 +183,33 @@ func newMockAttendanceCorrectionRepo() *mockAttendanceCorrectionRepo {
 }
 
 func (m *mockAttendanceCorrectionRepo) Create(ctx context.Context, c *model.AttendanceCorrection) error {
-	if m.createErr != nil { return m.createErr }
-	if c.ID == uuid.Nil { c.ID = uuid.New() }
+	if m.createErr != nil {
+		return m.createErr
+	}
+	if c.ID == uuid.Nil {
+		c.ID = uuid.New()
+	}
 	m.corrections[c.ID] = c
 	return nil
 }
 
 func (m *mockAttendanceCorrectionRepo) FindByID(ctx context.Context, id uuid.UUID) (*model.AttendanceCorrection, error) {
-	if m.findByIDErr != nil { return nil, m.findByIDErr }
+	if m.findByIDErr != nil {
+		return nil, m.findByIDErr
+	}
 	c, ok := m.corrections[id]
-	if !ok { return nil, errors.New("not found") }
+	if !ok {
+		return nil, errors.New("not found")
+	}
 	return c, nil
 }
 
 func (m *mockAttendanceCorrectionRepo) FindByUserID(ctx context.Context, userID uuid.UUID, page, pageSize int) ([]model.AttendanceCorrection, int64, error) {
 	var result []model.AttendanceCorrection
 	for _, c := range m.corrections {
-		if c.UserID == userID { result = append(result, *c) }
+		if c.UserID == userID {
+			result = append(result, *c)
+		}
 	}
 	return result, int64(len(result)), nil
 }
@@ -181,13 +217,17 @@ func (m *mockAttendanceCorrectionRepo) FindByUserID(ctx context.Context, userID 
 func (m *mockAttendanceCorrectionRepo) FindPending(ctx context.Context, page, pageSize int) ([]model.AttendanceCorrection, int64, error) {
 	var result []model.AttendanceCorrection
 	for _, c := range m.corrections {
-		if c.Status == model.CorrectionStatusPending { result = append(result, *c) }
+		if c.Status == model.CorrectionStatusPending {
+			result = append(result, *c)
+		}
 	}
 	return result, int64(len(result)), nil
 }
 
 func (m *mockAttendanceCorrectionRepo) Update(ctx context.Context, c *model.AttendanceCorrection) error {
-	if m.updateErr != nil { return m.updateErr }
+	if m.updateErr != nil {
+		return m.updateErr
+	}
 	m.corrections[c.ID] = c
 	return nil
 }
@@ -195,7 +235,9 @@ func (m *mockAttendanceCorrectionRepo) Update(ctx context.Context, c *model.Atte
 func (m *mockAttendanceCorrectionRepo) CountPending(ctx context.Context) (int64, error) {
 	var count int64
 	for _, c := range m.corrections {
-		if c.Status == model.CorrectionStatusPending { count++ }
+		if c.Status == model.CorrectionStatusPending {
+			count++
+		}
 	}
 	return count, nil
 }
@@ -213,8 +255,12 @@ func newMockNotificationRepo() *mockNotificationRepo {
 }
 
 func (m *mockNotificationRepo) Create(ctx context.Context, n *model.Notification) error {
-	if m.createErr != nil { return m.createErr }
-	if n.ID == uuid.Nil { n.ID = uuid.New() }
+	if m.createErr != nil {
+		return m.createErr
+	}
+	if n.ID == uuid.Nil {
+		n.ID = uuid.New()
+	}
 	m.notifications[n.ID] = n
 	return nil
 }
@@ -223,7 +269,9 @@ func (m *mockNotificationRepo) FindByUserID(ctx context.Context, userID uuid.UUI
 	var result []model.Notification
 	for _, n := range m.notifications {
 		if n.UserID == userID {
-			if isRead != nil && n.IsRead != *isRead { continue }
+			if isRead != nil && n.IsRead != *isRead {
+				continue
+			}
 			result = append(result, *n)
 		}
 	}
@@ -231,15 +279,23 @@ func (m *mockNotificationRepo) FindByUserID(ctx context.Context, userID uuid.UUI
 }
 
 func (m *mockNotificationRepo) MarkAsRead(ctx context.Context, id uuid.UUID) error {
-	if m.markReadErr != nil { return m.markReadErr }
-	if n, ok := m.notifications[id]; ok { n.IsRead = true }
+	if m.markReadErr != nil {
+		return m.markReadErr
+	}
+	if n, ok := m.notifications[id]; ok {
+		n.IsRead = true
+	}
 	return nil
 }
 
 func (m *mockNotificationRepo) MarkAllAsRead(ctx context.Context, userID uuid.UUID) error {
-	if m.markReadErr != nil { return m.markReadErr }
+	if m.markReadErr != nil {
+		return m.markReadErr
+	}
 	for _, n := range m.notifications {
-		if n.UserID == userID { n.IsRead = true }
+		if n.UserID == userID {
+			n.IsRead = true
+		}
 	}
 	return nil
 }
@@ -247,13 +303,17 @@ func (m *mockNotificationRepo) MarkAllAsRead(ctx context.Context, userID uuid.UU
 func (m *mockNotificationRepo) CountUnread(ctx context.Context, userID uuid.UUID) (int64, error) {
 	var count int64
 	for _, n := range m.notifications {
-		if n.UserID == userID && !n.IsRead { count++ }
+		if n.UserID == userID && !n.IsRead {
+			count++
+		}
 	}
 	return count, nil
 }
 
 func (m *mockNotificationRepo) Delete(ctx context.Context, id uuid.UUID) error {
-	if m.deleteErr != nil { return m.deleteErr }
+	if m.deleteErr != nil {
+		return m.deleteErr
+	}
 	delete(m.notifications, id)
 	return nil
 }
@@ -272,36 +332,50 @@ func newMockProjectRepo() *mockProjectRepo {
 }
 
 func (m *mockProjectRepo) Create(ctx context.Context, p *model.Project) error {
-	if m.createErr != nil { return m.createErr }
-	if p.ID == uuid.Nil { p.ID = uuid.New() }
+	if m.createErr != nil {
+		return m.createErr
+	}
+	if p.ID == uuid.Nil {
+		p.ID = uuid.New()
+	}
 	m.projects[p.ID] = p
 	return nil
 }
 
 func (m *mockProjectRepo) FindByID(ctx context.Context, id uuid.UUID) (*model.Project, error) {
-	if m.findByIDErr != nil { return nil, m.findByIDErr }
+	if m.findByIDErr != nil {
+		return nil, m.findByIDErr
+	}
 	p, ok := m.projects[id]
-	if !ok { return nil, errors.New("not found") }
+	if !ok {
+		return nil, errors.New("not found")
+	}
 	return p, nil
 }
 
 func (m *mockProjectRepo) FindAll(ctx context.Context, status *model.ProjectStatus, page, pageSize int) ([]model.Project, int64, error) {
 	var result []model.Project
 	for _, p := range m.projects {
-		if status != nil && p.Status != *status { continue }
+		if status != nil && p.Status != *status {
+			continue
+		}
 		result = append(result, *p)
 	}
 	return result, int64(len(result)), nil
 }
 
 func (m *mockProjectRepo) Update(ctx context.Context, p *model.Project) error {
-	if m.updateErr != nil { return m.updateErr }
+	if m.updateErr != nil {
+		return m.updateErr
+	}
 	m.projects[p.ID] = p
 	return nil
 }
 
 func (m *mockProjectRepo) Delete(ctx context.Context, id uuid.UUID) error {
-	if m.deleteErr != nil { return m.deleteErr }
+	if m.deleteErr != nil {
+		return m.deleteErr
+	}
 	delete(m.projects, id)
 	return nil
 }
@@ -320,16 +394,24 @@ func newMockTimeEntryRepo() *mockTimeEntryRepo {
 }
 
 func (m *mockTimeEntryRepo) Create(ctx context.Context, e *model.TimeEntry) error {
-	if m.createErr != nil { return m.createErr }
-	if e.ID == uuid.Nil { e.ID = uuid.New() }
+	if m.createErr != nil {
+		return m.createErr
+	}
+	if e.ID == uuid.Nil {
+		e.ID = uuid.New()
+	}
 	m.entries[e.ID] = e
 	return nil
 }
 
 func (m *mockTimeEntryRepo) FindByID(ctx context.Context, id uuid.UUID) (*model.TimeEntry, error) {
-	if m.findByIDErr != nil { return nil, m.findByIDErr }
+	if m.findByIDErr != nil {
+		return nil, m.findByIDErr
+	}
 	e, ok := m.entries[id]
-	if !ok { return nil, errors.New("not found") }
+	if !ok {
+		return nil, errors.New("not found")
+	}
 	return e, nil
 }
 
@@ -354,13 +436,17 @@ func (m *mockTimeEntryRepo) FindByProjectAndDateRange(ctx context.Context, proje
 }
 
 func (m *mockTimeEntryRepo) Update(ctx context.Context, e *model.TimeEntry) error {
-	if m.updateErr != nil { return m.updateErr }
+	if m.updateErr != nil {
+		return m.updateErr
+	}
 	m.entries[e.ID] = e
 	return nil
 }
 
 func (m *mockTimeEntryRepo) Delete(ctx context.Context, id uuid.UUID) error {
-	if m.deleteErr != nil { return m.deleteErr }
+	if m.deleteErr != nil {
+		return m.deleteErr
+	}
 	delete(m.entries, id)
 	return nil
 }
@@ -383,16 +469,24 @@ func newMockHolidayRepo() *mockHolidayRepo {
 }
 
 func (m *mockHolidayRepo) Create(ctx context.Context, h *model.Holiday) error {
-	if m.createErr != nil { return m.createErr }
-	if h.ID == uuid.Nil { h.ID = uuid.New() }
+	if m.createErr != nil {
+		return m.createErr
+	}
+	if h.ID == uuid.Nil {
+		h.ID = uuid.New()
+	}
 	m.holidays[h.ID] = h
 	return nil
 }
 
 func (m *mockHolidayRepo) FindByID(ctx context.Context, id uuid.UUID) (*model.Holiday, error) {
-	if m.findByIDErr != nil { return nil, m.findByIDErr }
+	if m.findByIDErr != nil {
+		return nil, m.findByIDErr
+	}
 	h, ok := m.holidays[id]
-	if !ok { return nil, errors.New("not found") }
+	if !ok {
+		return nil, errors.New("not found")
+	}
 	return h, nil
 }
 
@@ -413,13 +507,17 @@ func (m *mockHolidayRepo) FindByYear(ctx context.Context, year int) ([]model.Hol
 }
 
 func (m *mockHolidayRepo) Update(ctx context.Context, h *model.Holiday) error {
-	if m.updateErr != nil { return m.updateErr }
+	if m.updateErr != nil {
+		return m.updateErr
+	}
 	m.holidays[h.ID] = h
 	return nil
 }
 
 func (m *mockHolidayRepo) Delete(ctx context.Context, id uuid.UUID) error {
-	if m.deleteErr != nil { return m.deleteErr }
+	if m.deleteErr != nil {
+		return m.deleteErr
+	}
 	delete(m.holidays, id)
 	return nil
 }
@@ -451,16 +549,24 @@ func newMockApprovalFlowRepo() *mockApprovalFlowRepo {
 }
 
 func (m *mockApprovalFlowRepo) Create(ctx context.Context, f *model.ApprovalFlow) error {
-	if m.createErr != nil { return m.createErr }
-	if f.ID == uuid.Nil { f.ID = uuid.New() }
+	if m.createErr != nil {
+		return m.createErr
+	}
+	if f.ID == uuid.Nil {
+		f.ID = uuid.New()
+	}
 	m.flows[f.ID] = f
 	return nil
 }
 
 func (m *mockApprovalFlowRepo) FindByID(ctx context.Context, id uuid.UUID) (*model.ApprovalFlow, error) {
-	if m.findByIDErr != nil { return nil, m.findByIDErr }
+	if m.findByIDErr != nil {
+		return nil, m.findByIDErr
+	}
 	f, ok := m.flows[id]
-	if !ok { return nil, errors.New("not found") }
+	if !ok {
+		return nil, errors.New("not found")
+	}
 	f.Steps = m.steps[id]
 	return f, nil
 }
@@ -486,13 +592,17 @@ func (m *mockApprovalFlowRepo) FindAll(ctx context.Context) ([]model.ApprovalFlo
 }
 
 func (m *mockApprovalFlowRepo) Update(ctx context.Context, f *model.ApprovalFlow) error {
-	if m.updateErr != nil { return m.updateErr }
+	if m.updateErr != nil {
+		return m.updateErr
+	}
 	m.flows[f.ID] = f
 	return nil
 }
 
 func (m *mockApprovalFlowRepo) Delete(ctx context.Context, id uuid.UUID) error {
-	if m.deleteErr != nil { return m.deleteErr }
+	if m.deleteErr != nil {
+		return m.deleteErr
+	}
 	delete(m.flows, id)
 	return nil
 }
@@ -934,8 +1044,8 @@ func TestHolidayService_GetByYear(t *testing.T) {
 	svc := NewHolidayService(deps)
 	hRepo.holidays[uuid.New()] = &model.Holiday{
 		BaseModel: model.BaseModel{ID: uuid.New()},
-		Date: time.Date(2024, 1, 1, 0, 0, 0, 0, time.Local),
-		Name: "元旦",
+		Date:      time.Date(2024, 1, 1, 0, 0, 0, 0, time.Local),
+		Name:      "元旦",
 	}
 
 	holidays, err := svc.GetByYear(context.Background(), 2024)
@@ -991,8 +1101,8 @@ func TestHolidayService_GetCalendar(t *testing.T) {
 	svc := NewHolidayService(deps)
 	hRepo.holidays[uuid.New()] = &model.Holiday{
 		BaseModel: model.BaseModel{ID: uuid.New()},
-		Date: time.Date(2024, 1, 1, 0, 0, 0, 0, time.Local),
-		Name: "元旦", HolidayType: model.HolidayTypeNational,
+		Date:      time.Date(2024, 1, 1, 0, 0, 0, 0, time.Local),
+		Name:      "元旦", HolidayType: model.HolidayTypeNational,
 	}
 
 	days, err := svc.GetCalendar(context.Background(), 2024, 1)
@@ -1020,8 +1130,8 @@ func TestHolidayService_GetWorkingDays(t *testing.T) {
 	svc := NewHolidayService(deps)
 	hRepo.holidays[uuid.New()] = &model.Holiday{
 		BaseModel: model.BaseModel{ID: uuid.New()},
-		Date: time.Date(2024, 1, 1, 0, 0, 0, 0, time.Local),
-		Name: "元旦",
+		Date:      time.Date(2024, 1, 1, 0, 0, 0, 0, time.Local),
+		Name:      "元旦",
 	}
 
 	start := time.Date(2024, 1, 1, 0, 0, 0, 0, time.Local)
@@ -1095,7 +1205,7 @@ func TestApprovalFlowService_GetByType(t *testing.T) {
 	svc := NewApprovalFlowService(deps)
 	afRepo.flows[uuid.New()] = &model.ApprovalFlow{
 		BaseModel: model.BaseModel{ID: uuid.New()},
-		FlowType: model.ApprovalFlowLeave, IsActive: true,
+		FlowType:  model.ApprovalFlowLeave, IsActive: true,
 	}
 
 	flows, err := svc.GetByType(context.Background(), model.ApprovalFlowLeave)
@@ -1265,5 +1375,5 @@ func TestLeaveBalanceService_InitializeForUser_UpsertError(t *testing.T) {
 }
 
 // Helpers
-func stringPtr(s string) *string { return &s }
+func stringPtr(s string) *string       { return &s }
 func rolePtr(r model.Role) *model.Role { return &r }
