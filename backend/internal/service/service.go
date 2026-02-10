@@ -90,7 +90,7 @@ func NewServices(deps Deps) *Services {
 	return &Services{
 		Auth:                 NewAuthService(deps),
 		Attendance:           NewAttendanceService(deps),
-		Leave:                NewLeaveService(deps),
+		Leave:                NewLeaveService(deps, notificationSvc),
 		Shift:                NewShiftService(deps),
 		User:                 NewUserService(deps),
 		Department:           NewDepartmentService(deps),
@@ -379,11 +379,12 @@ type LeaveService interface {
 }
 
 type leaveService struct {
-	deps Deps
+	deps            Deps
+	notificationSvc NotificationService
 }
 
-func NewLeaveService(deps Deps) LeaveService {
-	return &leaveService{deps: deps}
+func NewLeaveService(deps Deps, notificationSvc NotificationService) LeaveService {
+	return &leaveService{deps: deps, notificationSvc: notificationSvc}
 }
 
 func (s *leaveService) Create(ctx context.Context, userID uuid.UUID, req *model.LeaveRequestCreate) (*model.LeaveRequest, error) {
@@ -434,7 +435,19 @@ func (s *leaveService) Approve(ctx context.Context, leaveID uuid.UUID, approverI
 		return nil, err
 	}
 
-	// TODO: メール通知（AWS SES）
+	// 申請者に通知を送信
+	if req.Status == model.ApprovalStatusApproved {
+		_ = s.notificationSvc.Send(ctx, leave.UserID, model.NotificationTypeLeaveApproved,
+			"休暇申請が承認されました",
+			fmt.Sprintf("あなたの休暇申請（%s〜%s）が承認されました。", leave.StartDate.Format("2006-01-02"), leave.EndDate.Format("2006-01-02")))
+	} else if req.Status == model.ApprovalStatusRejected {
+		msg := fmt.Sprintf("あなたの休暇申請（%s〜%s）が却下されました。", leave.StartDate.Format("2006-01-02"), leave.EndDate.Format("2006-01-02"))
+		if req.RejectedReason != "" {
+			msg += " 理由: " + req.RejectedReason
+		}
+		_ = s.notificationSvc.Send(ctx, leave.UserID, model.NotificationTypeLeaveRejected, "休暇申請が却下されました", msg)
+	}
+
 	return leave, nil
 }
 
@@ -657,7 +670,7 @@ func (s *departmentService) Delete(ctx context.Context, id uuid.UUID) error {
 // ===== DashboardService =====
 
 type DashboardService interface {
-	GetStats(ctx context.Context) (*model.DashboardStats, error)
+	GetStats(ctx context.Context) (*model.DashboardStatsExtended, error)
 }
 
 type dashboardService struct {
@@ -668,7 +681,7 @@ func NewDashboardService(deps Deps) DashboardService {
 	return &dashboardService{deps: deps}
 }
 
-func (s *dashboardService) GetStats(ctx context.Context) (*model.DashboardStats, error) {
+func (s *dashboardService) GetStats(ctx context.Context) (*model.DashboardStatsExtended, error) {
 	// 今日の出勤者数
 	todayPresent, _ := s.deps.Repos.Attendance.CountTodayPresent(ctx)
 
@@ -690,11 +703,41 @@ func (s *dashboardService) GetStats(ctx context.Context) (*model.DashboardStats,
 	monthEnd := monthStart.AddDate(0, 1, 0).Add(-time.Second)
 	monthlyOvertime, _ := s.deps.Repos.Attendance.GetMonthlyOvertime(ctx, monthStart, monthEnd)
 
-	return &model.DashboardStats{
-		TodayPresentCount: int(todayPresent),
-		TodayAbsentCount:  int(todayAbsent),
-		PendingLeaves:     int(pendingLeaves),
-		MonthlyOvertime:   int(monthlyOvertime),
+	// 週間トレンドデータ（過去7日間）
+	var weeklyTrend []model.DashboardTrend
+	for i := 6; i >= 0; i-- {
+		day := now.AddDate(0, 0, -i)
+		dayStart := time.Date(day.Year(), day.Month(), day.Day(), 0, 0, 0, 0, time.Local)
+		dayEnd := dayStart.Add(24*time.Hour - time.Second)
+
+		records, _ := s.deps.Repos.Attendance.FindByDateRange(ctx, dayStart, dayEnd)
+		presentCount := len(records)
+		absentCount := int(totalUsers) - presentCount
+		if absentCount < 0 {
+			absentCount = 0
+		}
+
+		attendanceRate := 0.0
+		if totalUsers > 0 {
+			attendanceRate = float64(presentCount) / float64(totalUsers) * 100
+		}
+
+		weeklyTrend = append(weeklyTrend, model.DashboardTrend{
+			Date:           dayStart.Format("2006-01-02"),
+			PresentCount:   presentCount,
+			AbsentCount:    absentCount,
+			AttendanceRate: attendanceRate,
+		})
+	}
+
+	return &model.DashboardStatsExtended{
+		DashboardStats: model.DashboardStats{
+			TodayPresentCount: int(todayPresent),
+			TodayAbsentCount:  int(todayAbsent),
+			PendingLeaves:     int(pendingLeaves),
+			MonthlyOvertime:   int(monthlyOvertime),
+		},
+		WeeklyTrend: weeklyTrend,
 	}, nil
 }
 

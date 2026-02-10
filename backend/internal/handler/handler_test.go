@@ -1616,11 +1616,13 @@ func TestDepartmentHandler_GetAll_Error(t *testing.T) {
 
 func TestDashboardHandler_GetStats_Success(t *testing.T) {
 	mockService := &mocks.MockDashboardService{
-		GetStatsFunc: func(ctx context.Context) (*model.DashboardStats, error) {
-			return &model.DashboardStats{
-				TodayPresentCount: 10,
-				TodayAbsentCount:  10,
-				PendingLeaves:     5,
+		GetStatsFunc: func(ctx context.Context) (*model.DashboardStatsExtended, error) {
+			return &model.DashboardStatsExtended{
+				DashboardStats: model.DashboardStats{
+					TodayPresentCount: 10,
+					TodayAbsentCount:  10,
+					PendingLeaves:     5,
+				},
 			}, nil
 		},
 	}
@@ -1640,7 +1642,7 @@ func TestDashboardHandler_GetStats_Success(t *testing.T) {
 
 func TestDashboardHandler_GetStats_Error(t *testing.T) {
 	mockService := &mocks.MockDashboardService{
-		GetStatsFunc: func(ctx context.Context) (*model.DashboardStats, error) {
+		GetStatsFunc: func(ctx context.Context) (*model.DashboardStatsExtended, error) {
 			return nil, errors.New("database error")
 		},
 	}

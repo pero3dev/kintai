@@ -265,12 +265,67 @@ func (m *MockDepartmentService) Delete(ctx context.Context, id uuid.UUID) error 
 // ===== MockDashboardService =====
 
 type MockDashboardService struct {
-	GetStatsFunc func(ctx context.Context) (*model.DashboardStats, error)
+	GetStatsFunc func(ctx context.Context) (*model.DashboardStatsExtended, error)
 }
 
-func (m *MockDashboardService) GetStats(ctx context.Context) (*model.DashboardStats, error) {
+func (m *MockDashboardService) GetStats(ctx context.Context) (*model.DashboardStatsExtended, error) {
 	if m.GetStatsFunc != nil {
 		return m.GetStatsFunc(ctx)
 	}
 	return nil, nil
 }
+
+// ===== MockNotificationService =====
+
+type MockNotificationService struct {
+	SendFunc          func(ctx context.Context, userID uuid.UUID, notifType model.NotificationType, title, message string) error
+	GetByUserFunc     func(ctx context.Context, userID uuid.UUID, isRead *bool, page, pageSize int) ([]model.Notification, int64, error)
+	MarkAsReadFunc    func(ctx context.Context, id uuid.UUID) error
+	MarkAllAsReadFunc func(ctx context.Context, userID uuid.UUID) error
+	GetUnreadCountFunc func(ctx context.Context, userID uuid.UUID) (int64, error)
+	DeleteFunc        func(ctx context.Context, id uuid.UUID) error
+}
+
+func (m *MockNotificationService) Send(ctx context.Context, userID uuid.UUID, notifType model.NotificationType, title, message string) error {
+	if m.SendFunc != nil {
+		return m.SendFunc(ctx, userID, notifType, title, message)
+	}
+	return nil
+}
+
+func (m *MockNotificationService) GetByUser(ctx context.Context, userID uuid.UUID, isRead *bool, page, pageSize int) ([]model.Notification, int64, error) {
+	if m.GetByUserFunc != nil {
+		return m.GetByUserFunc(ctx, userID, isRead, page, pageSize)
+	}
+	return nil, 0, nil
+}
+
+func (m *MockNotificationService) MarkAsRead(ctx context.Context, id uuid.UUID) error {
+	if m.MarkAsReadFunc != nil {
+		return m.MarkAsReadFunc(ctx, id)
+	}
+	return nil
+}
+
+func (m *MockNotificationService) MarkAllAsRead(ctx context.Context, userID uuid.UUID) error {
+	if m.MarkAllAsReadFunc != nil {
+		return m.MarkAllAsReadFunc(ctx, userID)
+	}
+	return nil
+}
+
+func (m *MockNotificationService) GetUnreadCount(ctx context.Context, userID uuid.UUID) (int64, error) {
+	if m.GetUnreadCountFunc != nil {
+		return m.GetUnreadCountFunc(ctx, userID)
+	}
+	return 0, nil
+}
+
+func (m *MockNotificationService) Delete(ctx context.Context, id uuid.UUID) error {
+	if m.DeleteFunc != nil {
+		return m.DeleteFunc(ctx, id)
+	}
+	return nil
+}
+
+

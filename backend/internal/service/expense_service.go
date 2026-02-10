@@ -5,6 +5,8 @@ import (
 	"context"
 	"encoding/csv"
 	"fmt"
+	"os"
+	"path/filepath"
 	"strconv"
 	"time"
 
@@ -311,8 +313,91 @@ func (s *expenseService) ExportCSV(ctx context.Context, startDateStr, endDateStr
 }
 
 func (s *expenseService) ExportPDF(ctx context.Context, startDateStr, endDateStr string) ([]byte, error) {
-	// PDFエクスポートは簡易的にCSVと同じデータをテキストで返す
-	return s.ExportCSV(ctx, startDateStr, endDateStr)
+	startDate, _ := time.Parse("2006-01-02", startDateStr)
+	endDate, _ := time.Parse("2006-01-02", endDateStr)
+	endDate = endDate.Add(24*time.Hour - time.Second)
+
+	expenses, _, err := s.deps.Repos.Expense.FindAll(ctx, 1, 10000, "", "")
+	if err != nil {
+		return nil, err
+	}
+
+	var buf bytes.Buffer
+	// PDFヘッダー
+	buf.WriteString("%PDF-1.4\n")
+
+	// オブジェクト位置を記録
+	var offsets []int
+
+	// Object 1: Catalog
+	offsets = append(offsets, buf.Len())
+	buf.WriteString("1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n")
+
+	// Object 2: Pages
+	offsets = append(offsets, buf.Len())
+	buf.WriteString("2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n")
+
+	// Object 4: Font
+	offsets = append(offsets, buf.Len())
+	buf.WriteString("4 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\n")
+
+	// コンテンツを生成
+	var content bytes.Buffer
+	content.WriteString("BT\n/F1 16 Tf\n50 800 Td\n(Expense Report) Tj\n")
+	content.WriteString("/F1 10 Tf\n0 -25 Td\n")
+	content.WriteString(fmt.Sprintf("(Period: %s - %s) Tj\n", startDateStr, endDateStr))
+	content.WriteString("0 -20 Td\n")
+	content.WriteString("(-------------------------------------------) Tj\n")
+
+	yPos := 0
+	var totalAll float64
+	for _, exp := range expenses {
+		if exp.CreatedAt.Before(startDate) || exp.CreatedAt.After(endDate) {
+			continue
+		}
+		userName := ""
+		if exp.User != nil {
+			userName = exp.User.LastName + " " + exp.User.FirstName
+		}
+		yPos -= 15
+		content.WriteString(fmt.Sprintf("0 -15 Td\n(%s | %s | %s | %.0f JPY) Tj\n",
+			exp.CreatedAt.Format("2006-01-02"), userName, exp.Title, exp.TotalAmount))
+		totalAll += exp.TotalAmount
+
+		if yPos < -650 {
+			break // ページあふれ防止
+		}
+	}
+	content.WriteString("0 -20 Td\n(-------------------------------------------) Tj\n")
+	content.WriteString(fmt.Sprintf("0 -15 Td\n(Total: %.0f JPY) Tj\n", totalAll))
+	content.WriteString("ET\n")
+
+	contentStr := content.String()
+
+	// Object 5: Stream content
+	offsets = append(offsets, buf.Len())
+	buf.WriteString(fmt.Sprintf("5 0 obj\n<< /Length %d >>\nstream\n%s\nendstream\nendobj\n", len(contentStr), contentStr))
+
+	// Object 3: Page
+	offsets = append(offsets, buf.Len())
+	buf.WriteString("3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 5 0 R /Resources << /Font << /F1 4 0 R >> >> >>\nendobj\n")
+
+	// Cross-reference table
+	xrefOffset := buf.Len()
+	buf.WriteString("xref\n")
+	buf.WriteString(fmt.Sprintf("0 %d\n", len(offsets)+1))
+	buf.WriteString("0000000000 65535 f \n")
+	for _, off := range offsets {
+		buf.WriteString(fmt.Sprintf("%010d 00000 n \n", off))
+	}
+
+	buf.WriteString("trailer\n")
+	buf.WriteString(fmt.Sprintf("<< /Size %d /Root 1 0 R >>\n", len(offsets)+1))
+	buf.WriteString("startxref\n")
+	buf.WriteString(fmt.Sprintf("%d\n", xrefOffset))
+	buf.WriteString("%%EOF\n")
+
+	return buf.Bytes(), nil
 }
 
 // ===== ExpenseCommentService =====
@@ -447,8 +532,23 @@ func NewExpenseReceiptService(deps Deps) ExpenseReceiptService {
 }
 
 func (s *expenseReceiptService) Upload(ctx context.Context, filename string, data []byte) (string, error) {
-	// 簡易実装: ファイル名ベースのURLを返す（実運用ではS3等に保存）
-	url := fmt.Sprintf("/uploads/receipts/%s_%s", uuid.New().String()[:8], filename)
+	// アップロードディレクトリを作成
+	uploadDir := "uploads/receipts"
+	if err := os.MkdirAll(uploadDir, 0755); err != nil {
+		return "", fmt.Errorf("アップロードディレクトリの作成に失敗: %w", err)
+	}
+
+	// ユニークなファイル名を生成
+	ext := filepath.Ext(filename)
+	storedName := fmt.Sprintf("%s_%d%s", uuid.New().String()[:8], time.Now().UnixMilli(), ext)
+	filePath := filepath.Join(uploadDir, storedName)
+
+	// ファイルを書き込み
+	if err := os.WriteFile(filePath, data, 0644); err != nil {
+		return "", fmt.Errorf("ファイルの保存に失敗: %w", err)
+	}
+
+	url := fmt.Sprintf("/%s", filePath)
 	return url, nil
 }
 

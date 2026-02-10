@@ -1,0 +1,3272 @@
+﻿
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90mC:/dev/go/kintai/frontend[39m
+
+ [31m❯[39m src/pages/hr.branch.test.tsx [2m([22m[2m34 tests[22m[2m | [22m[31m14 failed[39m[2m)[22m[33m 462[2mms[22m[39m
+[31m   [31m×[31m HREmployeesPage[2m > [22mcovers list filters pagination and create branches[90m 84[2mms[22m[31m[39m
+[31m     → Unable to find an element with the text: chevron_right. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"space-y-6 animate-fade-in"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"flex flex-col sm:flex-row sm:items-center justify-between gap-3"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex items-center gap-3"[31m
+        [36m>[31m
+          [36m<a[31m
+            [33mclass[31m=[32m"p-2 rounded-xl glass-subtle hover:bg-white/10 transition-all"[31m
+            [33mdata-to[31m=[32m"/hr"[31m
+            [33mhref[31m=[32m"/hr"[31m
+          [36m>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"material-symbols-outlined "[31m
+            [36m>[31m
+              [0marrow_back[0m
+            [36m</span>[31m
+          [36m</a>[31m
+          [36m<div>[31m
+            [36m<h1[31m
+              [33mclass[31m=[32m"text-xl sm:text-2xl font-bold gradient-text"[31m
+            [36m>[31m
+              [0mhr.employees.title[0m
+            [36m</h1>[31m
+            [36m<p[31m
+              [33mclass[31m=[32m"text-muted-foreground text-xs sm:text-sm mt-1"[31m
+            [36m>[31m
+              [0mhr.employees.subtitle[0m
+              [0m · [0m
+              [0mhr.employees.totalCount:0[0m
+            [36m</p>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<button[31m
+          [33mclass[31m=[32m"flex items-center gap-2 px-5 py-2.5 gradient-primary text-white font-semibold text-sm rounded-xl hover:shadow-glow-md transition-all"[31m
+        [36m>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"material-symbols-outlined text-lg"[31m
+          [36m>[31m
+            [0mperson_add[0m
+          [36m</span>[31m
+          [0mhr.employees.addEmployee[0m
+        [36m</button>[31m
+      [36m</div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"glass-card rounded-2xl p-4 flex flex-wrap gap-3"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex-1 min-w-[200px]"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"relative"[31m
+          [36m>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-lg"[31m
+            [36m>[31m
+              [0msearch[0m
+            [36m</span>[31m
+            [36m<input[31m
+              [33mclass[31m=[32m"w-full pl-10 pr-4 py-2.5 glass-input rounded-xl text-sm"[31m
+              [33mplaceholder[31m=[32m"common.search"[31m
+              [33mtype[31m=[32m"text"[31m
+              [33mvalue[31m=[32m"abc"[31m
+            [36m/>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<select[31m
+          [33mclass[31m=[32m"px-3 py-2.5 glass-input rounded-xl text-sm"[31m
+        [36m>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m""[31m
+          [36m>[31m
+            [0mhr.employees.department[0m
+          [36m</option>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m"d1"[31m
+          [36m>[31m
+            [0mDev[0m
+          [36m</option>[31m
+        [36m</select>[31m
+        [36m<select[31m
+          [33mclass[31m=[32m"px-3 py-2.5 glass-input rounded-xl text-sm"[31m
+        [36m>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m""[31m
+          [36m>[31m
+            [0mcommon.status[0m
+          [36m</option>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m"active"[31m
+          [36m>[31m
+            [0mhr.employees.statuses.active[0m
+          [36m</option>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m"onLeave"[31m
+          [36m>[31m
+            [0mhr.employees.statuses.onLeave[0m
+          [36m</option>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m"resigned"[31m
+          [36m>[31m
+            [0mhr.employees.statuses.resigned[0m
+          [36m</option>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m"terminated"[31m
+          [36m>[31m
+            [0mhr.employees.statuses.terminated[0m
+          [36m</option>[31m
+        [36m</select>[31m
+        [36m<select[31m
+          [33mclass[31m=[32m"px-3 py-2.5 glass-input rounded-xl text-sm"[31m
+        [36m>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m""[31m
+          [36m>[31m
+            [0mhr.employees.employmentType[0m
+          [36m</option>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m"fullTime"[31m
+          [36m>[31m
+            [0mhr.employees.types.fullTime[0m
+          [36m</option>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m"partTime"[31m
+          [36m>[31m
+            [0mhr.employees.types.partTime[0m
+          [36m</option>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m"contract"[31m
+          [36m>[31m
+            [0mhr.employees.types.contract[0m
+          [36m</option>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m"intern"[31m
+          [36m>[31m
+            [0mhr.employees.types.intern[0m
+          [36m</option>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m"temporary"[31m
+          [36m>[31m
+            [0mhr.employees.types.temporary[0m
+          [36m</option>[31m
+        [36m</select>[31m
+      [36m</div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"glass-card rounded-2xl p-4 sm:p-6"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"text-center py-12 text-muted-foreground"[31m
+        [36m>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"material-symbols-outlined text-4xl mb-2 block opacity-50"[31m
+          [36m>[31m
+            [0mperson_search[0m
+          [36m</span>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"text-sm"[31m
+          [36m>[31m
+            [0mcommon.noData[0m
+          [36m</p>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+[31m   [31m×[31m HREmployeeDetailPage[2m > [22mcovers profile goals docs history and edit branches[90m 9[2mms[22m[31m[39m
+[31m     → Found multiple elements with the text: Yamada Taro
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<h1[31m
+  [33mclass[31m=[32m"text-xl sm:text-2xl font-bold gradient-text"[31m
+[36m>[31m
+  [0mYamada[0m
+  [0m [0m
+  [0mTaro[0m
+[36m</h1>[31m
+
+Ignored nodes: comments, script, style
+[36m<span[31m
+  [33mclass[31m=[32m"text-sm font-medium"[31m
+[36m>[31m
+  [0mYamada Taro[0m
+[36m</span>[31m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"space-y-6 animate-fade-in"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"flex flex-col sm:flex-row sm:items-center justify-between gap-3"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex items-center gap-3"[31m
+        [36m>[31m
+          [36m<a[31m
+            [33mclass[31m=[32m"p-2 rounded-xl glass-subtle hover:bg-white/10 transition-all"[31m
+            [33mdata-to[31m=[32m"/hr/employees"[31m
+            [33mhref[31m=[32m"/hr/employees"[31m
+          [36m>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"material-symbols-outlined "[31m
+            [36m>[31m
+              [0marrow_back[0m
+            [36m</span>[31m
+          [36m</a>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"size-12 sm:size-14 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg sm:text-xl"[31m
+          [36m>[31m
+            [0mY[0m
+          [36m</div>[31m
+          [36m<div>[31m
+            [36m<h1[31m
+              [33mclass[31m=[32m"text-xl sm:text-2xl font-bold gradient-text"[31m
+            [36m>[31m
+              [0mYamada[0m
+              [0m [0m
+              [0mTaro[0m
+            [36m</h1>[31m
+            [36m<p[31m
+              [33mclass[31m=[32m"text-xs sm:text-sm text-muted-foreground"[31m
+            [36m>[31m
+              [0mEngineer[0m
+              [0m · [0m
+              [0mDev[0m
+            [36m</p>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<button[31m
+          [33mclass[31m=[32m"flex items-center gap-2 px-4 py-2 glass-subtle hover:bg-white/10 rounded-xl text-sm transition-all border border-white/5"[31m
+        [36m>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"material-symbols-outlined text-base"[31m
+          [36m>[31m
+            [0medit[0m
+          [36m</span>[31m
+          [0mhr.detail.editProfile[0m
+        [36m</button>[31m
+      [36m</div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"flex gap-1 glass-card rounded-2xl p-1.5 overflow-x-auto"[31m
+      [36m>[31m
+        [36m<button[31m
+          [33mclass[31m=[32m"flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all bg-indigo-500/20 text-indigo-400"[31m
+        [36m>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"material-symbols-outlined text-base"[31m
+          [36m>[31m
+            [0mperson[0m
+          [36m</span>[31m
+          [0mhr.detail.tabs.profile[0m
+        [36m</button>[31m
+        [36m<button[31m
+          [33mclass[31m=[32m"flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all text-muted-foreground hover:bg-white/5"[31m
+        [36m>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"material-symbols-outlined text-base"[31m
+          [36m>[31m
+            [0mflag[0m
+          [36m</span>[31m
+          [0mhr.detail.tabs.goals[0m
+        [36m</button>[31m
+        [36m<button[31m
+          [33mclass[31m=[32m"flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all text-muted-foreground hover:bg-white/5"[31m
+        [36m>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"material-symbols-outlined text-base"[31m
+          [36m>[31m
+            [0mdescription[0m
+          [36m</span>[31m
+          [0mhr.detail.tabs.documents[0m
+        [36m</button>[31m
+        [36m<button[31m
+          [33mclass[31m=[32m"flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all text-muted-foreground hover:bg-white/5"[31m
+        [36m>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"material-symbols-outlined text-base"[31m
+          [36m>[31m
+            [0mhistory[0m
+          [36m</span>[31m
+          [0mhr.detail.tabs.history[0m
+        [36m</button>[31m
+      [36m</div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"grid grid-cols-1 lg:grid-cols-2 gap-6"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"glass-card rounded-2xl p-4 sm:p-6"[31m
+        [36m>[31m
+          [36m<h2[31m
+            [33mclass[31m=[32m"text-lg font-semibold mb-4 flex items-center gap-2"[31m
+          [36m>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"material-symbols-outlined text-indigo-400"[31m
+            [36m>[31m
+              [0mbadge[0m
+            [36m</span>[31m
+            [0mhr.detail.basicInfo[0m
+          [36m</h2>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"space-y-3"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[31m
+            [36m>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm text-muted-foreground"[31m
+              [36m>[31m
+                [0mhr.employees.employeeId[0m
+              [36m</span>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm font-medium"[31m
+              [36m>[31m
+                [0mEMP-1[0m
+              [36m</span>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[31m
+            [36m>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm text-muted-foreground"[31m
+              [36m>[31m
+                [0musers.name[0m
+              [36m</span>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm font-medium"[31m
+              [36m>[31m
+                [0mYamada Taro[0m
+              [36m</span>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[31m
+            [36m>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm text-muted-foreground"[31m
+              [36m>[31m
+                [0mcommon.email[0m
+              [36m</span>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm font-medium"[31m
+              [36m>[31m
+                [0mtaro@example.com[0m
+              [36m</span>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[31m
+            [36m>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm text-muted-foreground"[31m
+              [36m>[31m
+                [0mhr.employees.birthDate[0m
+              [36m</span>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm font-medium"[31m
+              [36m>[31m
+                [0m-[0m
+              [36m</span>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[31m
+            [36m>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm text-muted-foreground"[31m
+              [36m>[31m
+                [0mhr.employees.gender[0m
+              [36m</span>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm font-medium"[31m
+              [36m>[31m
+                [0m-[0m
+              [36m</span>[31m
+            [36m</div>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"glass-card rounded-2xl p-4 sm:p-6"[31m
+        [36m>[31m
+          [36m<h2[31m
+            [33mclass[31m=[32m"text-lg font-semibold mb-4 flex items-center gap-2"[31m
+          [36m>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"material-symbols-outlined text-emerald-400"[31m
+            [36m>[31m
+              [0mwork[0m
+            [36m</span>[31m
+            [0mhr.detail.employment[0m
+          [36m</h2>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"space-y-3"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[31m
+            [36m>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm text-muted-foreground"[31m
+              [36m>[31m
+                [0mhr.employees.department[0m
+              [36m</span>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm font-medium"[31m
+              [36m>[31m
+                [0mDev[0m
+              [36m</span>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[31m
+            [36m>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm text-muted-foreground"[31m
+              [36m>[31m
+                [0mhr.employees.position[0m
+              [36m</span>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm font-medium"[31m
+              [36m>[31m
+                [0mEngineer[0m
+              [36m</span>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[31m
+            [36m>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm text-muted-foreground"[31m
+              [36m>[31m
+                [0mhr.employees.employmentType[0m
+              [36m</span>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm font-medium"[31m
+              [36m>[31m
+                [0mhr.employees.types.fullTime[0m
+              [36m</span>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[31m
+            [36m>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm text-muted-foreground"[31m
+              [36m>[31m
+                [0mhr.employees.hireDate[0m
+              [36m</span>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm font-medium"[31m
+              [36m>[31m
+                [0m-[0m
+              [36m</span>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[31m
+            [36m>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm text-muted-foreground"[31m
+              [36m>[31m
+                [0mcommon.status[0m
+              [36m</span>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm font-medium"[31m
+              [36m>[31m
+                [0mhr.employees.statuses.active[0m
+              [36m</span>[31m
+            [36m</div>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"glass-card rounded-2xl p-4 sm:p-6"[31m
+        [36m>[31m
+          [36m<h2[31m
+            [33mclass[31m=[32m"text-lg font-semibold mb-4 flex items-center gap-2"[31m
+          [36m>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"material-symbols-outlined text-blue-400"[31m
+            [36m>[31m
+              [0mcontact_phone[0m
+            [36m</span>[31m
+            [0mhr.detail.contactInfo[0m
+          [36m</h2>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"space-y-3"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[31m
+            [36m>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm text-muted-foreground"[31m
+              [36m>[31m
+                [0mhr.employees.phoneNumber[0m
+              [36m</span>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm font-medium text-right max-w-[60%]"[31m
+              [36m>[31m
+                [0m-[0m
+              [36m</span>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[31m
+            [36m>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm text-muted-foreground"[31m
+              [36m>[31m
+                [0mhr.employees.address[0m
+              [36m</span>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm font-medium text-right max-w-[60%]"[31m
+              [36m>[31m
+                [0mTokyo[0m
+              [36m</span>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[31m
+            [36m>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm text-muted-foreground"[31m
+              [36m>[31m
+                [0mhr.employees.emergencyContact[0m
+              [36m</span>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"text-sm font-medium text-right max-w-[60%]"[31m
+              [36m>[31m
+                [0m-[0m
+              [36m</span>[31m
+            [36m</div>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"glass-card rounded-2xl p-4 sm:p-6"[31m
+        [36m>[31m
+          [36m<h2[31m
+            [33mclass[31m=[32m"text-lg font-semibold mb-4 flex items-center gap-2"[31m
+          [36m>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"material-symbols-outlined text-amber-400"[31m
+            [36m>[31m
+              [0mpsychology[0m
+            [36m</span>[31m
+            [0mhr.detail.skills[0m
+          [36m</h2>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex flex-wrap gap-2"[31m
+          [36m>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"px-3 py-1.5 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-full text-xs font-medium"[31m
+            [36m>[31m
+              [0mGo[0m
+            [36m</span>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"px-3 py-1.5 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-full text-xs font-medium"[31m
+            [36m>[31m
+              [0mReact[0m
+            [36m</span>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+[31m   [31m×[31m HRGoalsPage[2m > [22mcovers list progress delete and create branches[90m 32[2mms[22m[31m[39m
+[31m     → Unable to fire a "change" event - please provide a DOM element.[39m
+[31m   [31m×[31m HRRecruitmentPage[2m > [22mcovers position/applicant actions and stage branches[90m 20[2mms[22m[31m[39m
+[31m     → button not found for hr.recruitment.stages.screening[39m
+[31m   [31m×[31m HRDocumentsPage[2m > [22mcovers download delete filters and upload branches[90m 10[2mms[22m[31m[39m
+[31m     → Unable to find an element with the text: download. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"space-y-6 animate-fade-in"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"flex flex-col sm:flex-row sm:items-center justify-between gap-3"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex items-center gap-3"[31m
+        [36m>[31m
+          [36m<a[31m
+            [33mclass[31m=[32m"p-2 rounded-xl glass-subtle hover:bg-white/10 transition-all"[31m
+            [33mdata-to[31m=[32m"/hr"[31m
+            [33mhref[31m=[32m"/hr"[31m
+          [36m>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"material-symbols-outlined "[31m
+            [36m>[31m
+              [0marrow_back[0m
+            [36m</span>[31m
+          [36m</a>[31m
+          [36m<div>[31m
+            [36m<h1[31m
+              [33mclass[31m=[32m"text-xl sm:text-2xl font-bold gradient-text"[31m
+            [36m>[31m
+              [0mhr.documents.title[0m
+            [36m</h1>[31m
+            [36m<p[31m
+              [33mclass[31m=[32m"text-muted-foreground text-xs sm:text-sm mt-1"[31m
+            [36m>[31m
+              [0mhr.documents.subtitle[0m
+            [36m</p>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<button[31m
+          [33mclass[31m=[32m"flex items-center gap-2 px-5 py-2.5 gradient-primary text-white font-semibold text-sm rounded-xl hover:shadow-glow-md transition-all"[31m
+        [36m>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"material-symbols-outlined text-lg"[31m
+          [36m>[31m
+            [0mupload[0m
+          [36m</span>[31m
+          [0mhr.documents.upload[0m
+        [36m</button>[31m
+      [36m</div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"flex flex-col sm:flex-row gap-3"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"relative flex-1"[31m
+        [36m>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xl"[31m
+          [36m>[31m
+            [0msearch[0m
+          [36m</span>[31m
+          [36m<input[31m
+            [33mclass[31m=[32m"w-full pl-10 pr-4 py-2.5 glass-input rounded-xl text-sm"[31m
+            [33mplaceholder[31m=[32m"common.search"[31m
+            [33mvalue[31m=[32m"contract"[31m
+          [36m/>[31m
+        [36m</div>[31m
+        [36m<select[31m
+          [33mclass[31m=[32m"px-4 py-2.5 glass-input rounded-xl text-sm min-w-[140px]"[31m
+        [36m>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m""[31m
+          [36m>[31m
+            [0mhr.documents.documentType[0m
+          [36m</option>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m"contract"[31m
+          [36m>[31m
+            [0mhr.documents.types.contract[0m
+          [36m</option>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m"policy"[31m
+          [36m>[31m
+            [0mhr.documents.types.policy[0m
+          [36m</option>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m"certificate"[31m
+          [36m>[31m
+            [0mhr.documents.types.certificate[0m
+          [36m</option>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m"id"[31m
+          [36m>[31m
+            [0mhr.documents.types.id[0m
+          [36m</option>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m"tax"[31m
+          [36m>[31m
+            [0mhr.documents.types.tax[0m
+          [36m</option>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m"other"[31m
+          [36m>[31m
+            [0mhr.documents.types.other[0m
+          [36m</option>[31m
+        [36m</select>[31m
+      [36m</div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"glass-card rounded-2xl p-12 text-center text-muted-foreground"[31m
+      [36m>[31m
+        [36m<span[31m
+          [33mclass[31m=[32m"material-symbols-outlined text-4xl mb-2 block opacity-50"[31m
+        [36m>[31m
+          [0mdescription[0m
+        [36m</span>[31m
+        [36m<p[31m
+          [33mclass[31m=[32m"text-sm"[31m
+        [36m>[31m
+          [0mcommon.noData[0m
+        [36m</p>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+[31m   [31m×[31m HRAnnouncementsPage[2m > [22mcovers create edit delete target branches[90m 8[2mms[22m[31m[39m
+[31m     → Unable to fire a "change" event - please provide a DOM element.[39m
+[31m   [31m×[31m HRAttendanceIntegrationPage[2m > [22mcovers alerts trend table and filters branches[90m 7[2mms[22m[31m[39m
+[31m     → Unable to find an element with the text: hr.attendanceIntegration.alerts. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"space-y-6 animate-fade-in"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"flex flex-col sm:flex-row sm:items-center justify-between gap-3"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex items-center gap-3"[31m
+        [36m>[31m
+          [36m<a[31m
+            [33mclass[31m=[32m"p-2 rounded-xl glass-subtle hover:bg-white/10 transition-all"[31m
+            [33mdata-to[31m=[32m"/hr"[31m
+            [33mhref[31m=[32m"/hr"[31m
+          [36m>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"material-symbols-outlined "[31m
+            [36m>[31m
+              [0marrow_back[0m
+            [36m</span>[31m
+          [36m</a>[31m
+          [36m<div>[31m
+            [36m<h1[31m
+              [33mclass[31m=[32m"text-xl sm:text-2xl font-bold gradient-text"[31m
+            [36m>[31m
+              [0mhr.attendanceIntegration.title[0m
+            [36m</h1>[31m
+            [36m<p[31m
+              [33mclass[31m=[32m"text-muted-foreground text-xs sm:text-sm mt-1"[31m
+            [36m>[31m
+              [0mhr.attendanceIntegration.subtitle[0m
+            [36m</p>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex gap-2"[31m
+        [36m>[31m
+          [36m<select[31m
+            [33mclass[31m=[32m"px-4 py-2.5 glass-input rounded-xl text-sm"[31m
+          [36m>[31m
+            [36m<option[31m
+              [33mvalue[31m=[32m"thisMonth"[31m
+            [36m>[31m
+              [0mhr.attendanceIntegration.periods.thisMonth[0m
+            [36m</option>[31m
+            [36m<option[31m
+              [33mvalue[31m=[32m"lastMonth"[31m
+            [36m>[31m
+              [0mhr.attendanceIntegration.periods.lastMonth[0m
+            [36m</option>[31m
+            [36m<option[31m
+              [33mvalue[31m=[32m"last3Months"[31m
+            [36m>[31m
+              [0mhr.attendanceIntegration.periods.last3Months[0m
+            [36m</option>[31m
+            [36m<option[31m
+              [33mvalue[31m=[32m"last6Months"[31m
+            [36m>[31m
+              [0mhr.attendanceIntegration.periods.last6Months[0m
+            [36m</option>[31m
+            [36m<option[31m
+              [33mvalue[31m=[32m"thisYear"[31m
+            [36m>[31m
+              [0mhr.attendanceIntegration.periods.thisYear[0m
+            [36m</option>[31m
+          [36m</select>[31m
+          [36m<input[31m
+            [33mclass[31m=[32m"px-4 py-2.5 glass-input rounded-xl text-sm w-32"[31m
+            [33mplaceholder[31m=[32m"hr.attendanceIntegration.department"[31m
+            [33mvalue[31m=[32m""[31m
+          [36m/>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"grid grid-cols-2 sm:grid-cols-4 gap-3"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"glass-card rounded-2xl p-4 text-center"[31m
+        [36m>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"material-symbols-outlined text-2xl text-blue-400 mb-1"[31m
+          [36m>[31m
+            [0mschedule[0m
+          [36m</span>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"text-2xl font-bold"[31m
+          [36m>[31m
+            [0m8.1h[0m
+          [36m</p>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"text-xs text-muted-foreground"[31m
+          [36m>[31m
+            [0mhr.attendanceIntegration.avgWorkHours[0m
+          [36m</p>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"glass-card rounded-2xl p-4 text-center"[31m
+        [36m>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"material-symbols-outlined text-2xl text-amber-400 mb-1"[31m
+          [36m>[31m
+            [0mmore_time[0m
+          [36m</span>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"text-2xl font-bold"[31m
+          [36m>[31m
+            [0m123h[0m
+          [36m</p>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"text-xs text-muted-foreground"[31m
+          [36m>[31m
+            [0mhr.attendanceIntegration.totalOvertime[0m
+          [36m</p>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"glass-card rounded-2xl p-4 text-center"[31m
+        [36m>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"material-symbols-outlined text-2xl text-red-400 mb-1"[31m
+          [36m>[31m
+            [0mrunning_with_errors[0m
+          [36m</span>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"text-2xl font-bold"[31m
+          [36m>[31m
+            [0m4.5%[0m
+          [36m</p>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"text-xs text-muted-foreground"[31m
+          [36m>[31m
+            [0mhr.attendanceIntegration.lateRate[0m
+          [36m</p>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"glass-card rounded-2xl p-4 text-center"[31m
+        [36m>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"material-symbols-outlined text-2xl text-green-400 mb-1"[31m
+          [36m>[31m
+            [0mevent_available[0m
+          [36m</span>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"text-2xl font-bold"[31m
+          [36m>[31m
+            [0m11.2%[0m
+          [36m</p>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"text-xs text-muted-foreground"[31m
+          [36m>[31m
+            [0mhr.attendanceIntegration.paidLeaveUsage[0m
+          [36m</p>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"glass-card rounded-2xl p-4 sm:p-5"[31m
+      [36m>[31m
+        [36m<h3[31m
+          [33mclass[31m=[32m"font-semibold text-sm mb-3 flex items-center gap-2"[31m
+        [36m>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"material-symbols-outlined text-amber-400"[31m
+          [36m>[31m
+            [0mwarning[0m
+          [36m</span>[31m
+          [0mhr.attendanceIntegration.alerts[0m
+          [0m ([0m
+          [0m2[0m
+          [0m)[0m
+        [36m</h3>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"space-y-2"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex items-center gap-3 p-2 glass-subtle rounded-xl"[31m
+          [36m>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"material-symbols-outlined text-sm text-red-400"[31m
+            [36m>[31m
+              [0mmore_time[0m
+            [36m</span>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex-1 min-w-0"[31m
+            [36m>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-sm font-medium truncate"[31m
+              [36m>[31m
+                [0mAlice[0m
+              [36m</p>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-xs text-muted-foreground"[31m
+              [36m>[31m
+                [0mOver threshold[0m
+              [36m</p>[31m
+            [36m</div>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"px-2 py-0.5 rounded text-[10px] font-medium bg-red-500/20 text-red-400"[31m
+            [36m>[31m
+              [0mhr.attendanceIntegration.riskLevels.high[0m
+            [36m</span>[31m
+          [36m</div>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex items-center gap-3 p-2 glass-subtle rounded-xl"[31m
+          [36m>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"material-symbols-outlined text-sm text-amber-400"[31m
+            [36m>[31m
+              [0mrunning_with_errors[0m
+            [36m</span>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex-1 min-w-0"[31m
+            [36m>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-sm font-medium truncate"[31m
+              [36m>[31m
+                [0mBob[0m
+              [36m</p>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-xs text-muted-foreground"[31m
+              [36m>[31m
+                [0mLate arrival[0m
+              [36m</p>[31m
+            [36m</div>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"px-2 py-0.5 rounded text-[10px] font-medium bg-green-500/20 text-green-400"[31m
+            [36m>[31m
+              [0mhr.attendanceIntegration.riskLevels.low[0m
+            [36m</span>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"glass-card rounded-2xl p-4 sm:p-5"[31m
+      [36m>[31m
+        [36m<h3[31m
+          [33mclass[31m=[32m"font-semibold text-sm mb-4"[31m
+        [36m>[31m
+          [0mhr.attendanceIntegration.trend[0m
+        [36m</h3>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex items-end gap-2 h-32"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex-1 flex flex-col items-center gap-1"[31m
+          [36m>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"text-[10px] text-muted-foreground"[31m
+            [36m>[31m
+              [0m5[0m
+              [0mh[0m
+            [36m</span>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"w-full rounded-t-lg bg-indigo-400/60 transition-all"[31m
+              [33mstyle[31m=[32m"height: 50%; min-height: 4px;"[31m
+            [36m/>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"text-[10px] text-muted-foreground truncate w-full text-center"[31m
+            [36m>[31m
+              [0mW1[0m
+            [36m</span>[31m
+          [36m</div>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex-1 flex flex-col items-center gap-1"[31m
+          [36m>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"text-[10px] text-muted-foreground"[31m
+            [36m>[31m
+              [0m10[0m
+              [0mh[0m
+            [36m</span>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"w-full rounded-t-lg bg-indigo-400/60 transition-all"[31m
+              [33mstyle[31m=[32m"height: 100%; min-height: 4px;"[31m
+            [36m/>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"text-[10px] text-muted-foreground truncate w-full text-center"[31m
+            [36m>[31m
+              [0mW2[0m
+            [36m</span>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"md:hidden space-y-3"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"glass-card rounded-2xl p-4"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex items-center justify-between mb-2"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center gap-2"[31m
+            [36m>[31m
+              [36m<div[31m
+                [33mclass[31m=[32m"size-8 rounded-lg bg-indigo-500/20 flex items-center justify-center text-indigo-400 font-bold text-xs"[31m
+              [36m>[31m
+                [0mA[0m
+              [36m</div>[31m
+              [36m<div>[31m
+                [36m<p[31m
+                  [33mclass[31m=[32m"font-semibold text-sm"[31m
+                [36m>[31m
+                  [0mAlice[0m
+                [36m</p>[31m
+                [36m<p[31m
+                  [33mclass[31m=[32m"text-[10px] text-muted-foreground"[31m
+                [36m>[31m
+                  [0mDev[0m
+                [36m</p>[31m
+              [36m</div>[31m
+            [36m</div>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"px-2 py-0.5 rounded text-[10px] font-medium bg-red-500/20 text-red-400"[31m
+            [36m>[31m
+              [0mhr.attendanceIntegration.riskLevels.high[0m
+            [36m</span>[31m
+          [36m</div>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"grid grid-cols-3 gap-2 text-center text-xs"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"glass-subtle rounded-lg p-1.5"[31m
+            [36m>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-muted-foreground"[31m
+              [36m>[31m
+                [0mhr.attendanceIntegration.overtimeHours[0m
+              [36m</p>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"font-bold"[31m
+              [36m>[31m
+                [0m10[0m
+                [0mh[0m
+              [36m</p>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"glass-subtle rounded-lg p-1.5"[31m
+            [36m>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-muted-foreground"[31m
+              [36m>[31m
+                [0mhr.attendanceIntegration.lateRate[0m
+              [36m</p>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"font-bold"[31m
+              [36m>[31m
+                [0m1[0m
+              [36m</p>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"glass-subtle rounded-lg p-1.5"[31m
+            [36m>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-muted-foreground"[31m
+              [36m>[31m
+                [0mhr.attendanceIntegration.paidLeaveUsage[0m
+              [36m</p>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"font-bold"[31m
+              [36m>[31m
+                [0m20[0m
+                [0m%[0m
+              [36m</p>[31m
+            [36m</div>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"hidden md:block glass-card rounded-2xl overflow-hidden"[31m
+      [36m>[31m
+        [36m<table[31m
+          [33mclass[31m=[32m"w-full"[31m
+        [36m>[31m
+          [36m<thead>[31m
+            [36m<tr[31m
+              [33mclass[31m=[32m"border-b border-white/10 text-xs text-muted-foreground"[31m
+            [36m>[31m
+              [36m<th[31m
+                [33mclass[31m=[32m"text-left px-5 py-3 font-medium"[31m
+              [36m>[31m
+                [0mhr.employees.employeeName[0m
+              [36m</th>[31m
+              [36m<th[31m
+                [33mclass[31m=[32m"text-left px-5 py-3 font-medium"[31m
+              [36m>[31m
+                [0mhr.attendanceIntegration.department[0m
+              [36m</th>[31m
+              [36m<th[31m
+                [33mclass[31m=[32m"text-right px-5 py-3 font-medium"[31m
+              [36m>[31m
+                [0mhr.attendanceIntegration.overtimeHours[0m
+              [36m</th>[31m
+              [36m<th[31m
+                [33mclass[31m=[32m"text-right px-5 py-3 font-medium"[31m
+              [36m>[31m
+                [0mhr.attendanceIntegration.lateRate[0m
+              [36m</th>[31m
+              [36m<th[31m
+                [33mclass[31m=[32m"text-right px-5 py-3 font-medium"[31m
+              [36m>[31m
+                [0mhr.attendanceIntegration.paidLeaveUsage[0m
+              [36m</th>[31m
+              [36m<th[31m
+                [33mclass[31m=[32m"text-right px-5 py-3 font-medium"[31m
+              [36m>[31m
+                [0mhr.attendanceIntegration.absentDays[0m
+              [36m</th>[31m
+              [36m<th[31m
+                [33mclass[31m=[32m"text-center px-5 py-3 font-medium"[31m
+              [36m>[31m
+                [0mhr.attendanceIntegration.riskLevel[0m
+              [36m</th>[31m
+            [36m</tr>[31m
+          [36m</thead>[31m
+          [36m<tbody>[31m
+            [36m<tr[31m
+              [33mclass[31m=[32m"border-b border-white/5 hover:bg-white/5 transition-colors"[31m
+            [36m>[31m
+              [36m<td[31m
+                [33mclass[31m=[32m"px-5 py-3 text-sm font-medium"[31m
+              [36m>[31m
+                [0mAlice[0m
+              [36m</td>[31m
+              [36m<td[31m
+                [33mclass[31m=[32m"px-5 py-3 text-sm text-muted-foreground"[31m
+              [36m>[31m
+                [0mDev[0m
+              [36m</td>[31m
+              [36m<td[31m
+                [33mclass[31m=[32m"px-5 py-3 text-sm text-right"[31m
+              [36m>[31m
+                [0m10[0m
+                [0mh[0m
+              [36m</td>[31m
+              [36m<td[31m
+                [33mclass[31m=[32m"px-5 py-3 text-sm text-right"[31m
+              [36m>[31m
+                [0m1[0m
+              [36m</td>[31m
+              [36m<td[31m
+                [33mclass[31m=[32m"px-5 py-3 text-sm text-right"[31m
+              [36m>[31m
+                [0m20[0m
+                [0m%[0m
+              [36m</td>[31m
+              [36m<td[31m
+                [33mclass[31m=[32m"px-5 py-3 text-sm text-right"[31m
+              [36m>[31m
+                [0m0[0m
+              [36m</td>[31m
+              [36m<td[31m
+                [33mclass[31m=[32m"px-5 py-3 text-center"[31m
+              [36m>[31m
+                [36m<span[31m
+                  [33mclass[31m=[32m"px-2 py-0.5 rounded text-[10px] font-medium bg-red-500/20 text-red-400"[31m
+                [36m>[31m
+                  [0mhr.attendanceIntegration.riskLevels.high[0m
+                [36m</span>[31m
+              [36m</td>[31m
+            [36m</tr>[31m
+          [36m</tbody>[31m
+        [36m</table>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+[31m   [31m×[31m HROrgChartPage[2m > [22mcovers array-to-tree conversion, flat mode and expand toggle branches[90m 4[2mms[22m[31m[39m
+[31m     → Found multiple elements with the text: Engineering
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<p[31m
+  [33mclass[31m=[32m"font-semibold text-sm truncate"[31m
+[36m>[31m
+  [0mEngineering[0m
+[36m</p>[31m
+
+Ignored nodes: comments, script, style
+[36m<p[31m
+  [33mclass[31m=[32m"text-[10px] text-indigo-400 truncate"[31m
+[36m>[31m
+  [0mEngineering[0m
+[36m</p>[31m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"space-y-6 animate-fade-in"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"flex flex-col sm:flex-row sm:items-center justify-between gap-3"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex items-center gap-3"[31m
+        [36m>[31m
+          [36m<a[31m
+            [33mclass[31m=[32m"p-2 rounded-xl glass-subtle hover:bg-white/10 transition-all"[31m
+            [33mdata-to[31m=[32m"/hr"[31m
+            [33mhref[31m=[32m"/hr"[31m
+          [36m>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"material-symbols-outlined "[31m
+            [36m>[31m
+              [0marrow_back[0m
+            [36m</span>[31m
+          [36m</a>[31m
+          [36m<div>[31m
+            [36m<h1[31m
+              [33mclass[31m=[32m"text-xl sm:text-2xl font-bold gradient-text"[31m
+            [36m>[31m
+              [0mhr.orgChart.title[0m
+            [36m</h1>[31m
+            [36m<p[31m
+              [33mclass[31m=[32m"text-muted-foreground text-xs sm:text-sm mt-1"[31m
+            [36m>[31m
+              [0mhr.orgChart.subtitle[0m
+            [36m</p>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex gap-2"[31m
+        [36m>[31m
+          [36m<input[31m
+            [33mclass[31m=[32m"px-4 py-2.5 glass-input rounded-xl text-sm w-40"[31m
+            [33mplaceholder[31m=[32m"hr.orgChart.searchPlaceholder"[31m
+            [33mvalue[31m=[32m""[31m
+          [36m/>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex glass-subtle rounded-xl overflow-hidden"[31m
+          [36m>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"px-3 py-2 text-sm flex items-center gap-1 bg-white/10"[31m
+            [36m>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"material-symbols-outlined text-sm"[31m
+              [36m>[31m
+                [0maccount_tree[0m
+              [36m</span>[31m
+              [0mhr.orgChart.treeView[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"px-3 py-2 text-sm flex items-center gap-1 "[31m
+            [36m>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"material-symbols-outlined text-sm"[31m
+              [36m>[31m
+                [0mlist[0m
+              [36m</span>[31m
+              [0mhr.orgChart.flatView[0m
+            [36m</button>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"glass-card rounded-2xl p-4 sm:p-6 overflow-x-auto"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex justify-center min-w-[600px]"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex flex-col items-center"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"glass-card rounded-2xl p-3 sm:p-4 text-center min-w-[140px] max-w-[200px] relative cursor-pointer hover:bg-white/10 transition-all"[31m
+            [36m>[31m
+              [36m<div[31m
+                [33mclass[31m=[32m"size-12 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400 font-bold mx-auto mb-2"[31m
+              [36m>[31m
+                [0mh[0m
+              [36m</div>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"font-semibold text-sm truncate"[31m
+              [36m>[31m
+                [0mhr.orgChart.title[0m
+              [36m</p>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-[10px] text-muted-foreground truncate"[31m
+              [36m/>[31m
+              [36m<p[31m
+                [33mclass[31m=[32m"text-[10px] text-indigo-400 truncate"[31m
+              [36m/>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"material-symbols-outlined absolute -bottom-2 left-1/2 -translate-x-1/2 text-sm glass-subtle rounded-full size-5 flex items-center justify-center"[31m
+              [36m>[31m
+                [0mexpand_less[0m
+              [36m</span>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"mt-6 relative"[31m
+            [36m>[31m
+              [36m<div[31m
+                [33mclass[31m=[32m"absolute top-0 left-1/2 w-px h-4 bg-white/20 -translate-y-2"[31m
+              [36m/>[31m
+              [36m<div[31m
+                [33mclass[31m=[32m"absolute top-4 left-0 right-0 h-px bg-white/20 -translate-y-2"[31m
+              [36m/>[31m
+              [36m<div[31m
+                [33mclass[31m=[32m"flex gap-4 pt-4"[31m
+              [36m>[31m
+                [36m<div[31m
+                  [33mclass[31m=[32m"flex flex-col items-center relative"[31m
+                [36m>[31m
+                  [36m<div[31m
+                    [33mclass[31m=[32m"absolute top-0 left-1/2 w-px h-4 bg-white/20 -translate-y-4"[31m
+                  [36m/>[31m
+                  [36m<div[31m
+                    [33mclass[31m=[32m"flex flex-col items-center"[31m
+                  [36m>[31m
+                    [36m<div[31m
+                      [33mclass[31m=[32m"glass-card rounded-2xl p-3 sm:p-4 text-center min-w-[140px] max-w-[200px] relative cursor-pointer hover:bg-white/10 transition-all"[31m
+                    [36m>[31m
+                      [36m<div[31m
+                        [33mclass[31m=[32m"size-12 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400 font-bold mx-auto mb-2"[31m
+                      [36m>[31m
+                        [0mE[0m
+                      [36m</div>[31m
+                      [36m<p[31m
+                        [33mclass[31m=[32m"font-semibold text-sm truncate"[31m
+                      [36m>[31m
+                        [0mEngineering[0m
+                      [36m</p>[31m
+                      [36m<p[31m
+                        [33mclass[31m=[32m"text-[10px] text-muted-foreground truncate"[31m
+                      [36m/>[31m
+                      [36m<p[31m
+                        [33mclass[31m=[32m"text-[10px] text-indigo-400 truncate"[31m
+                      [36m/>[31m
+                      [36m<span[31m
+                        [33mclass[31m=[32m"material-symbols-outlined absolute -bottom-2 left-1/2 -translate-x-1/2 text-sm glass-subtle rounded-full size-5 flex items-center justify-center"[31m
+                      [36m>[31m
+                        [0mexpand_less[0m
+                      [36m</span>[31m
+                    [36m</div>[31m
+                    [36m<div[31m
+                      [33mclass[31m=[32m"mt-6 relative"[31m
+                    [36m>[31m
+                      [36m<div[31m
+                        [33mclass[31m=[32m"absolute top-0 left-1/2 w-px h-4 bg-white/20 -translate-y-2"[31m
+                      [36m/>[31m
+                      [36m<div[31m
+                        [33mclass[31m=[32m"absolute top-4 left-0 right-0 h-px bg-white/20 -translate-y-2"[31m
+                      [36m/>[31m
+                      [36m<div[31m
+                        [33mclass[31m=[32m"flex gap-4 pt-4"[31m
+                      [36m>[31m
+                        [36m<div[31m
+                          [33mclass[31m=[32m"flex flex-col items-center relative"[31m
+                        [36m>[31m
+                          [36m<div[31m
+                            [33mclass[31m=[32m"absolute top-0 left-1/2 w-px h-4 bg-white/20 -translate-y-4"[31m
+                          [36m/>[31m
+                          [36m<div[31m
+                            [33mclass[31m=[32m"flex flex-col items-center"[31m
+                          [36m>[31m
+                            [36m<div[31m
+                              [33mclass[31m=[32m"glass-card rounded-2xl p-3 sm:p-4 text-center min-w-[140px] max-w-[200px] relative cursor-pointer hover:bg-white/10 transition-all"[31m
+                            [36m>[31m
+                              [36m<div[31m
+                                [33mclass[31m=[32m"size-12 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400 font-bold mx-auto mb-2"[31m
+                              [36m>[31m
+                                [0mA[0m
+                              [36m</div>[31m
+                              [36m<p[31m
+                                [33mclass[31m=[32m"font-semibold text-sm truncate"[31m
+                              [36m>[31m
+                                [0mAlice[0m
+                              [36m</p>[31m
+                              [36m<p[31m
+                                [33mclass[31m=[32m"text-[10px] text-muted-foreground truncate"[31m
+                              [36m>[31m
+                                [0mMgr[0m
+                              [36m</p>[31m
+                              [36m<p[31m
+                                [33mclass[31m=[32m"text-[10px] text-indigo-400 truncate"[31m
+                              [36m>[31m
+                                [0mEngineering[0m
+                              [36m</p>[31m
+                            [36m</div>[31m
+                          [36m</div>[31m
+                        [36m</div>[31m
+                        [36m<div[31m
+                          [33mclass[31m=[32m"flex flex-col items-center relative"[31m
+                        [36m>[31m
+                          [36m<div[31m
+                            [33mclass[31m=[32m"absolute top-0 left-1/2 w-px h-4 bg-white/20 -translate-y-4"[31m
+                          [36m/>[31m
+                          [36m<div[31m
+                            [33mclass[31m=[32m"flex flex-col items-center"[31m
+                          [36m>[31m
+                            [36m<div[31m
+                              [33mclass[31m=[32m"glass-card rounded-2xl p-3 sm:p-4 text-center min-w-[140px] max-w-[200px] relative cursor-pointer hover:bg-white/10 transition-all"[31m
+                            [36m>[31m
+                              [36m<div[31m
+                                [33mclass[31m=[32m"size-12 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400 font-bold mx-auto mb-2"[31m
+                              [36m>[31m
+                                [0mP[0m
+                              [36m</div>[31m
+                              [36m<p[31m
+                                [33mclass[31m=[32m"font-semibold text-sm truncate"[31m
+                              [36m>[31m
+                                [0mPlatform[0m
+                              [36m</p>[31m
+                              [36m<p[31m
+                                [33mclass[31m=[32m"text-[10px] text-muted-foreground truncate"[31m
+                              [36m/>[31m
+                              [36m<p[31m
+                                [33mclass[31m=[32m"text-[10px] text-indigo-400 truncate"[31m
+                              [36m/>[31m
+                              [36m<span[31m
+                                [33mclass[31m=[32m"material-symbols-outlined absolute -bottom-2 left-1/2 -translate-x-1/2 text-sm glass-subtle rounded-full size-5 flex items-center justify-center"[31m
+                              [36m>[31m
+                                [0mexpand_more[0m
+                              [36m</span>[31m
+                            [36m</div>[31m
+                          [36m</div>[31m
+                        [36m</div>[31m
+                      [36m</div>[31m
+                    [36m</div>[31m
+                  [36m</div>[31m
+                [36m</div>[31m
+                [36m<div[31m
+                  [33mclass[31m=[32m"flex flex-col items-center relative"[31m
+                [36m>[31m
+                  [36m<div[31m
+                    [33mclass[31m=[32m"absolute top-0 left-1/2 w-px h-4 bg-white/20 -translate-y-4"[31m
+                  [36m/>[31m
+                  [36m<div[31m
+                    [33mclass[31m=[32m"flex flex-col items-center"[31m
+                  [36m>[31m
+                    [36m<div[31m
+                      [33mclass[31m=[32m"glass-card rounded-2xl p-3 sm:p-4 text-center min-w-[140px] max-w-[200px] relative cursor-pointer hover:bg-white/10 transition-all"[31m
+                    [36m>[31m
+                      [36m<div[31m
+                        [33mclass[31m=[32m"size-12 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400 font-bold mx-auto mb-2"[31m
+                      [36m>[31m
+                        [0mH[0m
+                      [36m</div>[31m
+                      [36m<p[31m
+                        [33mclass[31m=[32m"font-semibold text-sm truncate"[31m
+                      [36m>[31m
+                        [0mHR[0m
+                      [36m</p>[31m
+                      [36m<p[31m
+                        [33mclass[31m=[32m"text-[10px] text-muted-foreground truncate"[31m
+                      [36m/>[31m
+                      [36m<p[31m
+                        [33mclass[31m=[32m"text-[10px] text-indigo-400 truncate"[31m
+                      [36m/>[31m
+                    [36m</div>[31m
+                  [36m</div>[31m
+                [36m</div>[31m
+              [36m</div>[31m
+            [36m</div>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+[31m   [31m×[31m HROneOnOnePage[2m > [22mcovers create detail toggle-action and delete branches[90m 5[2mms[22m[31m[39m
+[31m     → Unable to fire a "change" event - please provide a DOM element.[39m
+[31m   [31m×[31m HRSkillMapPage[2m > [22mcovers map add-skill and gap-analysis branches[90m 5[2mms[22m[31m[39m
+[31m     → Unable to fire a "change" event - please provide a DOM element.[39m
+[31m   [31m×[31m HRSalarySimulatorPage[2m > [22mcovers fallback and full data simulation branches[90m 19[2mms[22m[31m[39m
+[31m     → Unable to fire a "change" event - please provide a DOM element.[39m
+[31m   [31m×[31m HROnboardingPage[2m > [22mcovers create and toggle-task branches[90m 7[2mms[22m[31m[39m
+[31m     → Unable to fire a "change" event - please provide a DOM element.[39m
+[31m   [31m×[31m HROffboardingPage[2m > [22mcovers analytics create and checklist branches[90m 8[2mms[22m[31m[39m
+[31m     → Unable to fire a "change" event - please provide a DOM element.[39m
+[31m   [31m×[31m HRSurveyPage[2m > [22mcovers create publish close results and delete branches[90m 7[2mms[22m[31m[39m
+[31m     → Unable to fire a "change" event - please provide a DOM element.[39m
+
+node.exe : [31m⎯⎯⎯⎯⎯⎯[1m[7m Failed Tests 14 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+At C:\Users\sho_y\AppData\Roaming\npm\pnpm.ps1:24 char:5
++     & "node$exe"  "$basedir/node_modules/pnpm/bin/pnpm.cjs" $args
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([31m⎯⎯⎯⎯⎯⎯[1m...22m⎯⎯⎯⎯⎯⎯⎯[39m:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+[31m[1m[7m FAIL [27m[22m[39m src/pages/hr.branch.test.tsx[2m > [22mHREmployeesPage[2m > [22mcovers list filte
+rs pagination and create branches
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an element with the text: chevron_right. This could be be
+cause the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to mak
+e your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"space-y-6 animate-fade-in"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"flex flex-col sm:flex-row sm:items-center justify-between gap-3"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex items-center gap-3"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"p-2 rounded-xl glass-subtle hover:bg-white/10 transition-all"[39m
+            [33mdata-to[39m=[32m"/hr"[39m
+            [33mhref[39m=[32m"/hr"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"material-symbols-outlined "[39m
+            [36m>[39m
+              [0marrow_back[0m
+            [36m</span>[39m
+          [36m</a>[39m
+          [36m<div>[39m
+            [36m<h1[39m
+              [33mclass[39m=[32m"text-xl sm:text-2xl font-bold gradient-text"[39m
+            [36m>[39m
+              [0mhr.employees.title[0m
+            [36m</h1>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-muted-foreground text-xs sm:text-sm mt-1"[39m
+            [36m>[39m
+              [0mhr.employees.subtitle[0m
+              [0m · [0m
+              [0mhr.employees.totalCount:0[0m
+            [36m</p>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"flex items-center gap-2 px-5 py-2.5 gradient-primary text-white font-semibold text-sm r
+ounded-xl hover:shadow-glow-md transition-all"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"material-symbols-outlined text-lg"[39m
+          [36m>[39m
+            [0mperson_add[0m
+          [36m</span>[39m
+          [0mhr.employees.addEmployee[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"glass-card rounded-2xl p-4 flex flex-wrap gap-3"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex-1 min-w-[200px]"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreg
+round text-lg"[39m
+            [36m>[39m
+              [0msearch[0m
+            [36m</span>[39m
+            [36m<input[39m
+              [33mclass[39m=[32m"w-full pl-10 pr-4 py-2.5 glass-input rounded-xl text-sm"[39m
+              [33mplaceholder[39m=[32m"common.search"[39m
+              [33mtype[39m=[32m"text"[39m
+              [33mvalue[39m=[32m"abc"[39m
+            [36m/>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<select[39m
+          [33mclass[39m=[32m"px-3 py-2.5 glass-input rounded-xl text-sm"[39m
+        [36m>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m""[39m
+          [36m>[39m
+            [0mhr.employees.department[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"d1"[39m
+          [36m>[39m
+            [0mDev[0m
+          [36m</option>[39m
+        [36m</select>[39m
+        [36m<select[39m
+          [33mclass[39m=[32m"px-3 py-2.5 glass-input rounded-xl text-sm"[39m
+        [36m>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m""[39m
+          [36m>[39m
+            [0mcommon.status[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"active"[39m
+          [36m>[39m
+            [0mhr.employees.statuses.active[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"onLeave"[39m
+          [36m>[39m
+            [0mhr.employees.statuses.onLeave[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"resigned"[39m
+          [36m>[39m
+            [0mhr.employees.statuses.resigned[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"terminated"[39m
+          [36m>[39m
+            [0mhr.employees.statuses.terminated[0m
+          [36m</option>[39m
+        [36m</select>[39m
+        [36m<select[39m
+          [33mclass[39m=[32m"px-3 py-2.5 glass-input rounded-xl text-sm"[39m
+        [36m>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m""[39m
+          [36m>[39m
+            [0mhr.employees.employmentType[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"fullTime"[39m
+          [36m>[39m
+            [0mhr.employees.types.fullTime[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"partTime"[39m
+          [36m>[39m
+            [0mhr.employees.types.partTime[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"contract"[39m
+          [36m>[39m
+            [0mhr.employees.types.contract[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"intern"[39m
+          [36m>[39m
+            [0mhr.employees.types.intern[0m
+          [36m</option>[39m
+          [36m<option[39m
+            [33mvalue[39m=[32m"temporary"[39m
+          [36m>[39m
+            [0mhr.employees.types.temporary[0m
+          [36m</option>[39m
+        [36m</select>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"glass-card rounded-2xl p-4 sm:p-6"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"text-center py-12 text-muted-foreground"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"material-symbols-outlined text-4xl mb-2 block opacity-50"[39m
+          [36m>[39m
+            [0mperson_search[0m
+          [36m</span>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"text-sm"[39m
+          [36m>[39m
+            [0mcommon.noData[0m
+          [36m</p>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m109:15[22m[39m
+[36m [2m❯[22m clickButtonByIcon src/pages/hr.branch.test.tsx:[2m215:6[22m[39m
+    [90m213| [39m[35mfunction[39m [34mclickButtonByIcon[39m(icon[33m:[39m string[33m,[39m index [33m=[39m 
+[34m0[39m) {
+    [90m214| [39m  [35mconst[39m buttons [33m=[39m screen
+    [90m215| [39m    [33m.[39m[34mgetAllByText[39m(icon)
+    [90m   | [39m     [31m^[39m
+    [90m216| [39m    [33m.[39m[34mmap[39m((node) [33m=>[39m node[33m.[39m[34mclosest[39m([32m'button'[39m
+))
+    [90m217| [39m    [33m.[39m[34mfilter[39m((button)[33m:[39m button is [33mHTMLButtonElement[39m [33m=>[3
+9m button [35minstanceof[39m…
+[90m [2m❯[22m src/pages/hr.branch.test.tsx:[2m330:5[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/14]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/pages/hr.branch.test.tsx[2m > [22mHREmployeeDetailPage[2m > [22mcovers profi
+le goals docs history and edit branches
+[31m[1mTestingLibraryElementError[22m[39m: Found multiple elements with the text: Yamada Taro
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<h1[39m
+  [33mclass[39m=[32m"text-xl sm:text-2xl font-bold gradient-text"[39m
+[36m>[39m
+  [0mYamada[0m
+  [0m [0m
+  [0mTaro[0m
+[36m</h1>[39m
+
+Ignored nodes: comments, script, style
+[36m<span[39m
+  [33mclass[39m=[32m"text-sm font-medium"[39m
+[36m>[39m
+  [0mYamada Taro[0m
+[36m</span>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAl
+lByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"space-y-6 animate-fade-in"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"flex flex-col sm:flex-row sm:items-center justify-between gap-3"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex items-center gap-3"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"p-2 rounded-xl glass-subtle hover:bg-white/10 transition-all"[39m
+            [33mdata-to[39m=[32m"/hr/employees"[39m
+            [33mhref[39m=[32m"/hr/employees"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"material-symbols-outlined "[39m
+            [36m>[39m
+              [0marrow_back[0m
+            [36m</span>[39m
+          [36m</a>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"size-12 sm:size-14 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex 
+items-center justify-center text-white font-bold text-lg sm:text-xl"[39m
+          [36m>[39m
+            [0mY[0m
+          [36m</div>[39m
+          [36m<div>[39m
+            [36m<h1[39m
+              [33mclass[39m=[32m"text-xl sm:text-2xl font-bold gradient-text"[39m
+            [36m>[39m
+              [0mYamada[0m
+              [0m [0m
+              [0mTaro[0m
+            [36m</h1>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-xs sm:text-sm text-muted-foreground"[39m
+            [36m>[39m
+              [0mEngineer[0m
+              [0m · [0m
+              [0mDev[0m
+            [36m</p>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"flex items-center gap-2 px-4 py-2 glass-subtle hover:bg-white/10 rounded-xl text-sm tra
+nsition-all border border-white/5"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"material-symbols-outlined text-base"[39m
+          [36m>[39m
+            [0medit[0m
+          [36m</span>[39m
+          [0mhr.detail.editProfile[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"flex gap-1 glass-card rounded-2xl p-1.5 overflow-x-auto"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap tr
+ansition-all bg-indigo-500/20 text-indigo-400"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"material-symbols-outlined text-base"[39m
+          [36m>[39m
+            [0mperson[0m
+          [36m</span>[39m
+          [0mhr.detail.tabs.profile[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap tr
+ansition-all text-muted-foreground hover:bg-white/5"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"material-symbols-outlined text-base"[39m
+          [36m>[39m
+            [0mflag[0m
+          [36m</span>[39m
+          [0mhr.detail.tabs.goals[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap tr
+ansition-all text-muted-foreground hover:bg-white/5"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"material-symbols-outlined text-base"[39m
+          [36m>[39m
+            [0mdescription[0m
+          [36m</span>[39m
+          [0mhr.detail.tabs.documents[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap tr
+ansition-all text-muted-foreground hover:bg-white/5"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"material-symbols-outlined text-base"[39m
+          [36m>[39m
+            [0mhistory[0m
+          [36m</span>[39m
+          [0mhr.detail.tabs.history[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"grid grid-cols-1 lg:grid-cols-2 gap-6"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"glass-card rounded-2xl p-4 sm:p-6"[39m
+        [36m>[39m
+          [36m<h2[39m
+            [33mclass[39m=[32m"text-lg font-semibold mb-4 flex items-center gap-2"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"material-symbols-outlined text-indigo-400"[39m
+            [36m>[39m
+              [0mbadge[0m
+            [36m</span>[39m
+            [0mhr.detail.basicInfo[0m
+          [36m</h2>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"space-y-3"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm text-muted-foreground"[39m
+              [36m>[39m
+                [0mhr.employees.employeeId[0m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm font-medium"[39m
+              [36m>[39m
+                [0mEMP-1[0m
+              [36m</span>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm text-muted-foreground"[39m
+              [36m>[39m
+                [0musers.name[0m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm font-medium"[39m
+              [36m>[39m
+                [0mYamada Taro[0m
+              [36m</span>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm text-muted-foreground"[39m
+              [36m>[39m
+                [0mcommon.email[0m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm font-medium"[39m
+              [36m>[39m
+                [0mtaro@example.com[0m
+              [36m</span>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm text-muted-foreground"[39m
+              [36m>[39m
+                [0mhr.employees.birthDate[0m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm font-medium"[39m
+              [36m>[39m
+                [0m-[0m
+              [36m</span>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm text-muted-foreground"[39m
+              [36m>[39m
+                [0mhr.employees.gender[0m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm font-medium"[39m
+              [36m>[39m
+                [0m-[0m
+              [36m</span>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"glass-card rounded-2xl p-4 sm:p-6"[39m
+        [36m>[39m
+          [36m<h2[39m
+            [33mclass[39m=[32m"text-lg font-semibold mb-4 flex items-center gap-2"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"material-symbols-outlined text-emerald-400"[39m
+            [36m>[39m
+              [0mwork[0m
+            [36m</span>[39m
+            [0mhr.detail.employment[0m
+          [36m</h2>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"space-y-3"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm text-muted-foreground"[39m
+              [36m>[39m
+                [0mhr.employees.department[0m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm font-medium"[39m
+              [36m>[39m
+                [0mDev[0m
+              [36m</span>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm text-muted-foreground"[39m
+              [36m>[39m
+                [0mhr.employees.position[0m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm font-medium"[39m
+              [36m>[39m
+                [0mEngineer[0m
+              [36m</span>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm text-muted-foreground"[39m
+              [36m>[39m
+                [0mhr.employees.employmentType[0m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm font-medium"[39m
+              [36m>[39m
+                [0mhr.employees.types.fullTime[0m
+              [36m</span>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm text-muted-foreground"[39m
+              [36m>[39m
+                [0mhr.employees.hireDate[0m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm font-medium"[39m
+              [36m>[39m
+                [0m-[0m
+              [36m</span>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm text-muted-foreground"[39m
+              [36m>[39m
+                [0mcommon.status[0m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm font-medium"[39m
+              [36m>[39m
+                [0mhr.employees.statuses.active[0m
+              [36m</span>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"glass-card rounded-2xl p-4 sm:p-6"[39m
+        [36m>[39m
+          [36m<h2[39m
+            [33mclass[39m=[32m"text-lg font-semibold mb-4 flex items-center gap-2"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"material-symbols-outlined text-blue-400"[39m
+            [36m>[39m
+              [0mcontact_phone[0m
+            [36m</span>[39m
+            [0mhr.detail.contactInfo[0m
+          [36m</h2>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"space-y-3"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm text-muted-foreground"[39m
+              [36m>[39m
+                [0mhr.employees.phoneNumber[0m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm font-medium text-right max-w-[60%]"[39m
+              [36m>[39m
+                [0m-[0m
+              [36m</span>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm text-muted-foreground"[39m
+              [36m>[39m
+                [0mhr.employees.address[0m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm font-medium text-right max-w-[60%]"[39m
+              [36m>[39m
+                [0mTokyo[0m
+              [36m</span>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex items-center justify-between py-2 border-b border-white/5 last:border-0"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm text-muted-foreground"[39m
+              [36m>[39m
+                [0mhr.employees.emergencyContact[0m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm font-medium text-right max-w-[60%]"[39m
+              [36m>[39m
+                [0m-[0m
+              [36m</span>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"glass-card rounded-2xl p-4 sm:p-6"[39m
+        [36m>[39m
+          [36m<h2[39m
+            [33mclass[39m=[32m"text-lg font-semibold mb-4 flex items-center gap-2"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"material-symbols-outlined text-amber-400"[39m
+            [36m>[39m
+              [0mpsychology[0m
+            [36m</span>[39m
+            [0mhr.detail.skills[0m
+          [36m</h2>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex flex-wrap gap-2"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"px-3 py-1.5 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-fu
+ll text-xs font-medium"[39m
+            [36m>[39m
+              [0mGo[0m
+            [36m</span>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"px-3 py-1.5 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-fu
+ll text-xs font-medium"[39m
+            [36m>[39m
+              [0mReact[0m
+            [36m</span>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m getElementError node_modules/@testing-library/dom/dist/query-helpers.js:[2m20:35[22m[39m
+[90m [2m❯[22m getMultipleElementsFoundError node_modules/@testing-library/dom/dist/query-helpers.js:[2m23:10[22m[
+39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m55:13[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m src/pages/hr.branch.test.tsx:[2m408:19[22m[39m
+    [90m406| [39m
+    [90m407| [39m    [34mrender[39m([33m<[39m[33mHREmployeeDetailPage[39m [33m/[39m[33m>[39m)[33m;[39m
+    [90m408| [39m    [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m'Yamada Taro'[39m))[33m.[39m[34mt
+oBeInTheDocument[39m()[33m;[39m
+    [90m   | [39m                  [31m^[39m
+    [90m409| [39m    [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m'Go'[39m))[33m.[39m[34mtoBeInTheD
+ocument[39m()[33m;[39m
+    [90m410| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/14]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/pages/hr.branch.test.tsx[2m > [22mHRGoalsPage[2m > [22mcovers list progress 
+delete and create branches
+[31m[1mError[22m: Unable to fire a "change" event - please provide a DOM element.[39m
+[90m [2m❯[22m createEvent node_modules/@testing-library/dom/dist/events.js:[2m27:11[22m[39m
+[90m [2m❯[22m createEvent.<computed> [as change] node_modules/@testing-library/dom/dist/events.js:[2m106:38[22m[3
+9m
+[90m [2m❯[22m fireEvent.<computed> [as change] node_modules/@testing-library/dom/dist/events.js:[2m110:68[22m[39m
+[90m [2m❯[22m fireEvent.<computed> [as change] node_modules/@testing-library/react/dist/fire-event.js:[2m15:52[22m
+[39m
+[36m [2m❯[22m src/pages/hr.branch.test.tsx:[2m619:15[22m[39m
+    [90m617| [39m    [34mclickButtonByText[39m([32m'hr.goals.addGoal'[39m)[33m;[39m
+    [90m618| [39m    [35mconst[39m modalInputs [33m=[39m document[33m.[39m[34mquerySelectorAll[39m([32m'.fix
+ed input[type="[39m…
+    [90m619| [39m    fireEvent[33m.[39m[34mchange[39m(modalInputs[[34m0[39m] [35mas[39m [33mHTMLInputElement
+[39m[33m,[39m { target[33m:[39m { v…
+    [90m   | [39m              [31m^[39m
+    [90m620| [39m    fireEvent[33m.[39m[34mchange[39m(document[33m.[39m[34mquerySelector[39m([32m'.fixed tex
+tarea[rows="3"][39m…
+    [90m621| [39m      target[33m:[39m { value[33m:[39m [32m'KR-A\nKR-B'[39m }[33m,[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/14]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/pages/hr.branch.test.tsx[2m > [22mHRRecruitmentPage[2m > [22mcovers position
+/applicant actions and stage branches
+[31m[1mError[22m: button not found for hr.recruitment.stages.screening[39m
+[36m [2m❯[22m clickButtonByText src/pages/hr.branch.test.tsx:[2m209:22[22m[39m
+    [90m207| [39m  [35mconst[39m node [33m=[39m screen[33m.[39m[34mgetAllByText[39m(text)[index][33m;[39m
+    [90m208| [39m  [35mconst[39m button [33m=[39m node[33m.[39m[34mclosest[39m([32m'button'[39m)[33m;[39m
+    [90m209| [39m  [35mif[39m ([33m![39mbutton) [35mthrow[39m [35mnew[39m [33mError[39m([32m`button not fo
+und for [39m[36m${[39mtext[36m}[39m[32m`[39m)[33m;[39m
+    [90m   | [39m                     [31m^[39m
+    [90m210| [39m  fireEvent[33m.[39m[34mclick[39m(button)[33m;[39m
+    [90m211| [39m}
+[90m [2m❯[22m src/pages/hr.branch.test.tsx:[2m756:5[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/14]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/pages/hr.branch.test.tsx[2m > [22mHRDocumentsPage[2m > [22mcovers download d
+elete filters and upload branches
+[31m[1mTestingLibraryElementError[22m: Unable to find an element with the text: download. This could be because the 
+text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your mat
+cher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"space-y-6 animate-fade-in"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"flex flex-col sm:flex-row sm:items-center justify-between gap-3"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex items-center gap-3"[31m
+        [36m>[31m
+          [36m<a[31m
+            [33mclass[31m=[32m"p-2 rounded-xl glass-subtle hover:bg-white/10 transition-all"[31m
+            [33mdata-to[31m=[32m"/hr"[31m
+            [33mhref[31m=[32m"/hr"[31m
+          [36m>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"material-symbols-outlined "[31m
+            [36m>[31m
+              [0marrow_back[0m
+            [36m</span>[31m
+          [36m</a>[31m
+          [36m<div>[31m
+            [36m<h1[31m
+              [33mclass[31m=[32m"text-xl sm:text-2xl font-bold gradient-text"[31m
+            [36m>[31m
+              [0mhr.documents.title[0m
+            [36m</h1>[31m
+            [36m<p[31m
+              [33mclass[31m=[32m"text-muted-foreground text-xs sm:text-sm mt-1"[31m
+            [36m>[31m
+              [0mhr.documents.subtitle[0m
+            [36m</p>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<button[31m
+          [33mclass[31m=[32m"flex items-center gap-2 px-5 py-2.5 gradient-primary text-white font-semibold text-sm r
+ounded-xl hover:shadow-glow-md transition-all"[31m
+        [36m>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"material-symbols-outlined text-lg"[31m
+          [36m>[31m
+            [0mupload[0m
+          [36m</span>[31m
+          [0mhr.documents.upload[0m
+        [36m</button>[31m
+      [36m</div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"flex flex-col sm:flex-row gap-3"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"relative flex-1"[31m
+        [36m>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-muted-foregro
+und text-xl"[31m
+          [36m>[31m
+            [0msearch[0m
+          [36m</span>[31m
+          [36m<input[31m
+            [33mclass[31m=[32m"w-full pl-10 pr-4 py-2.5 glass-input rounded-xl text-sm"[31m
+            [33mplaceholder[31m=[32m"common.search"[31m
+            [33mvalue[31m=[32m"contract"[31m
+          [36m/>[31m
+        [36m</div>[31m
+        [36m<select[31m
+          [33mclass[31m=[32m"px-4 py-2.5 glass-input rounded-xl text-sm min-w-[140px]"[31m
+        [36m>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m""[31m
+          [36m>[31m
+            [0mhr.documents.documentType[0m
+          [36m</option>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m"contract"[31m
+          [36m>[31m
+            [0mhr.documents.types.contract[0m
+          [36m</option>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m"policy"[31m
+          [36m>[31m
+            [0mhr.documents.types.policy[0m
+          [36m</option>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m"certificate"[31m
+          [36m>[31m
+            [0mhr.documents.types.certificate[0m
+          [36m</option>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m"id"[31m
+          [36m>[31m
+            [0mhr.documents.types.id[0m
+          [36m</option>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m"tax"[31m
+          [36m>[31m
+            [0mhr.documents.types.tax[0m
+          [36m</option>[31m
+          [36m<option[31m
+            [33mvalue[31m=[32m"other"[31m
+          [36m>[31m
+            [0mhr.documents.types.other[0m
+          [36m</option>[31m
+        [36m</select>[31m
+      [36m</div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"glass-card rounded-2xl p-12 text-center text-muted-foreground"[31m
+      [36m>[31m
+        [36m<span[31m
+          [33mclass[31m=[32m"material-symbols-outlined text-4xl mb-2 block opacity-50"[31m
+        [36m>[31m
+          [0mdescription[0m
+        [36m</span>[31m
+        [36m<p[31m
+          [33mclass[31m=[32m"text-sm"[31m
+        [36m>[31m
+          [0mcommon.noData[0m
+        [36m</p>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+[90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m109:15[22m[39m
+[36m [2m❯[22m clickButtonByIcon src/pages/hr.branch.test.tsx:[2m215:6[22m[39m
+    [90m213| [39m[35mfunction[39m [34mclickButtonByIcon[39m(icon[33m:[39m string[33m,[39m index [33m=[39m 
+[34m0[39m) {
+    [90m214| [39m  [35mconst[39m buttons [33m=[39m screen
+    [90m215| [39m    [33m.[39m[34mgetAllByText[39m(icon)
+    [90m   | [39m     [31m^[39m
+    [90m216| [39m    [33m.[39m[34mmap[39m((node) [33m=>[39m node[33m.[39m[34mclosest[39m([32m'button'[39m
+))
+    [90m217| [39m    [33m.[39m[34mfilter[39m((button)[33m:[39m button is [33mHTMLButtonElement[39m [33m=>[3
+9m button [35minstanceof[39m…
+[90m [2m❯[22m src/pages/hr.branch.test.tsx:[2m808:5[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/14]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/pages/hr.branch.test.tsx[2m > [22mHRAnnouncementsPage[2m > [22mcovers create
+ edit delete target branches
+[31m[1mError[22m: Unable to fire a "change" event - please provide a DOM element.[39m
+[90m [2m❯[22m createEvent node_modules/@testing-library/dom/dist/events.js:[2m27:11[22m[39m
+[90m [2m❯[22m createEvent.<computed> [as change] node_modules/@testing-library/dom/dist/events.js:[2m106:38[22m[3
+9m
+[90m [2m❯[22m fireEvent.<computed> [as change] node_modules/@testing-library/dom/dist/events.js:[2m110:68[22m[39m
+[90m [2m❯[22m fireEvent.<computed> [as change] node_modules/@testing-library/react/dist/fire-event.js:[2m15:52[22m
+[39m
+[36m [2m❯[22m src/pages/hr.branch.test.tsx:[2m877:15[22m[39m
+    [90m875| [39m    [34mclickButtonByText[39m([32m'hr.announcements.addAnnouncement'[39m)[33m;[39m
+    [90m876| [39m    [35mconst[39m modalInputs [33m=[39m document[33m.[39m[34mquerySelectorAll[39m([32m'.fix
+ed input[type="[39m…
+    [90m877| [39m    fireEvent[33m.[39m[34mchange[39m(modalInputs[[34m0[39m] [35mas[39m [33mHTMLInputElement
+[39m[33m,[39m { target[33m:[39m { v…
+    [90m   | [39m              [31m^[39m
+    [90m878| [39m    fireEvent[33m.[39m[34mchange[39m(document[33m.[39m[34mquerySelector[39m([32m'.fixed tex
+tarea'[39m) [35mas[39m [33mHTML[39m…
+    [90m879| [39m    [35mconst[39m modalSelects [33m=[39m document[33m.[39m[34mquerySelectorAll[39m([32m'.fi
+xed select'[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/14]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/pages/hr.branch.test.tsx[2m > [22mHRAttendanceIntegrationPage[2m > [22mcover
+s alerts trend table and filters branches
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an element with the text: hr.attendanceIntegration.alerts
+. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your t
+ext matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"space-y-6 animate-fade-in"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"flex flex-col sm:flex-row sm:items-center justify-between gap-3"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex items-center gap-3"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"p-2 rounded-xl glass-subtle hover:bg-white/10 transition-all"[39m
+            [33mdata-to[39m=[32m"/hr"[39m
+            [33mhref[39m=[32m"/hr"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"material-symbols-outlined "[39m
+            [36m>[39m
+              [0marrow_back[0m
+            [36m</span>[39m
+          [36m</a>[39m
+          [36m<div>[39m
+            [36m<h1[39m
+              [33mclass[39m=[32m"text-xl sm:text-2xl font-bold gradient-text"[39m
+            [36m>[39m
+              [0mhr.attendanceIntegration.title[0m
+            [36m</h1>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-muted-foreground text-xs sm:text-sm mt-1"[39m
+            [36m>[39m
+              [0mhr.attendanceIntegration.subtitle[0m
+            [36m</p>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex gap-2"[39m
+        [36m>[39m
+          [36m<select[39m
+            [33mclass[39m=[32m"px-4 py-2.5 glass-input rounded-xl text-sm"[39m
+          [36m>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"thisMonth"[39m
+            [36m>[39m
+              [0mhr.attendanceIntegration.periods.thisMonth[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"lastMonth"[39m
+            [36m>[39m
+              [0mhr.attendanceIntegration.periods.lastMonth[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"last3Months"[39m
+            [36m>[39m
+              [0mhr.attendanceIntegration.periods.last3Months[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"last6Months"[39m
+            [36m>[39m
+              [0mhr.attendanceIntegration.periods.last6Months[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"thisYear"[39m
+            [36m>[39m
+              [0mhr.attendanceIntegration.periods.thisYear[0m
+            [36m</option>[39m
+          [36m</select>[39m
+          [36m<input[39m
+            [33mclass[39m=[32m"px-4 py-2.5 glass-input rounded-xl text-sm w-32"[39m
+            [33mplaceholder[39m=[32m"hr.attendanceIntegration.department"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"grid grid-cols-2 sm:grid-cols-4 gap-3"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"glass-card rounded-2xl p-4 text-center"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"material-symbols-outlined text-2xl text-blue-400 mb-1"[39m
+          [36m>[39m
+            [0mschedule[0m
+          [36m</span>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"text-2xl font-bold"[39m
+          [36m>[39m
+            [0m8.1h[0m
+          [36m</p>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"text-xs text-muted-foreground"[39m
+          [36m>[39m
+            [0mhr.attendanceIntegration.avgWorkHours[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"glass-card rounded-2xl p-4 text-center"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"material-symbols-outlined text-2xl text-amber-400 mb-1"[39m
+          [36m>[39m
+            [0mmore_time[0m
+          [36m</span>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"text-2xl font-bold"[39m
+          [36m>[39m
+            [0m123h[0m
+          [36m</p>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"text-xs text-muted-foreground"[39m
+          [36m>[39m
+            [0mhr.attendanceIntegration.totalOvertime[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"glass-card rounded-2xl p-4 text-center"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"material-symbols-outlined text-2xl text-red-400 mb-1"[39m
+          [36m>[39m
+            [0mrunning_with_errors[0m
+          [36m</span>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"text-2xl font-bold"[39m
+          [36m>[39m
+            [0m4.5%[0m
+          [36m</p>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"text-xs text-muted-foreground"[39m
+          [36m>[39m
+            [0mhr.attendanceIntegration.lateRate[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"glass-card rounded-2xl p-4 text-center"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"material-symbols-outlined text-2xl text-green-400 mb-1"[39m
+          [36m>[39m
+            [0mevent_available[0m
+          [36m</span>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"text-2xl font-bold"[39m
+          [36m>[39m
+            [0m11.2%[0m
+          [36m</p>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"text-xs text-muted-foreground"[39m
+          [36m>[39m
+            [0mhr.attendanceIntegration.paidLeaveUsage[0m
+          [36m</p>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"glass-card rounded-2xl p-4 sm:p-5"[39m
+      [36m>[39m
+        [36m<h3[39m
+          [33mclass[39m=[32m"font-semibold text-sm mb-3 flex items-center gap-2"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"material-symbols-outlined text-amber-400"[39m
+          [36m>[39m
+            [0mwarning[0m
+          [36m</span>[39m
+          [0mhr.attendanceIntegration.alerts[0m
+          [0m ([0m
+          [0m2[0m
+          [0m)[0m
+        [36m</h3>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"space-y-2"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-center gap-3 p-2 glass-subtle rounded-xl"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"material-symbols-outlined text-sm text-red-400"[39m
+            [36m>[39m
+              [0mmore_time[0m
+            [36m</span>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex-1 min-w-0"[39m
+            [36m>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"text-sm font-medium truncate"[39m
+              [36m>[39m
+                [0mAlice[0m
+              [36m</p>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"text-xs text-muted-foreground"[39m
+              [36m>[39m
+                [0mOver threshold[0m
+              [36m</p>[39m
+            [36m</div>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"px-2 py-0.5 rounded text-[10px] font-medium bg-red-500/20 text-red-400"[39m
+            [36m>[39m
+              [0mhr.attendanceIntegration.riskLevels.high[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-center gap-3 p-2 glass-subtle rounded-xl"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"material-symbols-outlined text-sm text-amber-400"[39m
+            [36m>[39m
+              [0mrunning_with_errors[0m
+            [36m</span>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex-1 min-w-0"[39m
+            [36m>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"text-sm font-medium truncate"[39m
+              [36m>[39m
+                [0mBob[0m
+              [36m</p>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"text-xs text-muted-foreground"[39m
+              [36m>[39m
+                [0mLate arrival[0m
+              [36m</p>[39m
+            [36m</div>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"px-2 py-0.5 rounded text-[10px] font-medium bg-green-500/20 text-green-400"[39m
+            [36m>[39m
+              [0mhr.attendanceIntegration.riskLevels.low[0m
+            [36m</span>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"glass-card rounded-2xl p-4 sm:p-5"[39m
+      [36m>[39m
+        [36m<h3[39m
+          [33mclass[39m=[32m"font-semibold text-sm mb-4"[39m
+        [36m>[39m
+          [0mhr.attendanceIntegration.trend[0m
+        [36m</h3>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex items-end gap-2 h-32"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex-1 flex flex-col items-center gap-1"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-[10px] text-muted-foreground"[39m
+            [36m>[39m
+              [0m5[0m
+              [0mh[0m
+            [36m</span>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"w-full rounded-t-lg bg-indigo-400/60 transition-all"[39m
+              [33mstyle[39m=[32m"height: 50%; min-height: 4px;"[39m
+            [36m/>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-[10px] text-muted-foreground truncate w-full text-center"[39m
+            [36m>[39m
+              [0mW1[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex-1 flex flex-col items-center gap-1"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-[10px] text-muted-foreground"[39m
+            [36m>[39m
+              [0m10[0m
+              [0mh[0m
+            [36m</span>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"w-full rounded-t-lg bg-indigo-400/60 transition-all"[39m
+              [33mstyle[39m=[32m"height: 100%; min-height: 4px;"[39m
+            [36m/>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-[10px] text-muted-foreground truncate w-full text-center"[39m
+            [36m>[39m
+              [0mW2[0m
+            [36m</span>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"md:hidden space-y-3"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"glass-card rounded-2xl p-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-center justify-between mb-2"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex items-center gap-2"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"size-8 rounded-lg bg-indigo-500/20 flex items-center justify-center text-indigo-4
+00 font-bold text-xs"[39m
+              [36m>[39m
+                [0mA[0m
+              [36m</div>[39m
+              [36m<div>[39m
+                [36m<p[39m
+                  [33mclass[39m=[32m"font-semibold text-sm"[39m
+                [36m>[39m
+                  [0mAlice[0m
+                [36m</p>[39m
+                [36m<p[39m
+                  [33mclass[39m=[32m"text-[10px] text-muted-foreground"[39m
+                [36m>[39m
+                  [0mDev[0m
+                [36m</p>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"px-2 py-0.5 rounded text-[10px] font-medium bg-red-500/20 text-red-400"[39m
+            [36m>[39m
+              [0mhr.attendanceIntegration.riskLevels.high[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"grid grid-cols-3 gap-2 text-center text-xs"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"glass-subtle rounded-lg p-1.5"[39m
+            [36m>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"text-muted-foreground"[39m
+              [36m>[39m
+                [0mhr.attendanceIntegration.overtimeHours[0m
+              [36m</p>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"font-bold"[39m
+              [36m>[39m
+                [0m10[0m
+                [0mh[0m
+              [36m</p>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"glass-subtle rounded-lg p-1.5"[39m
+            [36m>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"text-muted-foreground"[39m
+              [36m>[39m
+                [0mhr.attendanceIntegration.lateRate[0m
+              [36m</p>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"font-bold"[39m
+              [36m>[39m
+                [0m1[0m
+              [36m</p>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"glass-subtle rounded-lg p-1.5"[39m
+            [36m>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"text-muted-foreground"[39m
+              [36m>[39m
+                [0mhr.attendanceIntegration.paidLeaveUsage[0m
+              [36m</p>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"font-bold"[39m
+              [36m>[39m
+                [0m20[0m
+                [0m%[0m
+              [36m</p>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"hidden md:block glass-card rounded-2xl overflow-hidden"[39m
+      [36m>[39m
+        [36m<table[39m
+          [33mclass[39m=[32m"w-full"[39m
+        [36m>[39m
+          [36m<thead>[39m
+            [36m<tr[39m
+              [33mclass[39m=[32m"border-b border-white/10 text-xs text-muted-foreground"[39m
+            [36m>[39m
+              [36m<th[39m
+                [33mclass[39m=[32m"text-left px-5 py-3 font-medium"[39m
+              [36m>[39m
+                [0mhr.employees.employeeName[0m
+              [36m</th>[39m
+              [36m<th[39m
+                [33mclass[39m=[32m"text-left px-5 py-3 font-medium"[39m
+              [36m>[39m
+                [0mhr.attendanceIntegration.department[0m
+              [36m</th>[39m
+              [36m<th[39m
+                [33mclass[39m=[32m"text-right px-5 py-3 font-medium"[39m
+              [36m>[39m
+                [0mhr.attendanceIntegration.overtimeHours[0m
+              [36m</th>[39m
+              [36m<th[39m
+                [33mclass[39m=[32m"text-right px-5 py-3 font-medium"[39m
+              [36m>[39m
+                [0mhr.attendanceIntegration.lateRate[0m
+              [36m</th>[39m
+              [36m<th[39m
+                [33mclass[39m=[32m"text-right px-5 py-3 font-medium"[39m
+              [36m>[39m
+                [0mhr.attendanceIntegration.paidLeaveUsage[0m
+              [36m</th>[39m
+              [36m<th[39m
+                [33mclass[39m=[32m"text-right px-5 py-3 font-medium"[39m
+              [36m>[39m
+                [0mhr.attendanceIntegration.absentDays[0m
+              [36m</th>[39m
+              [36m<th[39m
+                [33mclass[39m=[32m"text-center px-5 py-3 font-medium"[39m
+              [36m>[39m
+                [0mhr.attendanceIntegration.riskLevel[0m
+              [36m</th>[39m
+            [36m</tr>[39m
+          [36m</thead>[39m
+          [36m<tbody>[39m
+            [36m<tr[39m
+              [33mclass[39m=[32m"border-b border-white/5 hover:bg-white/5 transition-colors"[39m
+            [36m>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"px-5 py-3 text-sm font-medium"[39m
+              [36m>[39m
+                [0mAlice[0m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"px-5 py-3 text-sm text-muted-foreground"[39m
+              [36m>[39m
+                [0mDev[0m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"px-5 py-3 text-sm text-right"[39m
+              [36m>[39m
+                [0m10[0m
+                [0mh[0m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"px-5 py-3 text-sm text-right"[39m
+              [36m>[39m
+                [0m1[0m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"px-5 py-3 text-sm text-right"[39m
+              [36m>[39m
+                [0m20[0m
+                [0m%[0m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"px-5 py-3 text-sm text-right"[39m
+              [36m>[39m
+                [0m0[0m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"px-5 py-3 text-center"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"px-2 py-0.5 rounded text-[10px] font-medium bg-red-500/20 text-red-400"[39m
+                [36m>[39m
+                  [0mhr.attendanceIntegration.riskLevels.high[0m
+                [36m</span>[39m
+              [36m</td>[39m
+            [36m</tr>[39m
+          [36m</tbody>[39m
+        [36m</table>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m src/pages/hr.branch.test.tsx:[2m954:19[22m[39m
+    [90m952| [39m
+    [90m953| [39m    [34mrender[39m([33m<[39m[33mHRAttendanceIntegrationPage[39m [33m/[39m[33m>[39m)[33m;
+[39m
+    [90m954| [39m    [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m'hr.attendanceIntegration.alerts'[39
+m))[33m.[39m[34mtoBeIn[39m…
+    [90m   | [39m                  [31m^[39m
+    [90m955| [39m    [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m'hr.attendanceIntegration.trend'[39m
+))[33m.[39m[34mtoBeInT[39m…
+    [90m956| [39m    [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m'Alice'[39m))[33m.[39m[34mtoBeInT
+heDocument[39m()[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/14]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/pages/hr.branch.test.tsx[2m > [22mHROrgChartPage[2m > [22mcovers array-to-tr
+ee conversion, flat mode and expand toggle branches
+[31m[1mTestingLibraryElementError[22m[39m: Found multiple elements with the text: Engineering
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<p[39m
+  [33mclass[39m=[32m"font-semibold text-sm truncate"[39m
+[36m>[39m
+  [0mEngineering[0m
+[36m</p>[39m
+
+Ignored nodes: comments, script, style
+[36m<p[39m
+  [33mclass[39m=[32m"text-[10px] text-indigo-400 truncate"[39m
+[36m>[39m
+  [0mEngineering[0m
+[36m</p>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAl
+lByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"space-y-6 animate-fade-in"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"flex flex-col sm:flex-row sm:items-center justify-between gap-3"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex items-center gap-3"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"p-2 rounded-xl glass-subtle hover:bg-white/10 transition-all"[39m
+            [33mdata-to[39m=[32m"/hr"[39m
+            [33mhref[39m=[32m"/hr"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"material-symbols-outlined "[39m
+            [36m>[39m
+              [0marrow_back[0m
+            [36m</span>[39m
+          [36m</a>[39m
+          [36m<div>[39m
+            [36m<h1[39m
+              [33mclass[39m=[32m"text-xl sm:text-2xl font-bold gradient-text"[39m
+            [36m>[39m
+              [0mhr.orgChart.title[0m
+            [36m</h1>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-muted-foreground text-xs sm:text-sm mt-1"[39m
+            [36m>[39m
+              [0mhr.orgChart.subtitle[0m
+            [36m</p>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex gap-2"[39m
+        [36m>[39m
+          [36m<input[39m
+            [33mclass[39m=[32m"px-4 py-2.5 glass-input rounded-xl text-sm w-40"[39m
+            [33mplaceholder[39m=[32m"hr.orgChart.searchPlaceholder"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex glass-subtle rounded-xl overflow-hidden"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"px-3 py-2 text-sm flex items-center gap-1 bg-white/10"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"material-symbols-outlined text-sm"[39m
+              [36m>[39m
+                [0maccount_tree[0m
+              [36m</span>[39m
+              [0mhr.orgChart.treeView[0m
+            [36m</button>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"px-3 py-2 text-sm flex items-center gap-1 "[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"material-symbols-outlined text-sm"[39m
+              [36m>[39m
+                [0mlist[0m
+              [36m</span>[39m
+              [0mhr.orgChart.flatView[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"glass-card rounded-2xl p-4 sm:p-6 overflow-x-auto"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex justify-center min-w-[600px]"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex flex-col items-center"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"glass-card rounded-2xl p-3 sm:p-4 text-center min-w-[140px] max-w-[200px] relative 
+cursor-pointer hover:bg-white/10 transition-all"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"size-12 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-
+400 font-bold mx-auto mb-2"[39m
+              [36m>[39m
+                [0mh[0m
+              [36m</div>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"font-semibold text-sm truncate"[39m
+              [36m>[39m
+                [0mhr.orgChart.title[0m
+              [36m</p>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"text-[10px] text-muted-foreground truncate"[39m
+              [36m/>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"text-[10px] text-indigo-400 truncate"[39m
+              [36m/>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"material-symbols-outlined absolute -bottom-2 left-1/2 -translate-x-1/2 text-sm gl
+ass-subtle rounded-full size-5 flex items-center justify-center"[39m
+              [36m>[39m
+                [0mexpand_less[0m
+              [36m</span>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"mt-6 relative"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"absolute top-0 left-1/2 w-px h-4 bg-white/20 -translate-y-2"[39m
+              [36m/>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"absolute top-4 left-0 right-0 h-px bg-white/20 -translate-y-2"[39m
+              [36m/>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex gap-4 pt-4"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"flex flex-col items-center relative"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"absolute top-0 left-1/2 w-px h-4 bg-white/20 -translate-y-4"[39m
+                  [36m/>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"flex flex-col items-center"[39m
+                  [36m>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"glass-card rounded-2xl p-3 sm:p-4 text-center min-w-[140px] max-w-[200px] r
+elative cursor-pointer hover:bg-white/10 transition-all"[39m
+                    [36m>[39m
+                      [36m<div[39m
+                        [33mclass[39m=[32m"size-12 rounded-xl bg-indigo-500/20 flex items-center justify-center text
+-indigo-400 font-bold mx-auto mb-2"[39m
+                      [36m>[39m
+                        [0mE[0m
+                      [36m</div>[39m
+                      [36m<p[39m
+                        [33mclass[39m=[32m"font-semibold text-sm truncate"[39m
+                      [36m>[39m
+                        [0mEngineering[0m
+                      [36m</p>[39m
+                      [36m<p[39m
+                        [33mclass[39m=[32m"text-[10px] text-muted-foreground truncate"[39m
+                      [36m/>[39m
+                      [36m<p[39m
+                        [33mclass[39m=[32m"text-[10px] text-indigo-400 truncate"[39m
+                      [36m/>[39m
+                      [36m<span[39m
+                        [33mclass[39m=[32m"material-symbols-outlined absolute -bottom-2 left-1/2 -translate-x-1/2 te
+xt-sm glass-subtle rounded-full size-5 flex items-center justify-center"[39m
+                      [36m>[39m
+                        [0mexpand_less[0m
+                      [36m</span>[39m
+                    [36m</div>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"mt-6 relative"[39m
+                    [36m>[39m
+                      [36m<div[39m
+                        [33mclass[39m=[32m"absolute top-0 left-1/2 w-px h-4 bg-white/20 -translate-y-2"[39m
+                      [36m/>[39m
+                      [36m<div[39m
+                        [33mclass[39m=[32m"absolute top-4 left-0 right-0 h-px bg-white/20 -translate-y-2"[39m
+                      [36m/>[39m
+                      [36m<div[39m
+                        [33mclass[39m=[32m"flex gap-4 pt-4"[39m
+                      [36m>[39m
+                        [36m<div[39m
+                          [33mclass[39m=[32m"flex flex-col items-center relative"[39m
+                        [36m>[39m
+                          [36m<div[39m
+                            [33mclass[39m=[32m"absolute top-0 left-1/2 w-px h-4 bg-white/20 -translate-y-4"[39m
+                          [36m/>[39m
+                          [36m<div[39m
+                            [33mclass[39m=[32m"flex flex-col items-center"[39m
+                          [36m>[39m
+                            [36m<div[39m
+                              [33mclass[39m=[32m"glass-card rounded-2xl p-3 sm:p-4 text-center min-w-[140px] max-w-[
+200px] relative cursor-pointer hover:bg-white/10 transition-all"[39m
+                            [36m>[39m
+                              [36m<div[39m
+                                [33mclass[39m=[32m"size-12 rounded-xl bg-indigo-500/20 flex items-center justify-cen
+ter text-indigo-400 font-bold mx-auto mb-2"[39m
+                              [36m>[39m
+                                [0mA[0m
+                              [36m</div>[39m
+                              [36m<p[39m
+                                [33mclass[39m=[32m"font-semibold text-sm truncate"[39m
+                              [36m>[39m
+                                [0mAlice[0m
+                              [36m</p>[39m
+                              [36m<p[39m
+                                [33mclass[39m=[32m"text-[10px] text-muted-foreground truncate"[39m
+                              [36m>[39m
+                                [0mMgr[0m
+                              [36m</p>[39m
+                              [36m<p[39m
+                                [33mclass[39m=[32m"text-[10px] text-indigo-400 truncate"[39m
+                              [36m>[39m
+                                [0mEngineering[0m
+                              [36m</p>[39m
+                            [36m</div>[39m
+                          [36m</div>[39m
+                        [36m</div>[39m
+                        [36m<div[39m
+                          [33mclass[39m=[32m"flex flex-col items-center relative"[39m
+                        [36m>[39m
+                          [36m<div[39m
+                            [33mclass[39m=[32m"absolute top-0 left-1/2 w-px h-4 bg-white/20 -translate-y-4"[39m
+                          [36m/>[39m
+                          [36m<div[39m
+                            [33mclass[39m=[32m"flex flex-col items-center"[39m
+                          [36m>[39m
+                            [36m<div[39m
+                              [33mclass[39m=[32m"glass-card rounded-2xl p-3 sm:p-4 text-center min-w-[140px] max-w-[
+200px] relative cursor-pointer hover:bg-white/10 transition-all"[39m
+                            [36m>[39m
+                              [36m<div[39m
+                                [33mclass[39m=[32m"size-12 rounded-xl bg-indigo-500/20 flex items-center justify-cen
+ter text-indigo-400 font-bold mx-auto mb-2"[39m
+                              [36m>[39m
+                                [0mP[0m
+                              [36m</div>[39m
+                              [36m<p[39m
+                                [33mclass[39m=[32m"font-semibold text-sm truncate"[39m
+                              [36m>[39m
+                                [0mPlatform[0m
+                              [36m</p>[39m
+                              [36m<p[39m
+                                [33mclass[39m=[32m"text-[10px] text-muted-foreground truncate"[39m
+                              [36m/>[39m
+                              [36m<p[39m
+                                [33mclass[39m=[32m"text-[10px] text-indigo-400 truncate"[39m
+                              [36m/>[39m
+                              [36m<span[39m
+                                [33mclass[39m=[32m"material-symbols-outlined absolute -bottom-2 left-1/2 -translate-
+x-1/2 text-sm glass-subtle rounded-full size-5 flex items-center justify-center"[39m
+                              [36m>[39m
+                                [0mexpand_more[0m
+                              [36m</span>[39m
+                            [36m</div>[39m
+                          [36m</div>[39m
+                        [36m</div>[39m
+                      [36m</div>[39m
+                    [36m</div>[39m
+                  [36m</div>[39m
+                [36m</div>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"flex flex-col items-center relative"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"absolute top-0 left-1/2 w-px h-4 bg-white/20 -translate-y-4"[39m
+                  [36m/>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"flex flex-col items-center"[39m
+                  [36m>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"glass-card rounded-2xl p-3 sm:p-4 text-center min-w-[140px] max-w-[200px] r
+elative cursor-pointer hover:bg-white/10 transition-all"[39m
+                    [36m>[39m
+                      [36m<div[39m
+                        [33mclass[39m=[32m"size-12 rounded-xl bg-indigo-500/20 flex items-center justify-center text
+-indigo-400 font-bold mx-auto mb-2"[39m
+                      [36m>[39m
+                        [0mH[0m
+                      [36m</div>[39m
+                      [36m<p[39m
+                        [33mclass[39m=[32m"font-semibold text-sm truncate"[39m
+                      [36m>[39m
+                        [0mHR[0m
+                      [36m</p>[39m
+                      [36m<p[39m
+                        [33mclass[39m=[32m"text-[10px] text-muted-foreground truncate"[39m
+                      [36m/>[39m
+                      [36m<p[39m
+                        [33mclass[39m=[32m"text-[10px] text-indigo-400 truncate"[39m
+                      [36m/>[39m
+                    [36m</div>[39m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m getElementError node_modules/@testing-library/dom/dist/query-helpers.js:[2m20:35[22m[39m
+[90m [2m❯[22m getMultipleElementsFoundError node_modules/@testing-library/dom/dist/query-helpers.js:[2m23:10[22m[
+39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m55:13[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m src/pages/hr.branch.test.tsx:[2m1009:19[22m[39m
+    [90m1007| [39m
+    [90m1008| [39m    [34mrender[39m([33m<[39m[33mHROrgChartPage[39m [33m/[39m[33m>[39m)[33m;[39m
+    [90m1009| [39m    [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m'Engineering'[39m))[33m.[39m[34m
+toBeInTheDocument[39m()[33m;[39m
+    [90m   | [39m                  [31m^[39m
+    [90m1010| [39m    [34mclickButtonByText[39m([32m'hr.orgChart.flatView'[39m)[33m;[39m
+    [90m1011| [39m    [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m'Platform'[39m))[33m.[39m[34mtoB
+eInTheDocument[39m()[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/14]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/pages/hr.branch.test.tsx[2m > [22mHROneOnOnePage[2m > [22mcovers create deta
+il toggle-action and delete branches
+[31m[1mError[22m: Unable to fire a "change" event - please provide a DOM element.[39m
+[90m [2m❯[22m createEvent node_modules/@testing-library/dom/dist/events.js:[2m27:11[22m[39m
+[90m [2m❯[22m createEvent.<computed> [as change] node_modules/@testing-library/dom/dist/events.js:[2m106:38[22m[3
+9m
+[90m [2m❯[22m fireEvent.<computed> [as change] node_modules/@testing-library/dom/dist/events.js:[2m110:68[22m[39m
+[90m [2m❯[22m fireEvent.<computed> [as change] node_modules/@testing-library/react/dist/fire-event.js:[2m15:52[22m
+[39m
+[36m [2m❯[22m src/pages/hr.branch.test.tsx:[2m1052:15[22m[39m
+    [90m1050| [39m    [34mclickButtonByText[39m([32m'hr.oneOnOne.schedule'[39m)[33m;[39m
+    [90m1051| [39m    [35mconst[39m modalInputs [33m=[39m document[33m.[39m[34mquerySelectorAll[39m([32m'.fi
+xed input[type="[39m…
+    [90m1052| [39m    fireEvent[33m.[39m[34mchange[39m(modalInputs[[34m0[39m] [35mas[39m [33mHTMLInputElemen
+t[39m[33m,[39m { target[33m:[39m { v…
+    [90m   | [39m              [31m^[39m
+    [90m1053| [39m    [34mclickButtonByText[39m([32m'common.save'[39m)[33m;[39m
+    [90m1054| [39m    [35mawait[39m [34mwaitFor[39m(() [33m=>[39m {
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/14]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/pages/hr.branch.test.tsx[2m > [22mHRSkillMapPage[2m > [22mcovers map add-ski
+ll and gap-analysis branches
+[31m[1mError[22m: Unable to fire a "change" event - please provide a DOM element.[39m
+[90m [2m❯[22m createEvent node_modules/@testing-library/dom/dist/events.js:[2m27:11[22m[39m
+[90m [2m❯[22m createEvent.<computed> [as change] node_modules/@testing-library/dom/dist/events.js:[2m106:38[22m[3
+9m
+[90m [2m❯[22m fireEvent.<computed> [as change] node_modules/@testing-library/dom/dist/events.js:[2m110:68[22m[39m
+[90m [2m❯[22m fireEvent.<computed> [as change] node_modules/@testing-library/react/dist/fire-event.js:[2m15:52[22m
+[39m
+[36m [2m❯[22m src/pages/hr.branch.test.tsx:[2m1109:15[22m[39m
+    [90m1107| [39m    [34mrender[39m([33m<[39m[33mHRSkillMapPage[39m [33m/[39m[33m>[39m)[33m;[39m
+    [90m1108| [39m    [34mclickButtonByText[39m([32m'hr.skillMap.addSkill'[39m[33m,[39m [34m0[39m)[33m;[39m
+    [90m1109| [39m    fireEvent[33m.[39m[34mchange[39m(document[33m.[39m[34mquerySelector[39m([32m'.fixed in
+put[type="text"][39m…
+    [90m   | [39m              [31m^[39m
+    [90m1110| [39m      target[33m:[39m { value[33m:[39m [32m'Design'[39m }[33m,[39m
+    [90m1111| [39m    })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/14]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/pages/hr.branch.test.tsx[2m > [22mHRSalarySimulatorPage[2m > [22mcovers fall
+back and full data simulation branches
+[31m[1mError[22m: Unable to fire a "change" event - please provide a DOM element.[39m
+[90m [2m❯[22m createEvent node_modules/@testing-library/dom/dist/events.js:[2m27:11[22m[39m
+[90m [2m❯[22m createEvent.<computed> [as change] node_modules/@testing-library/dom/dist/events.js:[2m106:38[22m[3
+9m
+[90m [2m❯[22m fireEvent.<computed> [as change] node_modules/@testing-library/dom/dist/events.js:[2m110:68[22m[39m
+[90m [2m❯[22m fireEvent.<computed> [as change] node_modules/@testing-library/react/dist/fire-event.js:[2m15:52[22m
+[39m
+[36m [2m❯[22m src/pages/hr.branch.test.tsx:[2m1158:15[22m[39m
+    [90m1156| [39m    [35mconst[39m numberInputs [33m=[39m document[33m.[39m[34mquerySelectorAll[39m([32m'in
+put[type="number[39m…
+    [90m1157| [39m    [35mconst[39m textInputs [33m=[39m document[33m.[39m[34mquerySelectorAll[39m([32m'inpu
+t[type="text"]'[39m)[33m;[39m
+    [90m1158| [39m    fireEvent[33m.[39m[34mchange[39m(textInputs[[34m1[39m] [35mas[39m [33mHTMLInputElement
+[39m[33m,[39m { target[33m:[39m { va…
+    [90m   | [39m              [31m^[39m
+    [90m1159| [39m    fireEvent[33m.[39m[34mchange[39m(textInputs[[34m2[39m] [35mas[39m [33mHTMLInputElement
+[39m[33m,[39m { target[33m:[39m { va…
+    [90m1160| [39m    fireEvent[33m.[39m[34mchange[39m(numberInputs[[34m0[39m] [35mas[39m [33mHTMLInputEleme
+nt[39m[33m,[39m { target[33m:[39m { …
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/14]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/pages/hr.branch.test.tsx[2m > [22mHROnboardingPage[2m > [22mcovers create an
+d toggle-task branches
+[31m[1mError[22m: Unable to fire a "change" event - please provide a DOM element.[39m
+[90m [2m❯[22m createEvent node_modules/@testing-library/dom/dist/events.js:[2m27:11[22m[39m
+[90m [2m❯[22m createEvent.<computed> [as change] node_modules/@testing-library/dom/dist/events.js:[2m106:38[22m[3
+9m
+[90m [2m❯[22m fireEvent.<computed> [as change] node_modules/@testing-library/dom/dist/events.js:[2m110:68[22m[39m
+[90m [2m❯[22m fireEvent.<computed> [as change] node_modules/@testing-library/react/dist/fire-event.js:[2m15:52[22m
+[39m
+[36m [2m❯[22m src/pages/hr.branch.test.tsx:[2m1215:15[22m[39m
+    [90m1213| [39m    fireEvent[33m.[39m[34mchange[39m(modalInputs[[34m0[39m] [35mas[39m [33mHTMLInputElemen
+t[39m[33m,[39m { target[33m:[39m { v…
+    [90m1214| [39m    fireEvent[33m.[39m[34mchange[39m(modalInputs[[34m2[39m] [35mas[39m [33mHTMLInputElemen
+t[39m[33m,[39m { target[33m:[39m { v…
+    [90m1215| [39m    fireEvent[33m.[39m[34mchange[39m(modalInputs[[34m3[39m] [35mas[39m [33mHTMLInputElemen
+t[39m[33m,[39m { target[33m:[39m { v…
+    [90m   | [39m              [31m^[39m
+    [90m1216| [39m    fireEvent[33m.[39m[34mchange[39m(document[33m.[39m[34mquerySelector[39m([32m'.fixed se
+lect'[39m) [35mas[39m [33mHTMLSe[39m…
+    [90m1217| [39m    [34mclickButtonByText[39m([32m'common.save'[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/14]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/pages/hr.branch.test.tsx[2m > [22mHROffboardingPage[2m > [22mcovers analytic
+s create and checklist branches
+[31m[1mError[22m: Unable to fire a "change" event - please provide a DOM element.[39m
+[90m [2m❯[22m createEvent node_modules/@testing-library/dom/dist/events.js:[2m27:11[22m[39m
+[90m [2m❯[22m createEvent.<computed> [as change] node_modules/@testing-library/dom/dist/events.js:[2m106:38[22m[3
+9m
+[90m [2m❯[22m fireEvent.<computed> [as change] node_modules/@testing-library/dom/dist/events.js:[2m110:68[22m[39m
+[90m [2m❯[22m fireEvent.<computed> [as change] node_modules/@testing-library/react/dist/fire-event.js:[2m15:52[22m
+[39m
+[36m [2m❯[22m src/pages/hr.branch.test.tsx:[2m1285:15[22m[39m
+    [90m1283| [39m
+    [90m1284| [39m    [34mclickButtonByText[39m([32m'hr.offboarding.startOffboarding'[39m)[33m;[39m
+    [90m1285| [39m    fireEvent[33m.[39m[34mchange[39m(document[33m.[39m[34mquerySelector[39m([32m'.fixed in
+put[type="text"][39m…
+    [90m   | [39m              [31m^[39m
+    [90m1286| [39m      target[33m:[39m { value[33m:[39m [32m'emp-5'[39m }[33m,[39m
+    [90m1287| [39m    })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/14]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/pages/hr.branch.test.tsx[2m > [22mHRSurveyPage[2m > [22mcovers create publis
+h close results and delete branches
+[31m[1mError[22m: Unable to fire a "change" event - please provide a DOM element.[39m
+[90m [2m❯[22m createEvent node_modules/@testing-library/dom/dist/events.js:[2m27:11[22m[39m
+[90m [2m❯[22m createEvent.<computed> [as change] node_modules/@testing-library/dom/dist/events.js:[2m106:38[22m[3
+9m
+[90m [2m❯[22m fireEvent.<computed> [as change] node_modules/@testing-library/dom/dist/events.js:[2m110:68[22m[39m
+[90m [2m❯[22m fireEvent.<computed> [as change] node_modules/@testing-library/react/dist/fire-event.js:[2m15:52[22m
+[39m
+[36m [2m❯[22m src/pages/hr.branch.test.tsx:[2m1361:15[22m[39m
+    [90m1359| [39m    [34mclickButtonByText[39m([32m'hr.survey.createSurvey'[39m)[33m;[39m
+    [90m1360| [39m    [35mconst[39m modalInput [33m=[39m document[33m.[39m[34mquerySelector[39m([32m'.fixed 
+input[type="text[39m…
+    [90m1361| [39m    fireEvent[33m.[39m[34mchange[39m(modalInput[33m,[39m { target[33m:[39m { value[33m:[3
+9m [32m'Created Survey'[39m }…
+    [90m   | [39m              [31m^[39m
+    [90m1362| [39m    [35mconst[39m modalTextareas [33m=[39m document[33m.[39m[34mquerySelectorAll[39m([32m'
+.fixed textarea'[39m…
+    [90m1363| [39m    fireEvent[33m.[39m[34mchange[39m(modalTextareas[[34m1[39m] [35mas[39m [33mHTMLTextArea
+Element[39m[33m,[39m { targe…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/14]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m14 failed[39m[22m[2m | [22m[1m[32m20 passed[39m[22m[90m (34)[39m
+[2m   Start at [22m 18:00:53
+[2m   Duration [22m 1.80s[2m (transform 331ms, setup 68ms, collect 444ms, tests 462ms, environment 354ms, prepare 54ms)[22m
+

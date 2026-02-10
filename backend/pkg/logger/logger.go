@@ -12,6 +12,10 @@ type Logger struct {
 	*zap.SugaredLogger
 }
 
+var zapConfigBuilder = func(config zap.Config) (*zap.Logger, error) {
+	return config.Build()
+}
+
 // NewLogger は新しいロガーを作成する
 func NewLogger(level string, env string) (*Logger, error) {
 	var zapLevel zapcore.Level
@@ -77,7 +81,7 @@ func NewLogger(level string, env string) (*Logger, error) {
 		}
 	}
 
-	zapLogger, err := config.Build()
+	zapLogger, err := zapConfigBuilder(config)
 	if err != nil {
 		return nil, err
 	}

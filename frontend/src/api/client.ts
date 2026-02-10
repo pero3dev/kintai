@@ -3,6 +3,49 @@ import { useAuthStore } from '@/stores/authStore';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api/v1';
 
+// トークンリフレッシュの排他制御
+let isRefreshing = false;
+let refreshPromise: Promise<boolean> | null = null;
+
+async function tryRefreshToken(): Promise<boolean> {
+  if (isRefreshing && refreshPromise) {
+    return refreshPromise;
+  }
+  isRefreshing = true;
+  refreshPromise = (async () => {
+    let refreshed = false;
+    try {
+      const refreshToken = useAuthStore.getState().refreshToken;
+      if (refreshToken) {
+        const response = await fetch(`${API_BASE_URL}/auth/refresh`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ refresh_token: refreshToken }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.access_token) {
+            useAuthStore.getState().setAuth(
+              data.user || useAuthStore.getState().user,
+              data.access_token,
+              data.refresh_token || refreshToken,
+            );
+            refreshed = true;
+          }
+        }
+      }
+    } catch {
+      refreshed = false;
+    } finally {
+      isRefreshing = false;
+      refreshPromise = null;
+    }
+    return refreshed;
+  })();
+  return refreshPromise;
+}
+
 // OpenAPI クライアント（型安全なAPIクライアント）
 export const apiClient = createClient({
   baseUrl: API_BASE_URL,
@@ -17,9 +60,21 @@ apiClient.use({
     }
     return request;
   },
-  async onResponse({ response }) {
+  async onResponse({ request, response }) {
     if (response.status === 401) {
-      // TODO: リフレッシュトークンでリトライ
+      const refreshed = await tryRefreshToken();
+      if (refreshed) {
+        // リフレッシュ成功 → リトライ
+        const token = useAuthStore.getState().accessToken;
+        const retryResponse = await fetch(request.url, {
+          ...request,
+          headers: {
+            ...Object.fromEntries(request.headers.entries()),
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        return retryResponse;
+      }
       useAuthStore.getState().logout();
       window.location.href = '/login';
     }
@@ -44,6 +99,29 @@ async function fetchWithAuth(url: string, options: RequestInit = {}) {
   });
 
   if (response.status === 401) {
+    // リフレッシュトークンでリトライ
+    const refreshed = await tryRefreshToken();
+    if (refreshed) {
+      const newToken = useAuthStore.getState().accessToken;
+      const retryResponse = await fetch(`${BASE_URL}${url}`, {
+        ...options,
+        headers: {
+          ...headers,
+          Authorization: `Bearer ${newToken}`,
+        },
+      });
+      if (!retryResponse.ok) {
+        if (retryResponse.status === 401) {
+          useAuthStore.getState().logout();
+          window.location.href = '/login';
+          throw new Error('Unauthorized');
+        }
+        const error = await retryResponse.json();
+        throw new Error(error.message || 'APIエラーが発生しました');
+      }
+      if (retryResponse.status === 204) return null;
+      return retryResponse.json();
+    }
     useAuthStore.getState().logout();
     window.location.href = '/login';
     throw new Error('Unauthorized');

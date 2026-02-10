@@ -115,15 +115,38 @@ export function DashboardPage() {
             <div className="p-6">
               <div className="relative h-48 w-full glass-subtle rounded-xl overflow-hidden flex items-center justify-center">
                 <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_50%_50%,#39E079_0%,transparent_70%)]"></div>
-                <div className="relative z-10 text-center">
+                <div className="relative z-10 text-center w-full px-4">
                   <div className="flex items-end justify-center gap-1 mb-4 h-24">
-                    <div className="w-8 bg-emerald-500/40 h-16 rounded-t"></div>
-                    <div className="w-8 bg-emerald-500/60 h-20 rounded-t"></div>
-                    <div className="w-8 bg-primary h-24 rounded-t"></div>
-                    <div className="w-8 bg-primary/80 h-20 rounded-t"></div>
-                    <div className="w-8 bg-amber-500 h-12 rounded-t"></div>
-                    <div className="w-8 bg-primary/60 h-18 rounded-t"></div>
-                    <div className="w-8 bg-destructive h-8 rounded-t"></div>
+                    {stats?.weekly_trend && stats.weekly_trend.length > 0 ? (
+                      stats.weekly_trend.map((day: { date: string; present_count: number; absent_count: number; attendance_rate: number }, idx: number) => {
+                        const maxRate = 100;
+                        const heightPct = Math.max((day.attendance_rate / maxRate) * 100, 5);
+                        const barColor = day.attendance_rate >= 90 ? 'bg-emerald-500' :
+                          day.attendance_rate >= 70 ? 'bg-primary' :
+                          day.attendance_rate >= 50 ? 'bg-amber-500' : 'bg-destructive';
+                        const dayLabel = new Date(day.date).toLocaleDateString('ja-JP', { weekday: 'short' });
+                        return (
+                          <div key={idx} className="flex flex-col items-center gap-1 flex-1 max-w-[3rem]">
+                            <div
+                              className={`w-full ${barColor} rounded-t transition-all duration-500`}
+                              style={{ height: `${heightPct}%` }}
+                              title={`${day.date}: ${day.attendance_rate.toFixed(1)}%`}
+                            />
+                            <span className="text-[9px] text-muted-foreground">{dayLabel}</span>
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <>
+                        <div className="w-8 bg-emerald-500/40 h-16 rounded-t"></div>
+                        <div className="w-8 bg-emerald-500/60 h-20 rounded-t"></div>
+                        <div className="w-8 bg-primary h-24 rounded-t"></div>
+                        <div className="w-8 bg-primary/80 h-20 rounded-t"></div>
+                        <div className="w-8 bg-amber-500 h-12 rounded-t"></div>
+                        <div className="w-8 bg-primary/60 h-18 rounded-t"></div>
+                        <div className="w-8 bg-destructive h-8 rounded-t"></div>
+                      </>
+                    )}
                   </div>
                   <p className="text-xs text-muted-foreground">{t('dashboard.weeklyTrend')}</p>
                 </div>

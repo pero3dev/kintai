@@ -751,19 +751,93 @@ func NewHRDashboardService(deps Deps) HRDashboardService {
 func (s *hrDashboardService) GetStats(ctx context.Context) (map[string]interface{}, error) {
 	active, total, _ := s.deps.Repos.HREmployee.CountByStatus(ctx)
 	depts, _ := s.deps.Repos.HRDepartment.FindAll(ctx)
+
+	// 新規入社者数（過去30日以内の入社）をカウント
+	newHires := int64(0)
+	thirtyDaysAgo := time.Now().AddDate(0, 0, -30)
+	allEmps, _, _ := s.deps.Repos.HREmployee.FindAll(ctx, 1, 10000, "", "", "", "")
+	for _, e := range allEmps {
+		if e.HireDate != nil && e.HireDate.After(thirtyDaysAgo) {
+			newHires++
+		}
+	}
+
+	// 休職中の社員数をカウント
+	onLeave := int64(0)
+	for _, e := range allEmps {
+		if e.Status == model.EmployeeStatusOnLeave {
+			onLeave++
+		}
+	}
+
 	return map[string]interface{}{
 		"total_employees":  total,
 		"active_employees": active,
 		"departments":      len(depts),
-		"new_hires":        0,
-		"on_leave":         total - active,
+		"new_hires":        newHires,
+		"on_leave":         onLeave,
 	}, nil
 }
 
 func (s *hrDashboardService) GetRecentActivities(ctx context.Context) ([]map[string]interface{}, error) {
-	activities := []map[string]interface{}{
-		{"type": "info", "message": "HR system initialized", "timestamp": time.Now().Format(time.RFC3339)},
+	activities := []map[string]interface{}{}
+
+	// 最新の入社者を取得
+	recentEmps, _, _ := s.deps.Repos.HREmployee.FindAll(ctx, 1, 5, "", "", "", "")
+	for _, e := range recentEmps {
+		if e.HireDate != nil && e.HireDate.After(time.Now().AddDate(0, -3, 0)) {
+			activities = append(activities, map[string]interface{}{
+				"type":      "new_hire",
+				"message":   fmt.Sprintf("%s %sが入社しました", e.LastName, e.FirstName),
+				"timestamp": e.HireDate.Format(time.RFC3339),
+			})
+		}
 	}
+
+	// 最新の評価を取得
+	evals, _, _ := s.deps.Repos.Evaluation.FindAll(ctx, 1, 5, "", "")
+	for _, ev := range evals {
+		activities = append(activities, map[string]interface{}{
+			"type":      "evaluation",
+			"message":   fmt.Sprintf("評価が%sに更新されました", string(ev.Status)),
+			"timestamp": ev.UpdatedAt.Format(time.RFC3339),
+		})
+	}
+
+	// 最新のお知らせを取得
+	announcements, _, _ := s.deps.Repos.Announcement.FindAll(ctx, 1, 5, "")
+	for _, a := range announcements {
+		activities = append(activities, map[string]interface{}{
+			"type":      "announcement",
+			"message":   fmt.Sprintf("お知らせ「%s」が公開されました", a.Title),
+			"timestamp": a.CreatedAt.Format(time.RFC3339),
+		})
+	}
+
+	// タイムスタンプ降順でソート（簡易ソート）
+	for i := 0; i < len(activities); i++ {
+		for j := i + 1; j < len(activities); j++ {
+			ti, _ := activities[i]["timestamp"].(string)
+			tj, _ := activities[j]["timestamp"].(string)
+			if ti < tj {
+				activities[i], activities[j] = activities[j], activities[i]
+			}
+		}
+	}
+
+	// 最大10件に制限
+	if len(activities) > 10 {
+		activities = activities[:10]
+	}
+
+	if len(activities) == 0 {
+		activities = append(activities, map[string]interface{}{
+			"type":      "info",
+			"message":   "最近のアクティビティはありません",
+			"timestamp": time.Now().Format(time.RFC3339),
+		})
+	}
+
 	return activities, nil
 }
 
@@ -783,29 +857,160 @@ func NewAttendanceIntegrationService(deps Deps) AttendanceIntegrationService {
 
 func (s *attendanceIntegrationService) GetIntegration(ctx context.Context, period, department string) (map[string]interface{}, error) {
 	active, total, _ := s.deps.Repos.HREmployee.CountByStatus(ctx)
+
+	// 今日の出勤者数を取得
+	presentToday, _ := s.deps.Repos.Attendance.CountTodayPresent(ctx)
+
+	// 休暇中の人数を取得
+	today := time.Now()
+	todayStart := time.Date(today.Year(), today.Month(), today.Day(), 0, 0, 0, 0, time.Local)
+	todayEnd := todayStart.Add(24*time.Hour - time.Second)
+	var onLeaveToday int64
+	leaves, _, _ := s.deps.Repos.LeaveRequest.FindPending(ctx, 1, 10000)
+	_ = leaves
+	// 承認済み休暇の出欠状況を確認
+	allUsers, _, _ := s.deps.Repos.User.FindAll(ctx, 1, 10000)
+	for _, u := range allUsers {
+		userLeaves, _, _ := s.deps.Repos.LeaveRequest.FindByUserID(ctx, u.ID, 1, 100)
+		for _, l := range userLeaves {
+			if l.Status == model.ApprovalStatusApproved &&
+				!l.StartDate.After(todayEnd) && !l.EndDate.Before(todayStart) {
+				onLeaveToday++
+				break
+			}
+		}
+	}
+
+	absentToday := total - presentToday - onLeaveToday
+	if absentToday < 0 {
+		absentToday = 0
+	}
+
+	// 出勤率を計算
+	attendanceRate := 0.0
+	if total > 0 {
+		attendanceRate = float64(presentToday) / float64(total) * 100
+		attendanceRate = math.Round(attendanceRate*10) / 10
+	}
+
+	// 平均勤務時間を計算（今月）
+	monthStart := time.Date(today.Year(), today.Month(), 1, 0, 0, 0, 0, time.Local)
+	monthEnd := monthStart.AddDate(0, 1, 0).Add(-time.Second)
+	totalOvertime, _ := s.deps.Repos.Attendance.GetMonthlyOvertime(ctx, monthStart, monthEnd)
+	avgWorkingHours := 8.0
+	if presentToday > 0 && active > 0 {
+		// 今月の総勤務時間から平均を推定
+		workDays := today.Day()
+		if workDays > 0 && active > 0 {
+			totalWorkMin := totalOvertime + (int64(workDays) * 480 * active) // 8h * 社員数 * 日数
+			avgWorkingHours = float64(totalWorkMin) / float64(int64(workDays)*active) / 60.0
+			avgWorkingHours = math.Round(avgWorkingHours*10) / 10
+		}
+	}
+
 	return map[string]interface{}{
 		"total_employees":   total,
-		"present_today":     active,
-		"absent_today":      total - active,
-		"on_leave_today":    0,
-		"attendance_rate":   95.5,
-		"avg_working_hours": 8.2,
+		"present_today":     presentToday,
+		"absent_today":      absentToday,
+		"on_leave_today":    onLeaveToday,
+		"attendance_rate":   attendanceRate,
+		"avg_working_hours": avgWorkingHours,
 	}, nil
 }
 
 func (s *attendanceIntegrationService) GetAlerts(ctx context.Context) ([]map[string]interface{}, error) {
-	return []map[string]interface{}{}, nil
+	alerts := []map[string]interface{}{}
+	now := time.Now()
+
+	// 全ユーザーの残業状況をチェック
+	allUsers, _, _ := s.deps.Repos.User.FindAll(ctx, 1, 10000)
+	for _, u := range allUsers {
+		// 月間残業時間
+		monthlyMin, _ := s.deps.Repos.OvertimeRequest.GetUserMonthlyOvertime(ctx, u.ID, now.Year(), int(now.Month()))
+		monthlyHours := float64(monthlyMin) / 60.0
+
+		if monthlyHours > 40 {
+			severity := "warning"
+			if monthlyHours > 45 {
+				severity = "critical"
+			}
+			alerts = append(alerts, map[string]interface{}{
+				"type":           "overtime",
+				"severity":       severity,
+				"employee_name":  u.LastName + " " + u.FirstName,
+				"employee_id":    u.ID,
+				"message":        fmt.Sprintf("%s %sの月間残業が%.1f時間に達しています", u.LastName, u.FirstName, monthlyHours),
+				"overtime_hours": monthlyHours,
+				"timestamp":      now.Format(time.RFC3339),
+			})
+		}
+
+		// 無断欠勤チェック（過去3日間出勤なし、休暇申請なし）
+		threeDaysAgo := now.AddDate(0, 0, -3)
+		attendances, _, _ := s.deps.Repos.Attendance.FindByUserAndDateRange(ctx, u.ID, threeDaysAgo, now, 1, 10)
+		if len(attendances) == 0 {
+			// 休暇がないか確認
+			userLeaves, _, _ := s.deps.Repos.LeaveRequest.FindByUserID(ctx, u.ID, 1, 10)
+			hasApprovedLeave := false
+			for _, l := range userLeaves {
+				if l.Status == model.ApprovalStatusApproved &&
+					!l.StartDate.After(now) && !l.EndDate.Before(threeDaysAgo) {
+					hasApprovedLeave = true
+					break
+				}
+			}
+			if !hasApprovedLeave {
+				alerts = append(alerts, map[string]interface{}{
+					"type":          "absence",
+					"severity":      "warning",
+					"employee_name": u.LastName + " " + u.FirstName,
+					"employee_id":   u.ID,
+					"message":       fmt.Sprintf("%s %sが3日間出勤記録がありません", u.LastName, u.FirstName),
+					"timestamp":     now.Format(time.RFC3339),
+				})
+			}
+		}
+	}
+
+	return alerts, nil
 }
 
 func (s *attendanceIntegrationService) GetTrend(ctx context.Context, period string) ([]map[string]interface{}, error) {
 	trend := []map[string]interface{}{}
-	for i := 6; i >= 0; i-- {
+	_, total, _ := s.deps.Repos.HREmployee.CountByStatus(ctx)
+	if total == 0 {
+		total = 1 // ゼロ除算防止
+	}
+
+	days := 7
+	if period == "month" {
+		days = 30
+	}
+
+	for i := days - 1; i >= 0; i-- {
 		d := time.Now().AddDate(0, 0, -i)
+		dateStr := d.Format("2006-01-02")
+
+		// その日の出勤者数をカウント
+		dayStart := time.Date(d.Year(), d.Month(), d.Day(), 0, 0, 0, 0, time.Local)
+		dayEnd := dayStart.Add(24*time.Hour - time.Second)
+		attendances, _ := s.deps.Repos.Attendance.FindByDateRange(ctx, dayStart, dayEnd)
+		presentCount := int64(len(attendances))
+
+		attendanceRate := float64(presentCount) / float64(total) * 100
+		if attendanceRate > 100 {
+			attendanceRate = 100
+		}
+		attendanceRate = math.Round(attendanceRate*10) / 10
+
 		trend = append(trend, map[string]interface{}{
-			"date":            d.Format("2006-01-02"),
-			"attendance_rate": 90 + float64(i%10),
+			"date":            dateStr,
+			"attendance_rate": attendanceRate,
+			"present_count":   presentCount,
+			"total_employees": total,
 		})
 	}
+
 	return trend, nil
 }
 
@@ -851,7 +1056,83 @@ func (s *orgChartService) GetOrgChart(ctx context.Context) ([]map[string]interfa
 }
 
 func (s *orgChartService) Simulate(ctx context.Context, data map[string]interface{}) ([]map[string]interface{}, error) {
-	return s.GetOrgChart(ctx)
+	chart, err := s.GetOrgChart(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	// シミュレーションデータの適用
+	// "moves" は社員の部署異動: [{"employee_id": "...", "from_department_id": "...", "to_department_id": "..."}]
+	if moves, ok := data["moves"].([]interface{}); ok {
+		for _, m := range moves {
+			move, ok := m.(map[string]interface{})
+			if !ok {
+				continue
+			}
+			empID, _ := move["employee_id"].(string)
+			fromDeptID, _ := move["from_department_id"].(string)
+			toDeptID, _ := move["to_department_id"].(string)
+			if empID == "" || toDeptID == "" {
+				continue
+			}
+
+			var movedEmployee map[string]interface{}
+
+			// 元の部署から社員を除去
+			for i, dept := range chart {
+				deptID := fmt.Sprintf("%v", dept["id"])
+				if deptID != fromDeptID {
+					continue
+				}
+				emps, _ := dept["employees"].([]map[string]interface{})
+				for j, e := range emps {
+					if fmt.Sprintf("%v", e["id"]) == empID {
+						movedEmployee = e
+						emps = append(emps[:j], emps[j+1:]...)
+						chart[i]["employees"] = emps
+						break
+					}
+				}
+			}
+
+			// 移動先の部署に社員を追加
+			if movedEmployee != nil {
+				for i, dept := range chart {
+					if fmt.Sprintf("%v", dept["id"]) == toDeptID {
+						emps, _ := dept["employees"].([]map[string]interface{})
+						emps = append(emps, movedEmployee)
+						chart[i]["employees"] = emps
+						break
+					}
+				}
+			}
+		}
+	}
+
+	// "rename" は部署名変更: {"department_id": "...", "new_name": "..."}
+	if renames, ok := data["renames"].([]interface{}); ok {
+		for _, r := range renames {
+			rename, ok := r.(map[string]interface{})
+			if !ok {
+				continue
+			}
+			deptID, _ := rename["department_id"].(string)
+			newName, _ := rename["new_name"].(string)
+			for i, dept := range chart {
+				if fmt.Sprintf("%v", dept["id"]) == deptID {
+					chart[i]["name"] = newName
+					break
+				}
+			}
+		}
+	}
+
+	// シミュレーション結果にメタデータを付与
+	for i := range chart {
+		chart[i]["simulated"] = true
+	}
+
+	return chart, nil
 }
 
 // ===== OneOnOneService =====
@@ -1068,23 +1349,57 @@ func (s *salaryService) GetOverview(ctx context.Context, department string) (map
 }
 
 func (s *salaryService) Simulate(ctx context.Context, req model.SalarySimulateRequest) (map[string]interface{}, error) {
+	// 同グレード・ポジションの社員の実データから基本給を算出
 	baseSalary := 300000.0
 	if req.Grade != "" {
-		switch req.Grade {
-		case "S1", "S2":
-			baseSalary = 250000
-		case "M1":
-			baseSalary = 400000
-		case "M2":
-			baseSalary = 500000
-		case "L1":
-			baseSalary = 600000
-		case "L2":
-			baseSalary = 750000
-		default:
-			baseSalary = 350000
+		emps, _, _ := s.deps.Repos.HREmployee.FindAll(ctx, 1, 10000, "", "active", "", "")
+		var gradeTotal float64
+		var gradeCount int
+		for _, e := range emps {
+			if e.Grade == req.Grade {
+				gradeTotal += e.BaseSalary
+				gradeCount++
+			}
+		}
+		if gradeCount > 0 {
+			baseSalary = gradeTotal / float64(gradeCount)
+		} else {
+			// DBにデータがない場合はフォールバック
+			switch req.Grade {
+			case "S1", "S2":
+				baseSalary = 250000
+			case "M1":
+				baseSalary = 400000
+			case "M2":
+				baseSalary = 500000
+			case "L1":
+				baseSalary = 600000
+			case "L2":
+				baseSalary = 750000
+			default:
+				baseSalary = 350000
+			}
 		}
 	}
+
+	// ポジション補正（同ポジションの平均を加重）
+	positionAdjustment := 0.0
+	if req.Position != "" {
+		emps, _, _ := s.deps.Repos.HREmployee.FindAll(ctx, 1, 10000, "", "active", "", "")
+		var posTotal float64
+		var posCount int
+		for _, e := range emps {
+			if e.Position == req.Position {
+				posTotal += e.BaseSalary
+				posCount++
+			}
+		}
+		if posCount > 0 {
+			posAvg := posTotal / float64(posCount)
+			positionAdjustment = (posAvg - baseSalary) * 0.3
+		}
+	}
+
 	years, _ := strconv.ParseFloat(req.YearsOfService, 64)
 	seniority := baseSalary * 0.02 * years
 
@@ -1094,13 +1409,14 @@ func (s *salaryService) Simulate(ctx context.Context, req model.SalarySimulateRe
 		evalBonus = baseSalary * (score / 100) * 0.3
 	}
 
-	projected := baseSalary + seniority + evalBonus
+	projected := baseSalary + positionAdjustment + seniority + evalBonus
 	return map[string]interface{}{
-		"base_salary":      baseSalary,
-		"seniority_bonus":  math.Round(seniority*100) / 100,
-		"evaluation_bonus": math.Round(evalBonus*100) / 100,
-		"projected_salary": math.Round(projected*100) / 100,
-		"annual_salary":    math.Round(projected*12*100) / 100,
+		"base_salary":          math.Round(baseSalary*100) / 100,
+		"position_adjustment":  math.Round(positionAdjustment*100) / 100,
+		"seniority_bonus":      math.Round(seniority*100) / 100,
+		"evaluation_bonus":     math.Round(evalBonus*100) / 100,
+		"projected_salary":     math.Round(projected*100) / 100,
+		"annual_salary":        math.Round(projected*12*100) / 100,
 	}, nil
 }
 
@@ -1112,13 +1428,43 @@ func (s *salaryService) GetBudget(ctx context.Context, department string) (map[s
 	overview, _ := s.deps.Repos.Salary.GetOverview(ctx, department)
 	totalPayroll, _ := overview["total_payroll"].(float64)
 	headcount, _ := overview["headcount"].(int64)
+
+	// 部署の予算を実データから計算
+	var totalBudget float64
+	depts, _ := s.deps.Repos.HRDepartment.FindAll(ctx)
+	for _, d := range depts {
+		if department == "" {
+			totalBudget += d.Budget
+		} else if d.Name == department || d.Code == department {
+			totalBudget += d.Budget
+		}
+	}
+
+	// 予算が設定されていない場合はフォールバック（年間給与の130%）
+	annualPayroll := totalPayroll * 12
+	if totalBudget <= 0 {
+		totalBudget = annualPayroll * 1.3
+	}
+
+	usedBudget := annualPayroll
+	remaining := totalBudget - usedBudget
+	if remaining < 0 {
+		remaining = 0
+	}
+
+	utilization := 0.0
+	if totalBudget > 0 {
+		utilization = math.Round(usedBudget/totalBudget*1000) / 10
+	}
+
 	return map[string]interface{}{
-		"total_budget": totalPayroll * 12 * 1.3,
-		"used_budget":  totalPayroll * 12,
-		"remaining":    totalPayroll * 12 * 0.3,
-		"utilization":  76.9,
-		"headcount":    headcount,
-		"avg_cost":     totalPayroll / float64(max(headcount, 1)),
+		"total_budget":    math.Round(totalBudget*100) / 100,
+		"used_budget":     math.Round(usedBudget*100) / 100,
+		"remaining":       math.Round(remaining*100) / 100,
+		"utilization":     utilization,
+		"headcount":       headcount,
+		"avg_cost":        math.Round(annualPayroll/float64(max(headcount, 1))*100) / 100,
+		"monthly_payroll": math.Round(totalPayroll*100) / 100,
 	}, nil
 }
 

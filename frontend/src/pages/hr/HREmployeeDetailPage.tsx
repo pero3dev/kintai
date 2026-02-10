@@ -8,6 +8,97 @@ function MaterialIcon({ name, className = '' }: { name: string; className?: stri
   return <span className={`material-symbols-outlined ${className}`}>{name}</span>;
 }
 
+function HistoryTab({ employeeId }: { employeeId: string }) {
+  const { t } = useTranslation();
+
+  const { data: historyData, isLoading: historyLoading } = useQuery({
+    queryKey: ['hr-salary-history', employeeId],
+    queryFn: () => api.hr.getSalaryHistory(employeeId),
+    enabled: !!employeeId,
+  });
+
+  const history: Record<string, unknown>[] = historyData?.data || historyData || [];
+
+  return (
+    <div className="glass-card rounded-2xl p-4 sm:p-6">
+      <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+        <MaterialIcon name="history" className="text-indigo-400" />
+        {t('hr.detail.history')}
+      </h2>
+      {historyLoading ? (
+        <div className="text-center py-8 text-muted-foreground text-sm">
+          <MaterialIcon name="hourglass_empty" className="text-2xl mb-2 block animate-spin" />
+          {t('common.loading')}
+        </div>
+      ) : history.length === 0 ? (
+        <p className="text-center py-8 text-muted-foreground text-sm">{t('common.noData')}</p>
+      ) : (
+        <div className="relative">
+          {/* タイムライン */}
+          <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-white/10" />
+          <div className="space-y-4">
+            {history.map((record, idx) => {
+              const effectiveDate = record.effective_date as string;
+              const baseSalary = Number(record.base_salary) || 0;
+              const netSalary = Number(record.net_salary) || 0;
+              const allowances = Number(record.allowances) || 0;
+              const deductions = Number(record.deductions) || 0;
+              const reason = record.reason as string || '-';
+              const prevNet = idx < history.length - 1 ? Number((history[idx + 1] as Record<string, unknown>).net_salary) || 0 : 0;
+              const diff = prevNet > 0 ? netSalary - prevNet : 0;
+
+              return (
+                <div key={record.id as string || idx} className="relative pl-10">
+                  <div className={`absolute left-2.5 top-2 size-3 rounded-full border-2 ${
+                    diff > 0 ? 'bg-emerald-500 border-emerald-500/50' :
+                    diff < 0 ? 'bg-destructive border-destructive/50' :
+                    'bg-indigo-500 border-indigo-500/50'
+                  }`} />
+                  <div className="glass-subtle rounded-xl p-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-bold">
+                          {effectiveDate ? new Date(effectiveDate).toLocaleDateString('ja-JP') : '-'}
+                        </span>
+                        {diff !== 0 && (
+                          <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
+                            diff > 0 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-destructive/20 text-destructive'
+                          }`}>
+                            {diff > 0 ? '+' : ''}{diff.toLocaleString()}円
+                          </span>
+                        )}
+                      </div>
+                      <span className="text-lg font-bold gradient-text">¥{netSalary.toLocaleString()}</span>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                      <div>
+                        <span className="text-muted-foreground">{t('hr.salary.baseSalary', '基本給')}</span>
+                        <p className="font-medium">¥{baseSalary.toLocaleString()}</p>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">{t('hr.salary.allowances', '手当')}</span>
+                        <p className="font-medium text-emerald-400">+¥{allowances.toLocaleString()}</p>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">{t('hr.salary.deductions', '控除')}</span>
+                        <p className="font-medium text-destructive">-¥{deductions.toLocaleString()}</p>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">{t('hr.salary.reason', '理由')}</span>
+                        <p className="font-medium">{reason}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function HREmployeeDetailPage() {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
@@ -274,13 +365,7 @@ export function HREmployeeDetailPage() {
 
       {/* 履歴タブ */}
       {activeTab === 'history' && (
-        <div className="glass-card rounded-2xl p-4 sm:p-6">
-          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <MaterialIcon name="history" className="text-indigo-400" />
-            {t('hr.detail.history')}
-          </h2>
-          <p className="text-center py-8 text-muted-foreground text-sm">{t('common.noData')}</p>
-        </div>
+        <HistoryTab employeeId={employeeId} />
       )}
 
       {/* 編集モーダル */}
