@@ -79,7 +79,8 @@ func TestAuthAndMiddlewareIntegration(t *testing.T) {
 
 	t.Run("cors_allowed_disallowed_and_options", func(t *testing.T) {
 		env := NewTestEnv(t, &Options{
-			AllowedOrigins: []string{"http://allowed.example.com"},
+			AllowedOrigins:               []string{"http://allowed.example.com"},
+			DisableAdditionalAutoMigrate: true,
 		})
 
 		allowedResp := env.DoJSON(t, http.MethodGet, "/health", nil, map[string]string{
@@ -117,8 +118,9 @@ func TestAuthAndMiddlewareIntegration(t *testing.T) {
 
 	t.Run("rate_limit_returns_429", func(t *testing.T) {
 		env := NewTestEnv(t, &Options{
-			RateLimitRPS:   1,
-			RateLimitBurst: 1,
+			RateLimitRPS:                 1,
+			RateLimitBurst:               1,
+			DisableAdditionalAutoMigrate: true,
 		})
 
 		remoteAddr := uniqueRemoteAddr()

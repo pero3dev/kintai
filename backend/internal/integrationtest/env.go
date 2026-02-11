@@ -31,25 +31,25 @@ const (
 )
 
 type Options struct {
-	DatabaseURL               string
-	JWTSecretKey              string
-	AllowedOrigins            []string
-	RateLimitRPS              int
-	RateLimitBurst            int
-	SeedFiles                 []string
+	DatabaseURL                  string
+	JWTSecretKey                 string
+	AllowedOrigins               []string
+	RateLimitRPS                 int
+	RateLimitBurst               int
+	SeedFiles                    []string
 	DisableAdditionalAutoMigrate bool
 	FailIfDatabaseUnavailable    bool
 }
 
 type options struct {
-	databaseURL               string
-	jwtSecretKey              string
-	allowedOrigins            []string
-	rateLimitRPS              int
-	rateLimitBurst            int
-	seedFiles                 []string
+	databaseURL                string
+	jwtSecretKey               string
+	allowedOrigins             []string
+	rateLimitRPS               int
+	rateLimitBurst             int
+	seedFiles                  []string
 	applyAdditionalAutoMigrate bool
-	skipIfDatabaseUnavailable bool
+	skipIfDatabaseUnavailable  bool
 }
 
 type TestEnv struct {
@@ -109,6 +109,9 @@ func NewTestEnv(t testing.TB, input *Options) *TestEnv {
 		backendRoot: root,
 	}
 
+	if err := env.ResetSchema(); err != nil {
+		t.Fatalf("failed to reset schema: %v", err)
+	}
 	if err := env.ApplyMigrations(); err != nil {
 		t.Fatalf("failed to apply migrations: %v", err)
 	}
@@ -133,6 +136,16 @@ func NewTestEnv(t testing.TB, input *Options) *TestEnv {
 	})
 
 	return env
+}
+
+func (e *TestEnv) ResetSchema() error {
+	if err := e.DB.Exec(`DROP SCHEMA IF EXISTS public CASCADE`).Error; err != nil {
+		return fmt.Errorf("drop public schema: %w", err)
+	}
+	if err := e.DB.Exec(`CREATE SCHEMA public`).Error; err != nil {
+		return fmt.Errorf("create public schema: %w", err)
+	}
+	return nil
 }
 
 func (e *TestEnv) ApplyMigrations() error {
@@ -295,13 +308,13 @@ func migrationFiles(root string) ([]string, error) {
 
 func normalizeOptions(input *Options) options {
 	o := options{
-		databaseURL:               defaultDatabaseURL,
-		jwtSecretKey:              defaultJWTSecret,
-		allowedOrigins:            []string{"http://localhost:5173"},
-		rateLimitRPS:              100000,
-		rateLimitBurst:            100000,
-		applyAdditionalAutoMigrate: true,
-		skipIfDatabaseUnavailable: true,
+		databaseURL:                defaultDatabaseURL,
+		jwtSecretKey:               defaultJWTSecret,
+		allowedOrigins:             []string{"http://localhost:5173"},
+		rateLimitRPS:               100000,
+		rateLimitBurst:             100000,
+		applyAdditionalAutoMigrate: false,
+		skipIfDatabaseUnavailable:  true,
 	}
 
 	if input == nil {
