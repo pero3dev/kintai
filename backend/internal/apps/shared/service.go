@@ -687,6 +687,14 @@ func (s *holidayService) Create(ctx context.Context, req *model.HolidayCreateReq
 	if err != nil {
 		return nil, errors.New("日付の形式が不正です")
 	}
+	exists, _, err := s.deps.Repos.Holiday.IsHoliday(ctx, date)
+	if err != nil {
+		return nil, err
+	}
+	if exists {
+		return nil, errors.New("同じ日付の休日が既に存在します")
+	}
+
 	holiday := &model.Holiday{
 		Date: date, Name: req.Name, HolidayType: req.HolidayType, IsRecurring: req.IsRecurring,
 	}
