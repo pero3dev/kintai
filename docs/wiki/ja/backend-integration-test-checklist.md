@@ -325,23 +325,23 @@
 - [x] 修正申請フロー連携（作成、承認、CRUD）
 
 ## 7. HRドメイン
-- [ ] HRダッシュボード（stats/activities）
-- [ ] 社員CRUD + フィルタ検索
-- [ ] HR部署CRUD + 階層
-- [ ] 評価CRUD + submit + サイクルCRUD
-- [ ] 目標CRUD + 進捗更新
-- [ ] 研修CRUD + enroll/complete
-- [ ] 採用（ポジション/候補者/ステージ更新）
-- [ ] 文書（upload/list/delete/download）
-- [ ] 入退社CRUD
-- [ ] 勤怠連携（integration/alerts/trend）
-- [ ] 人員計画（作成、シミュレーション）
-- [ ] 1on1（CRUD/アクション登録/トグル）
-- [ ] スキル（map/gap/add/update）
-- [ ] 給与予算（overview/simulate/history/budget）
-- [ ] オンボーディング（CRUD/テンプレートCRUD/タスクトグル）
-- [ ] オフボーディング（CRUD/完了処理/チェックリストトグル）
-- [ ] サーベイ（CRUD/publish/close/results/respond）
+- [x] HRダッシュボード（stats/activities）
+- [x] 社員CRUD + フィルタ検索
+- [x] HR部署CRUD + 階層
+- [x] 評価CRUD + submit + サイクルCRUD
+- [x] 目標CRUD + 進捗更新
+- [x] 研修CRUD + enroll/complete
+- [x] 採用（ポジション/候補者/ステージ更新）
+- [x] 文書（upload/list/delete/download）
+- [x] 入退社CRUD
+- [x] 勤怠連携（integration/alerts/trend）
+- [x] 人員計画（作成、シミュレーション）
+- [x] 1on1（CRUD/アクション登録/トグル）
+- [x] スキル（map/gap/add/update）
+- [x] 給与予算（overview/simulate/history/budget）
+- [x] オンボーディング（CRUD/テンプレートCRUD/タスクトグル）
+- [x] オフボーディング（CRUD/完了処理/チェックリストトグル）
+- [x] サーベイ（CRUD/publish/close/results/respond）
 
 ## 8. DB制約・SQL挙動
 - [ ] UNIQUE制約検証（email、department.name、project.code など）
