@@ -11,7 +11,7 @@ export type MockUser = {
   is_active: boolean;
 };
 
-export const state = vi.hoisted(() => ({
+const state = vi.hoisted(() => ({
   queryData: new Map<string, unknown>(),
   user: null as MockUser | null,
   language: 'ja',
@@ -31,7 +31,7 @@ export const state = vi.hoisted(() => ({
   invalidateQueries: vi.fn(),
 }));
 
-export const apiMocks = vi.hoisted(() => ({
+const apiMocks = vi.hoisted(() => ({
   auth: { login: vi.fn() },
   attendance: {
     getToday: vi.fn(),
@@ -189,6 +189,19 @@ vi.mock('@/api/client', () => ({
 
 export function setQueryData(key: unknown[], value: unknown) {
   state.queryData.set(JSON.stringify(key), value);
+}
+
+export function setUserRole(role: Role) {
+  if (!state.user) return;
+  state.user = { ...state.user, role };
+}
+
+export function setUser(user: MockUser | null) {
+  state.user = user;
+}
+
+export function getApiMocks() {
+  return apiMocks;
 }
 
 export function resetHarness() {
