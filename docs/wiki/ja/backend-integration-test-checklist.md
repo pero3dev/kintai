@@ -344,12 +344,12 @@
 - [x] サーベイ（CRUD/publish/close/results/respond）
 
 ## 8. DB制約・SQL挙動
-- [ ] UNIQUE制約検証（email、department.name、project.code など）
-- [ ] 複合UNIQUE検証（attendance user+date、shift user+date など）
-- [ ] FK制約検証（CASCADE/SET NULL）
-- [ ] Preload関連取得の検証
-- [ ] 集計SQL検証（dashboard/overtime/expense report/salary budget/turnover）
-- [ ] soft delete 後の検索/復元挙動
+- [x] UNIQUE制約検証（email、department.name、project.code など）
+- [x] 複合UNIQUE検証（attendance user+date、shift user+date など）
+- [x] FK制約検証（CASCADE/SET NULL）
+- [x] Preload関連取得の検証
+- [x] 集計SQL検証（dashboard/overtime/expense report/salary budget/turnover）
+- [x] soft delete 後の検索/復元挙動
 
 ## 9. 回帰重点
 - [ ] 日付境界（UTC/JST、月跨ぎ、締め日）での4xx/正常系
