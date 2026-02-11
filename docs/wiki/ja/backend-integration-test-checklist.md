@@ -283,12 +283,12 @@
 
 
 ## 3. 認証・ミドルウェア結合
-- [ ] `register -> login -> refresh -> logout` の一連フロー
-- [ ] 期限切れJWT / 不正署名JWT / Bearer形式不正
-- [ ] CORS（許可origin / 不許可origin / OPTIONS）
-- [ ] SecurityHeaders の付与
-- [ ] RateLimit で429
-- [ ] Recovery でpanic時に500
+- [x] `register -> login -> refresh -> logout` の一連フロー
+- [x] 期限切れJWT / 不正署名JWT / Bearer形式不正
+- [x] CORS（許可origin / 不許可origin / OPTIONS）
+- [x] SecurityHeaders の付与
+- [x] RateLimit で429
+- [x] Recovery でpanic時に500
 
 ## 4. 勤怠ドメイン（attendance）
 - [ ] 打刻フロー（出勤 -> 退勤 -> 勤怠一覧/詳細）
