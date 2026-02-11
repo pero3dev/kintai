@@ -163,7 +163,7 @@ const sections: Record<WikiSectionId, WikiSectionMeta> = {
   },
 };
 
-const commonCommands = ['make up', 'make test', 'cd backend; go test ./...', 'cd frontend; npm run test'];
+const commonCommands = ['make up', 'make test', 'cd backend; go test ./...', 'cd frontend; pnpm test'];
 
 const wikiCopy = {
   en: {
@@ -178,7 +178,7 @@ const wikiCopy = {
     updateSteps: [
       'Edit the corresponding `docs/wiki/*.md` file.',
       'Review the section in `/wiki` UI.',
-      'Run `npm run test` and open a PR.',
+      'Run `pnpm test` and open a PR.',
     ],
     commonCommandsTitle: 'Common Commands',
   },
@@ -194,7 +194,7 @@ const wikiCopy = {
     updateSteps: [
       '対応する `docs/wiki/ja/*.md` または `docs/wiki/*.md` を編集する。',
       '`/wiki` 画面で表示を確認する。',
-      '`npm run test` を実行して PR を作成する。',
+      '`pnpm test` を実行して PR を作成する。',
     ],
     commonCommandsTitle: 'よく使うコマンド',
   },

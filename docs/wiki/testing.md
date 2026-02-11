@@ -1,4 +1,4 @@
-﻿# Testing
+# Testing
 
 ## Testing Strategy
 
@@ -52,7 +52,7 @@ Useful examples:
 Playwright config: `frontend/playwright.config.ts`
 
 - base URL: `http://localhost:3000`
-- web server command: `npm run dev`
+- web server command: `pnpm dev`
 - chromium project enabled
 - traces on first retry
 
@@ -72,10 +72,10 @@ Workflow: `.github/workflows/ci.yml`
 ```sh
 # frontend
 cd frontend
-npm run test
-npm run test:coverage
-npm run build
-npm run test:e2e
+pnpm test
+pnpm test:coverage
+pnpm build
+pnpm test:e2e
 
 # backend
 cd backend
@@ -116,3 +116,4 @@ make frontend-e2e
 - No unexplained test skip.
 - New feature has at least one behavior-focused test.
 - Wiki docs updated for architectural behavior changes.
+

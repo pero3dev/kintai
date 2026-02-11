@@ -1,4 +1,4 @@
-﻿# Frontend
+# Frontend
 
 ## Runtime Shell
 
@@ -116,8 +116,9 @@ Vite config (`frontend/vite.config.ts`) currently:
 
 ```sh
 cd frontend
-npm run dev
-npm run test
-npm run build
-npm run test:e2e
+pnpm dev
+pnpm test
+pnpm build
+pnpm test:e2e
 ```
+

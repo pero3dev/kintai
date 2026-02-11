@@ -114,8 +114,10 @@ pathname -> getActiveApp -> Layoutナビ生成 -> AppSwitcher表示
 
 ```sh
 cd frontend
-npm run dev
-npm run test
-npm run build
-npm run test:e2e
+pnpm dev
+pnpm test
+pnpm build
+pnpm test:e2e
 ```
+
+

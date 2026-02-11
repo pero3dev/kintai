@@ -52,7 +52,7 @@
 Playwright設定: `frontend/playwright.config.ts`
 
 - baseURL: `http://localhost:3000`
-- webServer command: `npm run dev`
+- webServer command: `pnpm dev`
 - browser project: chromium
 - retry時にtrace収集
 
@@ -72,10 +72,10 @@ Playwright設定: `frontend/playwright.config.ts`
 ```sh
 # frontend
 cd frontend
-npm run test
-npm run test:coverage
-npm run build
-npm run test:e2e
+pnpm test
+pnpm test:coverage
+pnpm build
+pnpm test:e2e
 
 # backend
 cd backend
@@ -115,3 +115,5 @@ make frontend-e2e
 - 理由不明のskipがない
 - 新機能に少なくとも1件の振る舞いテストがある
 - アーキテクチャ変更時はWiki更新が完了している
+
+
