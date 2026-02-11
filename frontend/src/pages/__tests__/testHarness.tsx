@@ -133,6 +133,98 @@ const apiMocks = vi.hoisted(() => ({
     setDelegate: vi.fn(),
     removeDelegate: vi.fn(),
   },
+  hr: {
+    getStats: vi.fn(),
+    getRecentActivities: vi.fn(),
+    getEmployees: vi.fn(),
+    getEmployee: vi.fn(),
+    createEmployee: vi.fn(),
+    updateEmployee: vi.fn(),
+    deleteEmployee: vi.fn(),
+    getDepartments: vi.fn(),
+    getDepartment: vi.fn(),
+    createDepartment: vi.fn(),
+    updateDepartment: vi.fn(),
+    deleteDepartment: vi.fn(),
+    getEvaluations: vi.fn(),
+    getEvaluation: vi.fn(),
+    createEvaluation: vi.fn(),
+    updateEvaluation: vi.fn(),
+    submitEvaluation: vi.fn(),
+    getEvaluationCycles: vi.fn(),
+    createEvaluationCycle: vi.fn(),
+    getGoals: vi.fn(),
+    getGoal: vi.fn(),
+    createGoal: vi.fn(),
+    updateGoal: vi.fn(),
+    deleteGoal: vi.fn(),
+    updateGoalProgress: vi.fn(),
+    getTrainingPrograms: vi.fn(),
+    getTrainingProgram: vi.fn(),
+    createTrainingProgram: vi.fn(),
+    updateTrainingProgram: vi.fn(),
+    deleteTrainingProgram: vi.fn(),
+    enrollTraining: vi.fn(),
+    completeTraining: vi.fn(),
+    getPositions: vi.fn(),
+    getPosition: vi.fn(),
+    createPosition: vi.fn(),
+    updatePosition: vi.fn(),
+    getApplicants: vi.fn(),
+    createApplicant: vi.fn(),
+    updateApplicantStage: vi.fn(),
+    getDocuments: vi.fn(),
+    uploadDocument: vi.fn(),
+    deleteDocument: vi.fn(),
+    downloadDocument: vi.fn(),
+    getAnnouncements: vi.fn(),
+    getAnnouncement: vi.fn(),
+    createAnnouncement: vi.fn(),
+    updateAnnouncement: vi.fn(),
+    deleteAnnouncement: vi.fn(),
+    getAttendanceIntegration: vi.fn(),
+    getAttendanceAlerts: vi.fn(),
+    getAttendanceTrend: vi.fn(),
+    getOrgChart: vi.fn(),
+    simulateOrgChange: vi.fn(),
+    getOneOnOnes: vi.fn(),
+    getOneOnOne: vi.fn(),
+    createOneOnOne: vi.fn(),
+    updateOneOnOne: vi.fn(),
+    deleteOneOnOne: vi.fn(),
+    addActionItem: vi.fn(),
+    toggleActionItem: vi.fn(),
+    getSkillMap: vi.fn(),
+    getSkillGapAnalysis: vi.fn(),
+    addEmployeeSkill: vi.fn(),
+    updateEmployeeSkill: vi.fn(),
+    getSalaryOverview: vi.fn(),
+    simulateSalary: vi.fn(),
+    getSalaryHistory: vi.fn(),
+    getBudgetOverview: vi.fn(),
+    getOnboardings: vi.fn(),
+    getOnboarding: vi.fn(),
+    createOnboarding: vi.fn(),
+    updateOnboarding: vi.fn(),
+    toggleOnboardingTask: vi.fn(),
+    getOnboardingTemplates: vi.fn(),
+    createOnboardingTemplate: vi.fn(),
+    getOffboardings: vi.fn(),
+    getOffboarding: vi.fn(),
+    createOffboarding: vi.fn(),
+    updateOffboarding: vi.fn(),
+    toggleOffboardingChecklist: vi.fn(),
+    getTurnoverAnalytics: vi.fn(),
+    getSurveys: vi.fn(),
+    getSurvey: vi.fn(),
+    createSurvey: vi.fn(),
+    updateSurvey: vi.fn(),
+    deleteSurvey: vi.fn(),
+    publishSurvey: vi.fn(),
+    closeSurvey: vi.fn(),
+    getSurveyResults: vi.fn(),
+    submitSurveyResponse: vi.fn(),
+  },
 }));
 
 vi.mock('@tanstack/react-router', () => ({
@@ -168,9 +260,21 @@ vi.mock('react-i18next', () => ({
 }));
 
 vi.mock('@tanstack/react-query', () => ({
-  useQuery: (options: { queryKey: unknown[]; enabled?: boolean }) => {
+  useQuery: (options: { queryKey: unknown[]; enabled?: boolean; queryFn?: () => unknown }) => {
     if (options.enabled === false) return { data: undefined, isLoading: false };
-    return { data: state.queryData.get(JSON.stringify(options.queryKey)), isLoading: false };
+    const key = JSON.stringify(options.queryKey);
+    let data = state.queryData.get(key);
+    if (data === undefined) {
+      try {
+        const result = options.queryFn?.();
+        if (result !== undefined && typeof (result as { then?: unknown }).then !== 'function') {
+          data = result;
+        }
+      } catch {
+        // ignore query fallback errors in tests
+      }
+    }
+    return { data, isLoading: false };
   },
   useMutation: (options: {
     mutationFn: (vars?: unknown) => unknown;
