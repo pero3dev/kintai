@@ -5,7 +5,6 @@ import (
 
 	"github.com/google/uuid"
 	"gorm.io/datatypes"
-	"gorm.io/gorm"
 )
 
 // ===== HR社員 =====
@@ -403,32 +402,3 @@ type SurveyResponse struct {
 	Employee *HREmployee `gorm:"foreignKey:EmployeeID" json:"employee,omitempty"`
 }
 
-// HRAutoMigrate はHR関連テーブルのマイグレーションを実行する
-func HRAutoMigrate(db *gorm.DB) error {
-	// FK制約の自動生成を無効化してマイグレーション（循環参照を避ける）
-	prev := db.Config.DisableForeignKeyConstraintWhenMigrating
-	db.Config.DisableForeignKeyConstraintWhenMigrating = true
-	defer func() { db.Config.DisableForeignKeyConstraintWhenMigrating = prev }()
-
-	return db.AutoMigrate(
-		&HRDepartment{},
-		&HREmployee{},
-		&EvaluationCycle{},
-		&Evaluation{},
-		&HRGoal{},
-		&TrainingProgram{},
-		&TrainingEnrollment{},
-		&RecruitmentPosition{},
-		&Applicant{},
-		&HRDocument{},
-		&HRAnnouncement{},
-		&OneOnOneMeeting{},
-		&EmployeeSkill{},
-		&SalaryRecord{},
-		&Onboarding{},
-		&OnboardingTemplate{},
-		&Offboarding{},
-		&Survey{},
-		&SurveyResponse{},
-	)
-}

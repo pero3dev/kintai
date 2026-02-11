@@ -10,6 +10,7 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
+	appattendance "github.com/your-org/kintai/backend/internal/apps/attendance"
 	"github.com/your-org/kintai/backend/internal/config"
 	"github.com/your-org/kintai/backend/internal/model"
 	"github.com/your-org/kintai/backend/internal/repository"
@@ -22,11 +23,11 @@ var (
 	ErrInvalidCredentials    = errors.New("メールアドレスまたはパスワードが正しくありません")
 	ErrUserNotFound          = errors.New("ユーザーが見つかりません")
 	ErrEmailAlreadyExists    = errors.New("このメールアドレスは既に登録されています")
-	ErrAlreadyClockedIn      = errors.New("既に出勤打刻済みです")
-	ErrNotClockedIn          = errors.New("出勤打刻がありません")
-	ErrAlreadyClockedOut     = errors.New("既に退勤打刻済みです")
-	ErrLeaveNotFound         = errors.New("休暇申請が見つかりません")
-	ErrLeaveAlreadyProcessed = errors.New("この休暇申請は既に処理済みです")
+	ErrAlreadyClockedIn      = appattendance.ErrAlreadyClockedIn
+	ErrNotClockedIn          = appattendance.ErrNotClockedIn
+	ErrAlreadyClockedOut     = appattendance.ErrAlreadyClockedOut
+	ErrLeaveNotFound         = appattendance.ErrLeaveNotFound
+	ErrLeaveAlreadyProcessed = appattendance.ErrLeaveAlreadyProcessed
 	ErrUnauthorized          = errors.New("権限がありません")
 )
 
@@ -90,7 +91,7 @@ func NewServices(deps Deps) *Services {
 	return &Services{
 		Auth:                 NewAuthService(deps),
 		Attendance:           NewAttendanceService(deps),
-		Leave:                NewLeaveService(deps),
+		Leave:                NewLeaveService(deps, notificationSvc),
 		Shift:                NewShiftService(deps),
 		User:                 NewUserService(deps),
 		Department:           NewDepartmentService(deps),
@@ -275,175 +276,6 @@ func (s *authService) RefreshToken(ctx context.Context, refreshToken string) (*m
 
 func (s *authService) Logout(ctx context.Context, userID uuid.UUID) error {
 	return s.deps.Repos.RefreshToken.RevokeByUserID(ctx, userID)
-}
-
-// ===== AttendanceService =====
-
-type AttendanceService interface {
-	ClockIn(ctx context.Context, userID uuid.UUID, req *model.ClockInRequest) (*model.Attendance, error)
-	ClockOut(ctx context.Context, userID uuid.UUID, req *model.ClockOutRequest) (*model.Attendance, error)
-	GetByUserAndDateRange(ctx context.Context, userID uuid.UUID, start, end time.Time, page, pageSize int) ([]model.Attendance, int64, error)
-	GetSummary(ctx context.Context, userID uuid.UUID, start, end time.Time) (*model.AttendanceSummary, error)
-	GetTodayStatus(ctx context.Context, userID uuid.UUID) (*model.Attendance, error)
-}
-
-type attendanceService struct {
-	deps Deps
-}
-
-func NewAttendanceService(deps Deps) AttendanceService {
-	return &attendanceService{deps: deps}
-}
-
-func (s *attendanceService) ClockIn(ctx context.Context, userID uuid.UUID, req *model.ClockInRequest) (*model.Attendance, error) {
-	today := time.Now().Truncate(24 * time.Hour)
-
-	existing, _ := s.deps.Repos.Attendance.FindByUserAndDate(ctx, userID, today)
-	if existing != nil && existing.ClockIn != nil {
-		return nil, ErrAlreadyClockedIn
-	}
-
-	now := time.Now()
-	attendance := &model.Attendance{
-		UserID:  userID,
-		Date:    today,
-		ClockIn: &now,
-		Status:  model.AttendanceStatusPresent,
-		Note:    req.Note,
-	}
-
-	if err := s.deps.Repos.Attendance.Create(ctx, attendance); err != nil {
-		return nil, err
-	}
-
-	return attendance, nil
-}
-
-func (s *attendanceService) ClockOut(ctx context.Context, userID uuid.UUID, req *model.ClockOutRequest) (*model.Attendance, error) {
-	today := time.Now().Truncate(24 * time.Hour)
-
-	attendance, err := s.deps.Repos.Attendance.FindByUserAndDate(ctx, userID, today)
-	if err != nil {
-		return nil, ErrNotClockedIn
-	}
-
-	if attendance.ClockOut != nil {
-		return nil, ErrAlreadyClockedOut
-	}
-
-	now := time.Now()
-	attendance.ClockOut = &now
-	if req.Note != "" {
-		attendance.Note = req.Note
-	}
-
-	// 勤務時間を計算
-	if attendance.ClockIn != nil {
-		workDuration := now.Sub(*attendance.ClockIn)
-		attendance.WorkMinutes = int(workDuration.Minutes()) - attendance.BreakMinutes
-
-		// 8時間超過を残業として計算
-		standardMinutes := 8 * 60
-		if attendance.WorkMinutes > standardMinutes {
-			attendance.OvertimeMinutes = attendance.WorkMinutes - standardMinutes
-		}
-	}
-
-	if err := s.deps.Repos.Attendance.Update(ctx, attendance); err != nil {
-		return nil, err
-	}
-
-	return attendance, nil
-}
-
-func (s *attendanceService) GetByUserAndDateRange(ctx context.Context, userID uuid.UUID, start, end time.Time, page, pageSize int) ([]model.Attendance, int64, error) {
-	return s.deps.Repos.Attendance.FindByUserAndDateRange(ctx, userID, start, end, page, pageSize)
-}
-
-func (s *attendanceService) GetSummary(ctx context.Context, userID uuid.UUID, start, end time.Time) (*model.AttendanceSummary, error) {
-	return s.deps.Repos.Attendance.GetSummary(ctx, userID, start, end)
-}
-
-func (s *attendanceService) GetTodayStatus(ctx context.Context, userID uuid.UUID) (*model.Attendance, error) {
-	today := time.Now().Truncate(24 * time.Hour)
-	return s.deps.Repos.Attendance.FindByUserAndDate(ctx, userID, today)
-}
-
-// ===== LeaveService =====
-
-type LeaveService interface {
-	Create(ctx context.Context, userID uuid.UUID, req *model.LeaveRequestCreate) (*model.LeaveRequest, error)
-	Approve(ctx context.Context, leaveID uuid.UUID, approverID uuid.UUID, req *model.LeaveRequestApproval) (*model.LeaveRequest, error)
-	GetByUser(ctx context.Context, userID uuid.UUID, page, pageSize int) ([]model.LeaveRequest, int64, error)
-	GetPending(ctx context.Context, page, pageSize int) ([]model.LeaveRequest, int64, error)
-}
-
-type leaveService struct {
-	deps Deps
-}
-
-func NewLeaveService(deps Deps) LeaveService {
-	return &leaveService{deps: deps}
-}
-
-func (s *leaveService) Create(ctx context.Context, userID uuid.UUID, req *model.LeaveRequestCreate) (*model.LeaveRequest, error) {
-	startDate, err := time.Parse("2006-01-02", req.StartDate)
-	if err != nil {
-		return nil, errors.New("開始日の形式が不正です")
-	}
-	endDate, err := time.Parse("2006-01-02", req.EndDate)
-	if err != nil {
-		return nil, errors.New("終了日の形式が不正です")
-	}
-
-	leave := &model.LeaveRequest{
-		UserID:    userID,
-		LeaveType: req.LeaveType,
-		StartDate: startDate,
-		EndDate:   endDate,
-		Reason:    req.Reason,
-		Status:    model.ApprovalStatusPending,
-	}
-
-	if err := s.deps.Repos.LeaveRequest.Create(ctx, leave); err != nil {
-		return nil, err
-	}
-
-	return leave, nil
-}
-
-func (s *leaveService) Approve(ctx context.Context, leaveID uuid.UUID, approverID uuid.UUID, req *model.LeaveRequestApproval) (*model.LeaveRequest, error) {
-	leave, err := s.deps.Repos.LeaveRequest.FindByID(ctx, leaveID)
-	if err != nil {
-		return nil, ErrLeaveNotFound
-	}
-
-	if leave.Status != model.ApprovalStatusPending {
-		return nil, ErrLeaveAlreadyProcessed
-	}
-
-	now := time.Now()
-	leave.Status = req.Status
-	leave.ApprovedBy = &approverID
-	leave.ApprovedAt = &now
-	if req.Status == model.ApprovalStatusRejected {
-		leave.RejectedReason = req.RejectedReason
-	}
-
-	if err := s.deps.Repos.LeaveRequest.Update(ctx, leave); err != nil {
-		return nil, err
-	}
-
-	// TODO: メール通知（AWS SES）
-	return leave, nil
-}
-
-func (s *leaveService) GetByUser(ctx context.Context, userID uuid.UUID, page, pageSize int) ([]model.LeaveRequest, int64, error) {
-	return s.deps.Repos.LeaveRequest.FindByUserID(ctx, userID, page, pageSize)
-}
-
-func (s *leaveService) GetPending(ctx context.Context, page, pageSize int) ([]model.LeaveRequest, int64, error) {
-	return s.deps.Repos.LeaveRequest.FindPending(ctx, page, pageSize)
 }
 
 // ===== ShiftService =====
@@ -657,7 +489,7 @@ func (s *departmentService) Delete(ctx context.Context, id uuid.UUID) error {
 // ===== DashboardService =====
 
 type DashboardService interface {
-	GetStats(ctx context.Context) (*model.DashboardStats, error)
+	GetStats(ctx context.Context) (*model.DashboardStatsExtended, error)
 }
 
 type dashboardService struct {
@@ -668,7 +500,7 @@ func NewDashboardService(deps Deps) DashboardService {
 	return &dashboardService{deps: deps}
 }
 
-func (s *dashboardService) GetStats(ctx context.Context) (*model.DashboardStats, error) {
+func (s *dashboardService) GetStats(ctx context.Context) (*model.DashboardStatsExtended, error) {
 	// 今日の出勤者数
 	todayPresent, _ := s.deps.Repos.Attendance.CountTodayPresent(ctx)
 
@@ -690,321 +522,42 @@ func (s *dashboardService) GetStats(ctx context.Context) (*model.DashboardStats,
 	monthEnd := monthStart.AddDate(0, 1, 0).Add(-time.Second)
 	monthlyOvertime, _ := s.deps.Repos.Attendance.GetMonthlyOvertime(ctx, monthStart, monthEnd)
 
-	return &model.DashboardStats{
-		TodayPresentCount: int(todayPresent),
-		TodayAbsentCount:  int(todayAbsent),
-		PendingLeaves:     int(pendingLeaves),
-		MonthlyOvertime:   int(monthlyOvertime),
-	}, nil
-}
+	// 週間トレンドデータ（過去7日間）
+	var weeklyTrend []model.DashboardTrend
+	for i := 6; i >= 0; i-- {
+		day := now.AddDate(0, 0, -i)
+		dayStart := time.Date(day.Year(), day.Month(), day.Day(), 0, 0, 0, 0, time.Local)
+		dayEnd := dayStart.Add(24*time.Hour - time.Second)
 
-// ===== OvertimeRequestService =====
-
-type OvertimeRequestService interface {
-	Create(ctx context.Context, userID uuid.UUID, req *model.OvertimeRequestCreate) (*model.OvertimeRequest, error)
-	Approve(ctx context.Context, id uuid.UUID, approverID uuid.UUID, req *model.OvertimeRequestApproval) (*model.OvertimeRequest, error)
-	GetByUser(ctx context.Context, userID uuid.UUID, page, pageSize int) ([]model.OvertimeRequest, int64, error)
-	GetPending(ctx context.Context, page, pageSize int) ([]model.OvertimeRequest, int64, error)
-	GetOvertimeAlerts(ctx context.Context) ([]model.OvertimeAlert, error)
-}
-
-type overtimeRequestService struct {
-	deps            Deps
-	notificationSvc NotificationService
-}
-
-func NewOvertimeRequestService(deps Deps, notificationSvc NotificationService) OvertimeRequestService {
-	return &overtimeRequestService{deps: deps, notificationSvc: notificationSvc}
-}
-
-func (s *overtimeRequestService) Create(ctx context.Context, userID uuid.UUID, req *model.OvertimeRequestCreate) (*model.OvertimeRequest, error) {
-	date, err := time.Parse("2006-01-02", req.Date)
-	if err != nil {
-		return nil, errors.New("日付の形式が不正です")
-	}
-	overtime := &model.OvertimeRequest{
-		UserID: userID, Date: date, PlannedMinutes: req.PlannedMinutes,
-		Reason: req.Reason, Status: model.OvertimeStatusPending,
-	}
-	if err := s.deps.Repos.OvertimeRequest.Create(ctx, overtime); err != nil {
-		return nil, err
-	}
-	return overtime, nil
-}
-
-func (s *overtimeRequestService) Approve(ctx context.Context, id uuid.UUID, approverID uuid.UUID, req *model.OvertimeRequestApproval) (*model.OvertimeRequest, error) {
-	overtime, err := s.deps.Repos.OvertimeRequest.FindByID(ctx, id)
-	if err != nil {
-		return nil, errors.New("残業申請が見つかりません")
-	}
-	if overtime.Status != model.OvertimeStatusPending {
-		return nil, errors.New("この残業申請は既に処理済みです")
-	}
-	now := time.Now()
-	overtime.Status = req.Status
-	overtime.ApprovedBy = &approverID
-	overtime.ApprovedAt = &now
-	if req.Status == model.OvertimeStatusRejected {
-		overtime.RejectedReason = req.RejectedReason
-	}
-	if err := s.deps.Repos.OvertimeRequest.Update(ctx, overtime); err != nil {
-		return nil, err
-	}
-	// 通知送信
-	notifType := model.NotificationTypeLeaveApproved
-	title := "残業申請が承認されました"
-	if req.Status == model.OvertimeStatusRejected {
-		notifType = model.NotificationTypeLeaveRejected
-		title = "残業申請が却下されました"
-	}
-	_ = s.notificationSvc.Send(ctx, overtime.UserID, notifType, title,
-		fmt.Sprintf("%s の残業申請が%sされました", overtime.Date.Format("2006-01-02"),
-			map[model.OvertimeRequestStatus]string{model.OvertimeStatusApproved: "承認", model.OvertimeStatusRejected: "却下"}[req.Status]))
-	return overtime, nil
-}
-
-func (s *overtimeRequestService) GetByUser(ctx context.Context, userID uuid.UUID, page, pageSize int) ([]model.OvertimeRequest, int64, error) {
-	return s.deps.Repos.OvertimeRequest.FindByUserID(ctx, userID, page, pageSize)
-}
-
-func (s *overtimeRequestService) GetPending(ctx context.Context, page, pageSize int) ([]model.OvertimeRequest, int64, error) {
-	return s.deps.Repos.OvertimeRequest.FindPending(ctx, page, pageSize)
-}
-
-func (s *overtimeRequestService) GetOvertimeAlerts(ctx context.Context) ([]model.OvertimeAlert, error) {
-	users, _, _ := s.deps.Repos.User.FindAll(ctx, 1, 1000)
-	now := time.Now()
-	var alerts []model.OvertimeAlert
-	for _, u := range users {
-		monthly, _ := s.deps.Repos.OvertimeRequest.GetUserMonthlyOvertime(ctx, u.ID, now.Year(), int(now.Month()))
-		yearly, _ := s.deps.Repos.OvertimeRequest.GetUserYearlyOvertime(ctx, u.ID, now.Year())
-		monthlyHours := float64(monthly) / 60.0
-		yearlyHours := float64(yearly) / 60.0
-		// 36協定: 月45時間、年360時間
-		if monthlyHours > 35 || yearlyHours > 300 {
-			alerts = append(alerts, model.OvertimeAlert{
-				UserID: u.ID, UserName: u.LastName + " " + u.FirstName,
-				MonthlyOvertimeHours: monthlyHours, YearlyOvertimeHours: yearlyHours,
-				MonthlyLimitHours: 45, YearlyLimitHours: 360,
-				IsMonthlyExceeded: monthlyHours > 45, IsYearlyExceeded: yearlyHours > 360,
-			})
+		records, _ := s.deps.Repos.Attendance.FindByDateRange(ctx, dayStart, dayEnd)
+		presentCount := len(records)
+		absentCount := int(totalUsers) - presentCount
+		if absentCount < 0 {
+			absentCount = 0
 		}
-	}
-	return alerts, nil
-}
 
-// ===== LeaveBalanceService =====
+		attendanceRate := 0.0
+		if totalUsers > 0 {
+			attendanceRate = float64(presentCount) / float64(totalUsers) * 100
+		}
 
-type LeaveBalanceService interface {
-	GetByUser(ctx context.Context, userID uuid.UUID, fiscalYear int) ([]model.LeaveBalanceResponse, error)
-	SetBalance(ctx context.Context, userID uuid.UUID, fiscalYear int, leaveType model.LeaveType, req *model.LeaveBalanceUpdate) error
-	DeductBalance(ctx context.Context, userID uuid.UUID, leaveType model.LeaveType, days float64) error
-	InitializeForUser(ctx context.Context, userID uuid.UUID, fiscalYear int) error
-}
-
-type leaveBalanceService struct{ deps Deps }
-
-func NewLeaveBalanceService(deps Deps) LeaveBalanceService {
-	return &leaveBalanceService{deps: deps}
-}
-
-func (s *leaveBalanceService) GetByUser(ctx context.Context, userID uuid.UUID, fiscalYear int) ([]model.LeaveBalanceResponse, error) {
-	balances, err := s.deps.Repos.LeaveBalance.FindByUserAndYear(ctx, userID, fiscalYear)
-	if err != nil {
-		return nil, err
-	}
-	var responses []model.LeaveBalanceResponse
-	for _, b := range balances {
-		responses = append(responses, model.LeaveBalanceResponse{
-			LeaveType: b.LeaveType, TotalDays: b.TotalDays, UsedDays: b.UsedDays,
-			RemainingDays: b.TotalDays + b.CarriedOver - b.UsedDays,
-			CarriedOver:   b.CarriedOver, FiscalYear: b.FiscalYear,
+		weeklyTrend = append(weeklyTrend, model.DashboardTrend{
+			Date:           dayStart.Format("2006-01-02"),
+			PresentCount:   presentCount,
+			AbsentCount:    absentCount,
+			AttendanceRate: attendanceRate,
 		})
 	}
-	return responses, nil
-}
 
-func (s *leaveBalanceService) SetBalance(ctx context.Context, userID uuid.UUID, fiscalYear int, leaveType model.LeaveType, req *model.LeaveBalanceUpdate) error {
-	balance, err := s.deps.Repos.LeaveBalance.FindByUserYearAndType(ctx, userID, fiscalYear, leaveType)
-	if err != nil {
-		balance = &model.LeaveBalance{UserID: userID, FiscalYear: fiscalYear, LeaveType: leaveType}
-	}
-	if req.TotalDays != nil {
-		balance.TotalDays = *req.TotalDays
-	}
-	if req.CarriedOver != nil {
-		balance.CarriedOver = *req.CarriedOver
-	}
-	return s.deps.Repos.LeaveBalance.Upsert(ctx, balance)
-}
-
-func (s *leaveBalanceService) DeductBalance(ctx context.Context, userID uuid.UUID, leaveType model.LeaveType, days float64) error {
-	fiscalYear := time.Now().Year()
-	balance, err := s.deps.Repos.LeaveBalance.FindByUserYearAndType(ctx, userID, fiscalYear, leaveType)
-	if err != nil {
-		return errors.New("有給残日数が設定されていません")
-	}
-	remaining := balance.TotalDays + balance.CarriedOver - balance.UsedDays
-	if remaining < days {
-		return fmt.Errorf("有給残日数が不足しています（残り: %.1f日）", remaining)
-	}
-	balance.UsedDays += days
-	return s.deps.Repos.LeaveBalance.Update(ctx, balance)
-}
-
-func (s *leaveBalanceService) InitializeForUser(ctx context.Context, userID uuid.UUID, fiscalYear int) error {
-	defaultDays := map[model.LeaveType]float64{
-		model.LeaveTypePaid: 10, model.LeaveTypeSick: 5, model.LeaveTypeSpecial: 3,
-	}
-	for lt, days := range defaultDays {
-		balance := &model.LeaveBalance{
-			UserID: userID, FiscalYear: fiscalYear, LeaveType: lt,
-			TotalDays: days, UsedDays: 0, CarriedOver: 0,
-		}
-		if err := s.deps.Repos.LeaveBalance.Upsert(ctx, balance); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// ===== AttendanceCorrectionService =====
-
-type AttendanceCorrectionService interface {
-	Create(ctx context.Context, userID uuid.UUID, req *model.AttendanceCorrectionCreate) (*model.AttendanceCorrection, error)
-	Approve(ctx context.Context, id uuid.UUID, approverID uuid.UUID, req *model.AttendanceCorrectionApproval) (*model.AttendanceCorrection, error)
-	GetByUser(ctx context.Context, userID uuid.UUID, page, pageSize int) ([]model.AttendanceCorrection, int64, error)
-	GetPending(ctx context.Context, page, pageSize int) ([]model.AttendanceCorrection, int64, error)
-}
-
-type attendanceCorrectionService struct {
-	deps            Deps
-	notificationSvc NotificationService
-}
-
-func NewAttendanceCorrectionService(deps Deps, notificationSvc NotificationService) AttendanceCorrectionService {
-	return &attendanceCorrectionService{deps: deps, notificationSvc: notificationSvc}
-}
-
-func (s *attendanceCorrectionService) Create(ctx context.Context, userID uuid.UUID, req *model.AttendanceCorrectionCreate) (*model.AttendanceCorrection, error) {
-	date, err := time.Parse("2006-01-02", req.Date)
-	if err != nil {
-		return nil, errors.New("日付の形式が不正です")
-	}
-	correction := &model.AttendanceCorrection{
-		UserID: userID, Date: date, Reason: req.Reason,
-		Status: model.CorrectionStatusPending,
-	}
-	// 既存の出勤データを取得
-	existing, _ := s.deps.Repos.Attendance.FindByUserAndDate(ctx, userID, date)
-	if existing != nil {
-		correction.AttendanceID = &existing.ID
-		correction.OriginalClockIn = existing.ClockIn
-		correction.OriginalClockOut = existing.ClockOut
-	}
-	if req.CorrectedClockIn != nil {
-		t, err := time.Parse("2006-01-02T15:04:05", *req.CorrectedClockIn)
-		if err != nil {
-			t, err = time.Parse("15:04", *req.CorrectedClockIn)
-			if err == nil {
-				t = time.Date(date.Year(), date.Month(), date.Day(), t.Hour(), t.Minute(), 0, 0, time.Local)
-			}
-		}
-		if err == nil {
-			correction.CorrectedClockIn = &t
-		}
-	}
-	if req.CorrectedClockOut != nil {
-		t, err := time.Parse("2006-01-02T15:04:05", *req.CorrectedClockOut)
-		if err != nil {
-			t, err = time.Parse("15:04", *req.CorrectedClockOut)
-			if err == nil {
-				t = time.Date(date.Year(), date.Month(), date.Day(), t.Hour(), t.Minute(), 0, 0, time.Local)
-			}
-		}
-		if err == nil {
-			correction.CorrectedClockOut = &t
-		}
-	}
-	if err := s.deps.Repos.AttendanceCorrection.Create(ctx, correction); err != nil {
-		return nil, err
-	}
-	return correction, nil
-}
-
-func (s *attendanceCorrectionService) Approve(ctx context.Context, id uuid.UUID, approverID uuid.UUID, req *model.AttendanceCorrectionApproval) (*model.AttendanceCorrection, error) {
-	correction, err := s.deps.Repos.AttendanceCorrection.FindByID(ctx, id)
-	if err != nil {
-		return nil, errors.New("修正申請が見つかりません")
-	}
-	if correction.Status != model.CorrectionStatusPending {
-		return nil, errors.New("この修正申請は既に処理済みです")
-	}
-	now := time.Now()
-	correction.Status = req.Status
-	correction.ApprovedBy = &approverID
-	correction.ApprovedAt = &now
-	if req.Status == model.CorrectionStatusRejected {
-		correction.RejectedReason = req.RejectedReason
-	}
-	// 承認時：勤怠データを修正
-	if req.Status == model.CorrectionStatusApproved {
-		if correction.AttendanceID != nil {
-			att, _ := s.deps.Repos.Attendance.FindByID(ctx, *correction.AttendanceID)
-			if att != nil {
-				if correction.CorrectedClockIn != nil {
-					att.ClockIn = correction.CorrectedClockIn
-				}
-				if correction.CorrectedClockOut != nil {
-					att.ClockOut = correction.CorrectedClockOut
-				}
-				if att.ClockIn != nil && att.ClockOut != nil {
-					workDuration := att.ClockOut.Sub(*att.ClockIn)
-					att.WorkMinutes = int(workDuration.Minutes()) - att.BreakMinutes
-					if att.WorkMinutes > 480 {
-						att.OvertimeMinutes = att.WorkMinutes - 480
-					} else {
-						att.OvertimeMinutes = 0
-					}
-				}
-				_ = s.deps.Repos.Attendance.Update(ctx, att)
-			}
-		} else {
-			// 新規作成
-			att := &model.Attendance{
-				UserID: correction.UserID, Date: correction.Date,
-				ClockIn: correction.CorrectedClockIn, ClockOut: correction.CorrectedClockOut,
-				Status: model.AttendanceStatusPresent,
-			}
-			if att.ClockIn != nil && att.ClockOut != nil {
-				workDuration := att.ClockOut.Sub(*att.ClockIn)
-				att.WorkMinutes = int(workDuration.Minutes())
-				if att.WorkMinutes > 480 {
-					att.OvertimeMinutes = att.WorkMinutes - 480
-				}
-			}
-			_ = s.deps.Repos.Attendance.Create(ctx, att)
-		}
-	}
-	if err := s.deps.Repos.AttendanceCorrection.Update(ctx, correction); err != nil {
-		return nil, err
-	}
-	// 通知送信
-	title := "勤怠修正申請が承認されました"
-	if req.Status == model.CorrectionStatusRejected {
-		title = "勤怠修正申請が却下されました"
-	}
-	_ = s.notificationSvc.Send(ctx, correction.UserID, model.NotificationTypeCorrectionResult, title,
-		fmt.Sprintf("%s の勤怠修正申請が処理されました", correction.Date.Format("2006-01-02")))
-	return correction, nil
-}
-
-func (s *attendanceCorrectionService) GetByUser(ctx context.Context, userID uuid.UUID, page, pageSize int) ([]model.AttendanceCorrection, int64, error) {
-	return s.deps.Repos.AttendanceCorrection.FindByUserID(ctx, userID, page, pageSize)
-}
-
-func (s *attendanceCorrectionService) GetPending(ctx context.Context, page, pageSize int) ([]model.AttendanceCorrection, int64, error) {
-	return s.deps.Repos.AttendanceCorrection.FindPending(ctx, page, pageSize)
+	return &model.DashboardStatsExtended{
+		DashboardStats: model.DashboardStats{
+			TodayPresentCount: int(todayPresent),
+			TodayAbsentCount:  int(todayAbsent),
+			PendingLeaves:     int(pendingLeaves),
+			MonthlyOvertime:   int(monthlyOvertime),
+		},
+		WeeklyTrend: weeklyTrend,
+	}, nil
 }
 
 // ===== NotificationService =====

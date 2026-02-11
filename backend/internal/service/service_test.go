@@ -58,7 +58,7 @@ func TestAuthService_Login_Success(t *testing.T) {
 	authService := NewAuthService(deps)
 	ctx := context.Background()
 
-	// テストユーザーを作成
+	// チE��トユーザーを作�E
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte("password123"), bcrypt.DefaultCost)
 	userID := uuid.New()
 	testUser := &model.User{
@@ -117,7 +117,7 @@ func TestAuthService_Login_InvalidPassword(t *testing.T) {
 	authService := NewAuthService(deps)
 	ctx := context.Background()
 
-	// テストユーザーを作成
+	// チE��トユーザーを作�E
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte("password123"), bcrypt.DefaultCost)
 	userID := uuid.New()
 	testUser := &model.User{
@@ -170,7 +170,7 @@ func TestAuthService_Register_DuplicateEmail(t *testing.T) {
 	authService := NewAuthService(deps)
 	ctx := context.Background()
 
-	// 既存ユーザーを作成
+	// 既存ユーザーを作�E
 	existingUserID := uuid.New()
 	existingUser := &model.User{
 		BaseModel: model.BaseModel{ID: existingUserID},
@@ -197,7 +197,7 @@ func TestAuthService_RefreshToken_Success(t *testing.T) {
 	authService := NewAuthService(deps)
 	ctx := context.Background()
 
-	// テストユーザーを作成
+	// チE��トユーザーを作�E
 	userID := uuid.New()
 	testUser := &model.User{
 		BaseModel: model.BaseModel{ID: userID},
@@ -209,13 +209,13 @@ func TestAuthService_RefreshToken_Success(t *testing.T) {
 	mockUserRepo := deps.Repos.User.(*mocks.MockUserRepository)
 	mockUserRepo.Users[userID] = testUser
 
-	// リフレッシュトークンを生成
+	// リフレチE��ュト�Eクンを生戁E
 	refreshToken, err := generateTestToken(testUser, deps.Config.JWTSecretKey, time.Hour)
 	if err != nil {
 		t.Fatalf("Failed to generate refresh token: %v", err)
 	}
 
-	// リフレッシュ
+	// リフレチE��ュ
 	resp, err := authService.RefreshToken(ctx, refreshToken)
 	if err != nil {
 		t.Fatalf("RefreshToken failed: %v", err)
@@ -357,7 +357,7 @@ func TestAttendanceService_ClockIn_AlreadyClockedIn(t *testing.T) {
 
 	userID := uuid.New()
 
-	// 最初の出勤打刻
+	// 最初�E出勤打刻
 	_, err := attService.ClockIn(ctx, userID, &model.ClockInRequest{})
 	if err != nil {
 		t.Fatalf("First ClockIn failed: %v", err)
@@ -488,7 +488,7 @@ func TestAttendanceService_GetTodayStatus(t *testing.T) {
 
 func TestLeaveService_Create_Success(t *testing.T) {
 	deps := setupTestDeps(t)
-	leaveService := NewLeaveService(deps)
+	leaveService := NewLeaveService(deps, &mocks.MockNotificationService{})
 	ctx := context.Background()
 
 	userID := uuid.New()
@@ -512,7 +512,7 @@ func TestLeaveService_Create_Success(t *testing.T) {
 
 func TestLeaveService_Create_InvalidStartDate(t *testing.T) {
 	deps := setupTestDeps(t)
-	leaveService := NewLeaveService(deps)
+	leaveService := NewLeaveService(deps, &mocks.MockNotificationService{})
 	ctx := context.Background()
 
 	userID := uuid.New()
@@ -530,7 +530,7 @@ func TestLeaveService_Create_InvalidStartDate(t *testing.T) {
 
 func TestLeaveService_Create_InvalidEndDate(t *testing.T) {
 	deps := setupTestDeps(t)
-	leaveService := NewLeaveService(deps)
+	leaveService := NewLeaveService(deps, &mocks.MockNotificationService{})
 	ctx := context.Background()
 
 	userID := uuid.New()
@@ -548,10 +548,10 @@ func TestLeaveService_Create_InvalidEndDate(t *testing.T) {
 
 func TestLeaveService_Approve_Success(t *testing.T) {
 	deps := setupTestDeps(t)
-	leaveService := NewLeaveService(deps)
+	leaveService := NewLeaveService(deps, &mocks.MockNotificationService{})
 	ctx := context.Background()
 
-	// 休暇申請を作成
+	// 休暇申請を作�E
 	userID := uuid.New()
 	leave, _ := leaveService.Create(ctx, userID, &model.LeaveRequestCreate{
 		LeaveType: model.LeaveTypePaid,
@@ -560,7 +560,7 @@ func TestLeaveService_Approve_Success(t *testing.T) {
 		Reason:    "Test",
 	})
 
-	// 承認
+	// 承誁E
 	approverID := uuid.New()
 	approved, err := leaveService.Approve(ctx, leave.ID, approverID, &model.LeaveRequestApproval{
 		Status: model.ApprovalStatusApproved,
@@ -576,7 +576,7 @@ func TestLeaveService_Approve_Success(t *testing.T) {
 
 func TestLeaveService_Approve_NotFound(t *testing.T) {
 	deps := setupTestDeps(t)
-	leaveService := NewLeaveService(deps)
+	leaveService := NewLeaveService(deps, &mocks.MockNotificationService{})
 	ctx := context.Background()
 
 	approverID := uuid.New()
@@ -591,10 +591,10 @@ func TestLeaveService_Approve_NotFound(t *testing.T) {
 
 func TestLeaveService_Approve_AlreadyProcessed(t *testing.T) {
 	deps := setupTestDeps(t)
-	leaveService := NewLeaveService(deps)
+	leaveService := NewLeaveService(deps, &mocks.MockNotificationService{})
 	ctx := context.Background()
 
-	// 休暇申請を作成して承認
+	// 休暇申請を作�Eして承誁E
 	userID := uuid.New()
 	leave, _ := leaveService.Create(ctx, userID, &model.LeaveRequestCreate{
 		LeaveType: model.LeaveTypePaid,
@@ -608,7 +608,7 @@ func TestLeaveService_Approve_AlreadyProcessed(t *testing.T) {
 		Status: model.ApprovalStatusApproved,
 	})
 
-	// 再度承認試行
+	// 再度承認試衁E
 	_, err := leaveService.Approve(ctx, leave.ID, approverID, &model.LeaveRequestApproval{
 		Status: model.ApprovalStatusApproved,
 	})
@@ -620,10 +620,10 @@ func TestLeaveService_Approve_AlreadyProcessed(t *testing.T) {
 
 func TestLeaveService_Approve_Rejected(t *testing.T) {
 	deps := setupTestDeps(t)
-	leaveService := NewLeaveService(deps)
+	leaveService := NewLeaveService(deps, &mocks.MockNotificationService{})
 	ctx := context.Background()
 
-	// 休暇申請を作成
+	// 休暇申請を作�E
 	userID := uuid.New()
 	leave, _ := leaveService.Create(ctx, userID, &model.LeaveRequestCreate{
 		LeaveType: model.LeaveTypePaid,
@@ -632,7 +632,7 @@ func TestLeaveService_Approve_Rejected(t *testing.T) {
 		Reason:    "Test",
 	})
 
-	// 却下
+	// 却丁E
 	approverID := uuid.New()
 	rejected, err := leaveService.Approve(ctx, leave.ID, approverID, &model.LeaveRequestApproval{
 		Status:         model.ApprovalStatusRejected,
@@ -652,7 +652,7 @@ func TestLeaveService_Approve_Rejected(t *testing.T) {
 
 func TestLeaveService_GetByUser(t *testing.T) {
 	deps := setupTestDeps(t)
-	leaveService := NewLeaveService(deps)
+	leaveService := NewLeaveService(deps, &mocks.MockNotificationService{})
 	ctx := context.Background()
 
 	userID := uuid.New()
@@ -677,7 +677,7 @@ func TestLeaveService_GetByUser(t *testing.T) {
 
 func TestLeaveService_GetPending(t *testing.T) {
 	deps := setupTestDeps(t)
-	leaveService := NewLeaveService(deps)
+	leaveService := NewLeaveService(deps, &mocks.MockNotificationService{})
 	ctx := context.Background()
 
 	userID := uuid.New()
@@ -871,7 +871,7 @@ func TestUserService_Create_DuplicateEmail(t *testing.T) {
 	userService := NewUserService(deps)
 	ctx := context.Background()
 
-	// 最初のユーザーを作成
+	// 最初�Eユーザーを作�E
 	_, _ = userService.Create(ctx, &model.UserCreateRequest{
 		Email:     "existing@example.com",
 		Password:  "password123",
@@ -880,7 +880,7 @@ func TestUserService_Create_DuplicateEmail(t *testing.T) {
 		Role:      model.RoleEmployee,
 	})
 
-	// 重複メールで作成試行
+	// 重褁E��ールで作�E試衁E
 	_, err := userService.Create(ctx, &model.UserCreateRequest{
 		Email:     "existing@example.com",
 		Password:  "password123",
@@ -1221,7 +1221,7 @@ func TestAttendanceService_ClockOut_UpdateError(t *testing.T) {
 	userID := uuid.New()
 	_, _ = attService.ClockIn(ctx, userID, &model.ClockInRequest{})
 
-	// Update errorを設定
+	// Update errorを設宁E
 	mockAttRepo := deps.Repos.Attendance.(*mocks.MockAttendanceRepository)
 	mockAttRepo.UpdateErr = errors.New("database error")
 
@@ -1255,7 +1255,7 @@ func TestLeaveService_Create_RepoError(t *testing.T) {
 	mockLeaveRepo := deps.Repos.LeaveRequest.(*mocks.MockLeaveRequestRepository)
 	mockLeaveRepo.CreateErr = errors.New("database error")
 
-	leaveService := NewLeaveService(deps)
+	leaveService := NewLeaveService(deps, &mocks.MockNotificationService{})
 	ctx := context.Background()
 
 	userID := uuid.New()
@@ -1272,7 +1272,7 @@ func TestLeaveService_Create_RepoError(t *testing.T) {
 
 func TestLeaveService_Approve_UpdateError(t *testing.T) {
 	deps := setupTestDeps(t)
-	leaveService := NewLeaveService(deps)
+	leaveService := NewLeaveService(deps, &mocks.MockNotificationService{})
 	ctx := context.Background()
 
 	// Create a pending leave

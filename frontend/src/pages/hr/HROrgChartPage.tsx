@@ -93,7 +93,68 @@ export function HROrgChartPage() {
     queryFn: () => api.hr.getOrgChart(),
   });
 
-  const orgData: OrgNode = data?.data || data || { id: '0', name: '', position: '', department: '', children: [] };
+  // バックエンドは部署の配列を返すため、ツリー構造に変換
+  const orgData: OrgNode = (() => {
+    const raw = data?.data || data;
+    if (!raw) return { id: '0', name: '', position: '', department: '', children: [] };
+
+    // 単一オブジェクト（既にツリー形式）の場合
+    if (!Array.isArray(raw)) {
+      return raw as OrgNode;
+    }
+
+    // 部署配列 → ツリー変換
+    type DeptNode = {
+      id: string;
+      name?: string;
+      parent_id?: string | null;
+      manager_id?: string | null;
+      employees?: { id: string; name?: string; position?: string }[];
+      employee_count?: number;
+    };
+    const depts = raw as DeptNode[];
+
+    const deptMap = new Map<string, OrgNode>();
+    for (const dept of depts) {
+      const empChildren: OrgNode[] = (dept.employees || []).map((e) => ({
+        id: String(e.id),
+        name: e.name || '—',
+        position: e.position || '',
+        department: dept.name || '',
+      }));
+      deptMap.set(String(dept.id), {
+        id: String(dept.id),
+        name: dept.name || '—',
+        position: '',
+        department: '',
+        employee_count: empChildren.length,
+        children: empChildren,
+      });
+    }
+
+    // 親子関係を構築
+    const roots: OrgNode[] = [];
+    for (const dept of depts) {
+      const node = deptMap.get(String(dept.id))!;
+      if (dept.parent_id) {
+        const parent = deptMap.get(String(dept.parent_id));
+        if (parent) {
+          parent.children = [...(parent.children || []), node];
+          continue;
+        }
+      }
+      roots.push(node);
+    }
+
+    if (roots.length === 1) return roots[0];
+    return {
+      id: 'root',
+      name: t('hr.orgChart.title'),
+      position: '',
+      department: '',
+      children: roots,
+    };
+  })();
 
   function filterNodes(node: OrgNode, query: string): OrgNode | null {
     if (!query) return node;

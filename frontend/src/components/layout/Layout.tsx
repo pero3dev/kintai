@@ -76,6 +76,23 @@ export function Layout() {
 
   const navItems = useMemo(() => {
     const activeApp = getActiveApp(location.pathname);
+    const wikiLabels = i18n.language.startsWith('ja')
+      ? {
+          overview: '概要',
+          architecture: 'アーキテクチャ',
+          backend: 'バックエンド',
+          frontend: 'フロントエンド',
+          infrastructure: 'インフラ',
+          testing: 'テスト',
+        }
+      : {
+          overview: 'Overview',
+          architecture: 'Architecture',
+          backend: 'Backend',
+          frontend: 'Frontend',
+          infrastructure: 'Infrastructure',
+          testing: 'Testing',
+        };
 
     // 経費精算アプリのナビ
     if (activeApp?.id === 'expenses') {
@@ -119,6 +136,18 @@ export function Layout() {
       ];
     }
 
+    // 社内Wikiアプリのナビ
+    if (activeApp?.id === 'wiki') {
+      return [
+        { to: '/wiki' as const, icon: 'home', label: wikiLabels.overview, mobile: true },
+        { to: '/wiki/architecture' as const, icon: 'lan', label: wikiLabels.architecture, mobile: true },
+        { to: '/wiki/backend' as const, icon: 'dns', label: wikiLabels.backend, mobile: true },
+        { to: '/wiki/frontend' as const, icon: 'web', label: wikiLabels.frontend, mobile: true },
+        { to: '/wiki/infrastructure' as const, icon: 'cloud', label: wikiLabels.infrastructure, mobile: false },
+        { to: '/wiki/testing' as const, icon: 'fact_check', label: wikiLabels.testing, mobile: false },
+      ];
+    }
+
     // デフォルト: 勤怠管理アプリのナビ
     return [
       { to: '/' as const, icon: 'home', label: t('nav.home'), mobile: true },
@@ -139,7 +168,7 @@ export function Layout() {
           ]
         : []),
     ];
-  }, [location.pathname, user?.role, t]);
+  }, [location.pathname, user?.role, t, i18n.language]);
 
   // ボトムタブ用（最大4つ + Moreボタン）
   const mobileTabItems = useMemo(() => navItems.filter(i => i.mobile).slice(0, 4), [navItems]);

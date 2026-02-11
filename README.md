@@ -1,4 +1,4 @@
-# 勤怠管理システム (Kintai)
+﻿# 勤怠管理システム (Kintai)
 
 従業員の勤怠管理を行うWebアプリケーションです。
 
@@ -47,6 +47,7 @@
 - Docker & Docker Compose
 - Go 1.23+
 - Node.js 22+
+- pnpm 10+
 - Make
 
 ### ローカル開発
@@ -77,6 +78,14 @@ make backend-dev
 
 # フロントエンドのみ
 make frontend-dev
+```
+
+### Frontend (direct command)
+
+```bash
+cd frontend
+pnpm install --frozen-lockfile
+pnpm dev
 ```
 
 ### テスト

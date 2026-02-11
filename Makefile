@@ -1,87 +1,87 @@
 .PHONY: help up down build logs backend-test frontend-test lint migrate
 
 # ========================================
-# 勤怠管理システム - Makefile
+# Kintai - Makefile
 # ========================================
 
-help: ## ヘルプを表示
+help: ## Show available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 # ---- Docker Compose ----
-up: ## 開発環境を起動
+up: ## Start local services
 	docker compose up -d
 
-down: ## 開発環境を停止
+down: ## Stop local services
 	docker compose down
 
-build: ## コンテナをビルド
+build: ## Build containers
 	docker compose build
 
-logs: ## ログを表示
+logs: ## Tail logs
 	docker compose logs -f
 
 # ---- Backend ----
-backend-run: ## バックエンドを起動 (ホットリロード)
+backend-run: ## Run backend (hot reload)
 	cd backend && air
 
-backend-test: ## バックエンドのテストを実行
+backend-test: ## Run backend tests
 	cd backend && go test ./... -v -cover
 
-backend-lint: ## バックエンドのLintを実行
+backend-lint: ## Run backend lint
 	cd backend && golangci-lint run ./...
 
-backend-swagger: ## Swaggerドキュメントを生成
+backend-swagger: ## Generate Swagger docs
 	cd backend && swag init -g cmd/server/main.go -o docs
 
 # ---- Frontend ----
-frontend-dev: ## フロントエンド開発サーバーを起動
-	cd frontend && npm run dev
+frontend-dev: ## Start frontend dev server
+	cd frontend && pnpm dev
 
-frontend-build: ## フロントエンドをビルド
-	cd frontend && npm run build
+frontend-build: ## Build frontend
+	cd frontend && pnpm build
 
-frontend-test: ## フロントエンドのテストを実行
-	cd frontend && npm run test
+frontend-test: ## Run frontend tests
+	cd frontend && pnpm test
 
-frontend-lint: ## フロントエンドのLintを実行
-	cd frontend && npm run lint
+frontend-lint: ## Run frontend lint
+	cd frontend && pnpm lint
 
-frontend-storybook: ## Storybookを起動
-	cd frontend && npm run storybook
+frontend-storybook: ## Start Storybook
+	cd frontend && pnpm storybook
 
-frontend-e2e: ## E2Eテストを実行
-	cd frontend && npm run test:e2e
+frontend-e2e: ## Run E2E tests
+	cd frontend && pnpm test:e2e
 
 # ---- Database ----
-migrate-up: ## マイグレーションを適用
+migrate-up: ## Apply migrations
 	migrate -path backend/migrations -database "$(DATABASE_URL)" up
 
-migrate-down: ## マイグレーションをロールバック
+migrate-down: ## Roll back one migration
 	migrate -path backend/migrations -database "$(DATABASE_URL)" down 1
 
-migrate-create: ## 新しいマイグレーションを作成 (NAME=xxx)
+migrate-create: ## Create a new migration (NAME=xxx)
 	migrate create -ext sql -dir backend/migrations -seq $(NAME)
 
-seed: ## 開発用シードデータを投入
+seed: ## Load development seed data
 	docker compose exec -T postgres psql -U kintai -d kintai < backend/seeds/seed.sql
 
-seed-reset: ## データベースをリセットしてシードを投入
+seed-reset: ## Reset database and reseed
 	docker compose exec -T postgres psql -U kintai -d kintai -c "TRUNCATE users, departments, attendances, leave_requests, shifts, refresh_tokens CASCADE;"
 	docker compose exec -T postgres psql -U kintai -d kintai < backend/seeds/seed.sql
 
 # ---- Infrastructure ----
-tf-init: ## Terraform初期化 (dev)
+tf-init: ## Terraform init (dev)
 	cd infrastructure/environments/dev && terraform init
 
-tf-plan: ## Terraformプラン確認 (dev)
+tf-plan: ## Terraform plan (dev)
 	cd infrastructure/environments/dev && terraform plan
 
-tf-apply: ## Terraform適用 (dev)
+tf-apply: ## Terraform apply (dev)
 	cd infrastructure/environments/dev && terraform apply
 
 # ---- Codegen ----
-generate-api-client: ## OpenAPIからフロントエンドAPIクライアントを生成
-	cd frontend && npm run generate:api
+generate-api-client: ## Generate frontend API client from OpenAPI
+	cd frontend && pnpm generate:api
 
-generate-mocks: ## Goモックを生成
+generate-mocks: ## Generate Go mocks
 	cd backend && go generate ./...

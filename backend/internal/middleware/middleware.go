@@ -77,7 +77,7 @@ func (m *Middleware) Auth() gin.HandlerFunc {
 			return
 		}
 
-		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		token, err := jwtParse(tokenString, func(token *jwt.Token) (interface{}, error) {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 				return nil, jwt.ErrSignatureInvalid
 			}
@@ -143,22 +143,29 @@ type clientLimiter struct {
 }
 
 var (
-	clients = make(map[string]*clientLimiter)
-	mu      sync.Mutex
+	clients  = make(map[string]*clientLimiter)
+	mu       sync.Mutex
+	jwtParse = jwt.Parse
+	timeNow  = time.Now
 )
+
+func cleanupStaleClients(now time.Time) {
+	mu.Lock()
+	defer mu.Unlock()
+
+	for ip, client := range clients {
+		if now.Sub(client.lastSeen) > 3*time.Minute {
+			delete(clients, ip)
+		}
+	}
+}
 
 func (m *Middleware) RateLimit() gin.HandlerFunc {
 	// クリーンアップゴルーチン
 	go func() {
 		for {
 			time.Sleep(time.Minute)
-			mu.Lock()
-			for ip, client := range clients {
-				if time.Since(client.lastSeen) > 3*time.Minute {
-					delete(clients, ip)
-				}
-			}
-			mu.Unlock()
+			cleanupStaleClients(timeNow())
 		}
 	}()
 
@@ -171,7 +178,7 @@ func (m *Middleware) RateLimit() gin.HandlerFunc {
 				limiter: rate.NewLimiter(rate.Limit(m.config.RateLimitRPS), m.config.RateLimitBurst),
 			}
 		}
-		clients[ip].lastSeen = time.Now()
+		clients[ip].lastSeen = timeNow()
 		limiter := clients[ip].limiter
 		mu.Unlock()
 

@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker exec:*)",
+      "Bash(go build:*)",
+      "Bash(go test:*)",
+      "Bash(go tool cover:*)",
+      "Bash(go get:*)",
+      "Bash(dir:*)",
+      "Bash(ls -lah \"c:\\\\dev\\\\go\\\\kintai\\\\backend\"\" | grep -E \"^- \")",
+      "Bash(find:*)",
+      "Bash(wc:*)",
+      "Bash(git rm:*)",
+      "Bash(git mv:*)"
+    ]
+  }
+}

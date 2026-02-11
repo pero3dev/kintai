@@ -20,6 +20,17 @@ backend/vendor/
 coverage.out
 coverage.html
 
+# ==== Go Coverage Artifacts ====
+backend/**/cover
+backend/**/cover_*
+backend/**/*_cover
+backend/**/*_cover.*
+backend/**/$cov
+backend/**/-
+backend/**/repo
+backend/**/svc
+*.test.exe
+
 # ==== Node.js ====
 frontend/node_modules/
 frontend/dist/
@@ -28,6 +39,7 @@ frontend/coverage/
 frontend/storybook-static/
 frontend/playwright-report/
 frontend/test-results/
+frontend/*.txt
 
 # ==== IDE ====
 .idea/
