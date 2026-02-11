@@ -66,6 +66,10 @@ JWTクレーム: `sub`, `email`, `role`, `exp`, `iat`
 - expense: 経費申請、コメント、履歴、テンプレート、ポリシー、通知
 - hr: 社員情報、評価、目標、育成、採用、組織、入退社、サーベイ
 
+## 結合テスト実装チェックリスト
+
+- `docs/wiki/ja/backend-integration-test-checklist.md`
+
 ## 典型的な処理フロー
 
 ```text

@@ -27,6 +27,11 @@
 - handlerテスト: 入力バインド、HTTPステータス、応答形式
 - repositoryテスト: クエリ挙動、DB境界ケース
 - router/middlewareテスト: 認証、ロール制限、到達性
+- backend結合テスト: 実DB + middleware + handler + service + repository の経路検証
+
+実装項目一覧:
+
+- `docs/wiki/ja/backend-integration-test-checklist.md`
 
 代表例:
 
