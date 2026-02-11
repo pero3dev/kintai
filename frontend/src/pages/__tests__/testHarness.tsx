@@ -14,6 +14,7 @@ export type MockUser = {
 const state = vi.hoisted(() => ({
   queryData: new Map<string, unknown>(),
   user: null as MockUser | null,
+  params: {} as Record<string, string>,
   language: 'ja',
   mutationPending: false,
   availableApps: [] as Array<{
@@ -91,6 +92,47 @@ const apiMocks = vi.hoisted(() => ({
     projects: vi.fn(),
   },
   approvalFlows: { getAll: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn() },
+  expenses: {
+    getList: vi.fn(),
+    getByID: vi.fn(),
+    create: vi.fn(),
+    update: vi.fn(),
+    delete: vi.fn(),
+    getPending: vi.fn(),
+    approve: vi.fn(),
+    getStats: vi.fn(),
+    getComments: vi.fn(),
+    addComment: vi.fn(),
+    getHistory: vi.fn(),
+    getReport: vi.fn(),
+    getMonthlyTrend: vi.fn(),
+    exportCSV: vi.fn(),
+    exportPDF: vi.fn(),
+    uploadReceipt: vi.fn(),
+    getTemplates: vi.fn(),
+    createTemplate: vi.fn(),
+    updateTemplate: vi.fn(),
+    deleteTemplate: vi.fn(),
+    useTemplate: vi.fn(),
+    getPolicies: vi.fn(),
+    createPolicy: vi.fn(),
+    updatePolicy: vi.fn(),
+    deletePolicy: vi.fn(),
+    getBudgets: vi.fn(),
+    getPolicyViolations: vi.fn(),
+    getNotifications: vi.fn(),
+    markNotificationRead: vi.fn(),
+    markAllNotificationsRead: vi.fn(),
+    getReminders: vi.fn(),
+    dismissReminder: vi.fn(),
+    getNotificationSettings: vi.fn(),
+    updateNotificationSettings: vi.fn(),
+    advancedApprove: vi.fn(),
+    getApprovalFlowConfig: vi.fn(),
+    getDelegates: vi.fn(),
+    setDelegate: vi.fn(),
+    removeDelegate: vi.fn(),
+  },
 }));
 
 vi.mock('@tanstack/react-router', () => ({
@@ -108,6 +150,7 @@ vi.mock('@tanstack/react-router', () => ({
     </a>
   ),
   useNavigate: () => state.navigate,
+  useParams: () => state.params,
 }));
 
 vi.mock('react-i18next', () => ({
@@ -126,8 +169,8 @@ vi.mock('react-i18next', () => ({
 
 vi.mock('@tanstack/react-query', () => ({
   useQuery: (options: { queryKey: unknown[]; enabled?: boolean }) => {
-    if (options.enabled === false) return { data: undefined };
-    return { data: state.queryData.get(JSON.stringify(options.queryKey)) };
+    if (options.enabled === false) return { data: undefined, isLoading: false };
+    return { data: state.queryData.get(JSON.stringify(options.queryKey)), isLoading: false };
   },
   useMutation: (options: {
     mutationFn: (vars?: unknown) => unknown;
@@ -208,6 +251,7 @@ export function resetHarness() {
   state.queryData.clear();
   state.mutationPending = false;
   state.language = 'ja';
+  state.params = {};
   state.availableApps = [];
   state.user = {
     id: 'u1',
@@ -230,6 +274,10 @@ export function resetHarness() {
     createObjectURL: vi.fn(() => 'blob:mock'),
     revokeObjectURL: vi.fn(),
   });
+}
+
+export function setRouteParams(params: Record<string, string>) {
+  state.params = params;
 }
 
 export function getWeekRange(baseDate: Date) {
