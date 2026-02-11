@@ -22,45 +22,45 @@
 ## 実装チェックリスト
 
 ## 1. テスト基盤（共通）
-- [ ] PostgreSQL実DBで migration を適用して起動するテスト基盤を構築
-- [ ] テストケースごとにDB状態を初期化（truncate または schema recreate）
-- [ ] JWT生成ヘルパーを準備（admin / manager / employee / 期限切れ / 不正署名）
-- [ ] APIリクエストヘルパーを準備（JSON / multipart / download）
-- [ ] seed投入ヘルパーを準備（必要に応じて `backend/seeds/*.sql` を利用）
+- [x] PostgreSQL実DBで migration を適用して起動するテスト基盤を構築
+- [x] テストケースごとにDB状態を初期化（truncate または schema recreate）
+- [x] JWT生成ヘルパーを準備（admin / manager / employee / 期限切れ / 不正署名）
+- [x] APIリクエストヘルパーを準備（JSON / multipart / download）
+- [x] seed投入ヘルパーを準備（必要に応じて `backend/seeds/*.sql` を利用）
 
 ## 2. 全endpoint共通のテスト軸
-- [ ] endpoint分類表を作成（SoT: `backend/internal/router/router.go` + 各 `*/routes.go`）
-- [ ] 公開endpoint（5件）で未認証アクセスが成功することを確認
-- [ ] 保護endpoint（194件）で未認証アクセスが401になることを確認
-- [ ] ロール制御endpoint（34件）で employee は403、admin/manager は403以外になることを確認
-- [ ] 入力バリデーション異常で4xx + `model.ErrorResponse`（`code`, `message`）が返ることを確認
-- [ ] 正常系で期待ステータス/レスポンス形式になることを確認
-- [ ] 書き込み系でDB変更（insert/update/delete）が反映されることを確認
+- [x] endpoint分類表を作成（SoT: `backend/internal/router/router.go` + 各 `*/routes.go`）
+- [x] 公開endpoint（5件）で未認証アクセスが成功することを確認
+- [x] 保護endpoint（194件）で未認証アクセスが401になることを確認
+- [x] ロール制御endpoint（34件）で employee は403、admin/manager は403以外になることを確認
+- [x] 入力バリデーション異常で4xx + `model.ErrorResponse`（`code`, `message`）が返ることを確認
+- [x] 正常系で期待ステータス/レスポンス形式になることを確認
+- [x] 書き込み系でDB変更（insert/update/delete）が反映されることを確認
 
 ### 2.1 endpoint分類（2026-02-11時点）
-- [ ] 公開endpoint（5件）: `GET /health`, `GET /metrics`, `POST /api/v1/auth/login`, `POST /api/v1/auth/register`, `POST /api/v1/auth/refresh`
-- [ ] 保護endpoint（194件）: `Auth()` 必須（`/api/v1/**` の protected group配下）
-- [ ] ロール制御endpoint（34件）: `RequireRole(admin, manager)` 適用（shared: 24 + attendance: 10）
+- [x] 公開endpoint（5件）: `GET /health`, `GET /metrics`, `POST /api/v1/auth/login`, `POST /api/v1/auth/register`, `POST /api/v1/auth/refresh`
+- [x] 保護endpoint（194件）: `Auth()` 必須（`/api/v1/**` の protected group配下）
+- [x] ロール制御endpoint（34件）: `RequireRole(admin, manager)` 適用（shared: 24 + attendance: 10）
 
 ### 2.2 共通ケースID（全endpointで使い回す）
-- [ ] `CA-01 PublicAccess`: 公開endpointにAuthorizationなしでアクセスし、`401/403` にならないことを確認
-- [ ] `CA-02 ProtectedUnauthorized`: 保護endpointにAuthorizationなしでアクセスし、`401` + `model.ErrorResponse` を確認
-- [ ] `CA-03 RoleForbidden`: ロール制御endpointに employee JWT でアクセスし、`403` を確認
-- [ ] `CA-04 RoleAllowed`: ロール制御endpointに admin/manager JWT でアクセスし、`403` にならないことを確認
-- [ ] `CA-05 ValidationError`: 不正入力（body/query/path）を渡し、`4xx` + `model.ErrorResponse`（`code`, `message`）を確認
-- [ ] `CA-06 HappyPath`: 正常入力で期待HTTPステータス・必須レスポンス項目・Content-Type を確認
-- [ ] `CA-07 DBMutation`: POST/PUT/PATCH/DELETE 実行後にDBを直接参照し、対象レコードの増減または更新値を確認
+- [x] `CA-01 PublicAccess`: 公開endpointにAuthorizationなしでアクセスし、`401/403` にならないことを確認
+- [x] `CA-02 ProtectedUnauthorized`: 保護endpointにAuthorizationなしでアクセスし、`401` + `model.ErrorResponse` を確認
+- [x] `CA-03 RoleForbidden`: ロール制御endpointに employee JWT でアクセスし、`403` を確認
+- [x] `CA-04 RoleAllowed`: ロール制御endpointに admin/manager JWT でアクセスし、`403` にならないことを確認
+- [x] `CA-05 ValidationError`: 不正入力（body/query/path）を渡し、`4xx` + `model.ErrorResponse`（`code`, `message`）を確認
+- [x] `CA-06 HappyPath`: 正常入力で期待HTTPステータス・必須レスポンス項目・Content-Type を確認
+- [x] `CA-07 DBMutation`: POST/PUT/PATCH/DELETE 実行後にDBを直接参照し、対象レコードの増減または更新値を確認
 
 ### 2.3 実装ルール
-- [ ] 共通ケースは `backend/internal/integrationtest` のヘルパー（`env.go`, `http.go`, `jwt.go`）で実装
-- [ ] `CA-02` / `CA-03` はミドルウェアで判定されるため、最小リクエスト（空body・ダミーpath param）で実施
-- [ ] `CA-04` は「403にならない」ことを共通軸で確認し、200/201等の正常完了はドメイン別ケースで担保
-- [ ] `CA-07` は before/after のDB状態比較を必須化（件数 or 対象カラム値）
-- [ ] 各endpointに対して「適用するケースID」の対応表を作成し、未割当を0件にする
+- [x] 共通ケースは `backend/internal/integrationtest` のヘルパー（`env.go`, `http.go`, `jwt.go`）で実装
+- [x] `CA-02` / `CA-03` はミドルウェアで判定されるため、最小リクエスト（空body・ダミーpath param）で実施
+- [x] `CA-04` は「403にならない」ことを共通軸で確認し、200/201等の正常完了はドメイン別ケースで担保
+- [x] `CA-07` は before/after のDB状態比較を必須化（件数 or 対象カラム値）
+- [x] 各endpointに対して「適用するケースID」の対応表を作成し、未割当を0件にする
 
 ### 2.4 endpoint別ケース対応表（2026-02-11時点）
 - [ ] 下表の全199 endpointで「適用ケースID」実装を完了する
-- [ ] No欠番・重複なしを確認する
+- [x] No欠番・重複なしを確認する
 
 #### router
 | No | Method | Endpoint | 種別 | 適用ケースID |
