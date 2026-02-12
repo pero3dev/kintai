@@ -22,6 +22,7 @@
   5. `infrastructure.md`
   6. `testing.md`
   7. `backend-integration-test-checklist.md`
+  8. `non-functional-test-checklist.md`
 - API追加の場合: `architecture.md` -> `backend.md` -> `testing.md`
 - 画面追加の場合: `architecture.md` -> `frontend.md` -> `testing.md`
 - 環境トラブル対応の場合: `infrastructure.md` -> `testing.md`
