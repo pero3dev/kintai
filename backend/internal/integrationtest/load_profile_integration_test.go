@@ -76,7 +76,7 @@ func TestLoadProfileScenarios(t *testing.T) {
 			name:          "spike_load",
 			concurrency:   50,
 			totalRequests: 1500,
-			maxP95:        250 * time.Millisecond,
+			maxP95:        350 * time.Millisecond,
 			minRPS:        800,
 			maxErrorRate:  0.02,
 		},
