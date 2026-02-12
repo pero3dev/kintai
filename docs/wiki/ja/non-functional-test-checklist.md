@@ -15,7 +15,7 @@
 - [x] APIスループット検証（RPS、処理件数/秒）
 - [x] エンドポイント別の性能回帰テスト（基準値比較）
 - [x] 大量データ条件でのDBクエリ性能検証（閾値つき）
-- [ ] Go Benchmarkテスト（`func Benchmark...`）の追加
+- [x] Go Benchmarkテスト（`func Benchmark...`）の追加
 - [ ] フロントエンドのWeb Vitals/Lighthouse回帰測定
 
 ## 2. 負荷/耐久（同時アクセス、長時間）
