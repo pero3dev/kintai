@@ -1,0 +1,130 @@
+name: Load Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      soak_duration:
+        description: "Soak test duration (e.g. 2m, 5m)"
+        required: false
+        default: "2m"
+  schedule:
+    # Every Sunday 18:00 UTC (Monday 03:00 JST)
+    - cron: "0 18 * * 0"
+
+env:
+  GO_VERSION: "1.23"
+  K6_IMAGE: "grafana/k6:latest"
+  K6_BASE_URL: "http://127.0.0.1:8080"
+
+jobs:
+  k6-load-test:
+    name: k6 Load Test (Scheduled/Manual)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: kintai
+          POSTGRES_PASSWORD: kintai
+          POSTGRES_DB: kintai_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Start backend API
+        working-directory: backend
+        env:
+          APP_ENV: development
+          APP_PORT: "8080"
+          DATABASE_URL: postgres://kintai:kintai@localhost:5432/kintai_test?sslmode=disable
+          REDIS_URL: redis://localhost:6379/0
+          LOG_LEVEL: error
+          ALLOWED_ORIGINS: http://localhost:3000,http://localhost:5173
+          JWT_SECRET_KEY: ci-load-test-secret
+          OTLP_ENDPOINT: localhost:4317
+        run: |
+          go run ./cmd/server > /tmp/kintai-backend-loadtest.log 2>&1 &
+          echo $! > /tmp/kintai-backend-loadtest.pid
+
+      - name: Wait for health endpoint
+        run: |
+          for i in $(seq 1 60); do
+            if curl -fsS "${K6_BASE_URL}/health" > /dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Backend did not become healthy in time."
+          cat /tmp/kintai-backend-loadtest.log || true
+          exit 1
+
+      - name: Run k6 scenarios
+        run: |
+          mkdir -p "${GITHUB_WORKSPACE}/backend/loadtest/k6/results"
+          SOAK_DURATION="${{ github.event.inputs.soak_duration || '2m' }}"
+
+          docker run --rm --network host \
+            -v "${GITHUB_WORKSPACE}/backend/loadtest/k6:/scripts" \
+            -e K6_BASE_URL="${K6_BASE_URL}" \
+            -e K6_STAGE_NORMAL_DURATION=15s \
+            -e K6_STAGE_PEAK_DURATION=15s \
+            -e K6_STAGE_SPIKE_DURATION=10s \
+            -e K6_STAGE_COOLDOWN_DURATION=5s \
+            "${K6_IMAGE}" run \
+            --summary-export=/scripts/results/load-profile-summary.json \
+            /scripts/scenarios/load-profile.js
+
+          docker run --rm --network host \
+            -v "${GITHUB_WORKSPACE}/backend/loadtest/k6:/scripts" \
+            -e K6_BASE_URL="${K6_BASE_URL}" \
+            -e K6_VUS=80 \
+            -e K6_DURATION=20s \
+            "${K6_IMAGE}" run \
+            --summary-export=/scripts/results/high-concurrency-summary.json \
+            /scripts/scenarios/high-concurrency.js
+
+          docker run --rm --network host \
+            -v "${GITHUB_WORKSPACE}/backend/loadtest/k6:/scripts" \
+            -e K6_BASE_URL="${K6_BASE_URL}" \
+            -e K6_VUS=12 \
+            -e K6_DURATION="${SOAK_DURATION}" \
+            "${K6_IMAGE}" run \
+            --summary-export=/scripts/results/soak-endurance-summary.json \
+            /scripts/scenarios/soak-endurance.js
+
+      - name: Upload k6 artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: k6-load-test-results
+          path: |
+            backend/loadtest/k6/results/*.json
+            /tmp/kintai-backend-loadtest.log
+          retention-days: 14
+
+      - name: Stop backend API
+        if: always()
+        run: |
+          if [ -f /tmp/kintai-backend-loadtest.pid ]; then
+            kill "$(cat /tmp/kintai-backend-loadtest.pid)" || true
+          fi

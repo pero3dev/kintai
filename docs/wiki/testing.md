@@ -75,6 +75,12 @@ Workflow: `.github/workflows/ci.yml`
 - frontend Playwright E2E
 - docker image build on `main`
 
+Scheduled load-test workflow: `.github/workflows/load-test.yml`
+
+- Trigger: `schedule` (weekly) / `workflow_dispatch`
+- Scenarios: k6 `load-profile` / `high-concurrency` / `soak-endurance`
+- Outputs: k6 summary JSON and backend log uploaded as artifacts
+
 ## Core Commands
 
 ```sh
