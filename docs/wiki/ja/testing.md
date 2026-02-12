@@ -59,7 +59,10 @@ Playwright設定: `frontend/playwright.config.ts`
 
 - baseURL: `http://localhost:3000`
 - webServer command: `pnpm dev`
-- browser project: chromium
+- browser project:
+  - chromium（既存E2E全体）
+  - firefox / webkit / edge（互換性スモーク）
+  - mobile-android / mobile-ios / tablet-ipad（端末差分スモーク）
 - retry時にtrace収集
 
 ## 負荷テスト設定（k6）
@@ -79,6 +82,7 @@ Playwright設定: `frontend/playwright.config.ts`
 - frontend lint + type check
 - frontend test + coverage
 - frontend Playwright E2E
+  - ブラウザ別マトリクス: chromium / firefox / webkit / edge / mobile-android / mobile-ios / tablet-ipad
 - mainブランチでdocker build
 
 定期負荷試験ワークフロー: `.github/workflows/load-test.yml`
