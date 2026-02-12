@@ -53,7 +53,10 @@ Playwright config: `frontend/playwright.config.ts`
 
 - base URL: `http://localhost:3000`
 - web server command: `pnpm dev`
-- chromium project enabled
+- browser projects:
+  - chromium (full E2E suite)
+  - firefox / webkit / edge (compatibility smoke)
+  - mobile-android / mobile-ios / tablet-ipad (device/viewport smoke)
 - traces on first retry
 
 ## Load Test Setup (k6)
@@ -73,6 +76,7 @@ Workflow: `.github/workflows/ci.yml`
 - frontend lint + type check
 - frontend tests with coverage
 - frontend Playwright E2E
+  - browser/device matrix: chromium / firefox / webkit / edge / mobile-android / mobile-ios / tablet-ipad
 - docker image build on `main`
 
 Scheduled load-test workflow: `.github/workflows/load-test.yml`
