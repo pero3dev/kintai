@@ -114,6 +114,8 @@ func TestSetup_RegisteredRoutes(t *testing.T) {
 		path   string
 	}{
 		{"GET", "/health"},
+		{"GET", "/live"},
+		{"GET", "/ready"},
 		{"GET", "/metrics"},
 		{"POST", "/api/v1/auth/login"},
 		{"POST", "/api/v1/auth/register"},

@@ -20,6 +20,8 @@ func Setup(r *gin.Engine, h *handler.Handlers, mw *middleware.Middleware) {
 	r.Use(mw.RateLimit())
 
 	r.GET("/health", h.Health.Health)
+	r.GET("/live", h.Health.Liveness)
+	r.GET("/ready", h.Health.Readiness)
 	r.GET("/metrics", gin.WrapH(promhttp.Handler()))
 
 	v1 := r.Group("/api/v1")

@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"context"
 	"net/http"
 	"strconv"
 	"time"
@@ -62,6 +63,14 @@ type Handlers struct {
 
 // NewHandlers は全ハンドラーを初期化する
 func NewHandlers(services *service.Services, logger *logger.Logger) *Handlers {
+	var readinessChecks []func(context.Context) error
+	if services != nil && services.User != nil {
+		readinessChecks = append(readinessChecks, func(ctx context.Context) error {
+			_, _, err := services.User.GetAll(ctx, 1, 1)
+			return err
+		})
+	}
+
 	return &Handlers{
 		Auth:                 NewAuthHandler(services.Auth, logger),
 		Attendance:           NewAttendanceHandler(services.Attendance, logger),
@@ -70,7 +79,7 @@ func NewHandlers(services *service.Services, logger *logger.Logger) *Handlers {
 		User:                 NewUserHandler(services.User, logger),
 		Department:           NewDepartmentHandler(services.Department, logger),
 		Dashboard:            NewDashboardHandler(services.Dashboard, logger),
-		Health:               NewHealthHandler(),
+		Health:               NewHealthHandlerWithChecks(readinessChecks...),
 		OvertimeRequest:      NewOvertimeRequestHandler(services.OvertimeRequest, logger),
 		LeaveBalance:         NewLeaveBalanceHandler(services.LeaveBalance, logger),
 		AttendanceCorrection: NewAttendanceCorrectionHandler(services.AttendanceCorrection, logger),
@@ -175,10 +184,25 @@ func paginatedResponse(c *gin.Context, data interface{}, total int64, page, page
 
 // ===== HealthHandler =====
 
-type HealthHandler struct{}
-
 func NewHealthHandler() *HealthHandler {
-	return &HealthHandler{}
+	return NewHealthHandlerWithChecks()
+}
+
+type dependencyCheck func(ctx context.Context) error
+
+type HealthHandler struct {
+	readinessChecks []dependencyCheck
+}
+
+func NewHealthHandlerWithChecks(checks ...func(context.Context) error) *HealthHandler {
+	normalized := make([]dependencyCheck, 0, len(checks))
+	for _, check := range checks {
+		if check == nil {
+			continue
+		}
+		normalized = append(normalized, check)
+	}
+	return &HealthHandler{readinessChecks: normalized}
 }
 
 // Health godoc
@@ -190,6 +214,36 @@ func NewHealthHandler() *HealthHandler {
 func (h *HealthHandler) Health(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"status":  "ok",
+		"service": "kintai-api",
+		"version": "1.0.0",
+	})
+}
+
+func (h *HealthHandler) Liveness(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"status":  "alive",
+		"service": "kintai-api",
+		"version": "1.0.0",
+	})
+}
+
+func (h *HealthHandler) Readiness(c *gin.Context) {
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 2*time.Second)
+	defer cancel()
+
+	for _, check := range h.readinessChecks {
+		if err := check(ctx); err != nil {
+			c.JSON(http.StatusServiceUnavailable, gin.H{
+				"status":  "not_ready",
+				"service": "kintai-api",
+				"version": "1.0.0",
+			})
+			return
+		}
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status":  "ready",
 		"service": "kintai-api",
 		"version": "1.0.0",
 	})
