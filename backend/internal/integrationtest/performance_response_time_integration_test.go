@@ -16,6 +16,8 @@ import (
 const (
 	latencyWarmupRequests   = 5
 	latencyMeasuredRequests = 80
+	throughputWarmupRequest = 10
+	throughputRequestCount  = 200
 )
 
 type responseTimeSLO struct {
@@ -32,6 +34,20 @@ type responseTimeTarget struct {
 	headers        map[string]string
 	expectedStatus int
 	slo            responseTimeSLO
+}
+
+type throughputSLO struct {
+	minRPS float64
+}
+
+type throughputTarget struct {
+	name           string
+	method         string
+	path           string
+	body           any
+	headers        map[string]string
+	expectedStatus int
+	slo            throughputSLO
 }
 
 func TestPerformanceResponseTimeSLO(t *testing.T) {
@@ -94,6 +110,48 @@ func TestPerformanceResponseTimeSLO(t *testing.T) {
 	}
 }
 
+func TestPerformanceThroughputSLO(t *testing.T) {
+	env := NewTestEnv(t, nil)
+	require.NoError(t, env.ResetDB())
+
+	email := fmt.Sprintf("it-throughput-%s@example.com", uuid.NewString())
+	user := createTestUser(t, env, model.RoleEmployee, email, "password123")
+	employeeHeaders := map[string]string{
+		"Authorization": env.MustBearerToken(t, user.ID, model.RoleEmployee),
+	}
+
+	targets := []throughputTarget{
+		{
+			name:           "health",
+			method:         http.MethodGet,
+			path:           "/health",
+			expectedStatus: http.StatusOK,
+			slo: throughputSLO{
+				minRPS: 300,
+			},
+		},
+		{
+			name:           "users_me",
+			method:         http.MethodGet,
+			path:           "/api/v1/users/me",
+			headers:        employeeHeaders,
+			expectedStatus: http.StatusOK,
+			slo: throughputSLO{
+				minRPS: 150,
+			},
+		},
+	}
+
+	for _, target := range targets {
+		target := target
+		t.Run(target.name, func(t *testing.T) {
+			rps := measureEndpointRPS(t, env, target)
+			t.Logf("throughput_slo target=%s rps=%.2f", target.name, rps)
+			require.GreaterOrEqualf(t, rps, target.slo.minRPS, "%s throughput dropped below SLO", target.name)
+		})
+	}
+}
+
 func measureEndpointLatencies(t testing.TB, env *TestEnv, target responseTimeTarget) []time.Duration {
 	t.Helper()
 
@@ -132,3 +190,23 @@ func percentileDuration(samples []time.Duration, percentile float64) time.Durati
 	return sorted[rank]
 }
 
+func measureEndpointRPS(t testing.TB, env *TestEnv, target throughputTarget) float64 {
+	t.Helper()
+
+	for i := 0; i < throughputWarmupRequest; i++ {
+		resp := env.DoJSON(t, target.method, target.path, target.body, target.headers)
+		require.Equalf(t, target.expectedStatus, resp.Code, "%s warmup status", target.name)
+	}
+
+	start := time.Now()
+	for i := 0; i < throughputRequestCount; i++ {
+		resp := env.DoJSON(t, target.method, target.path, target.body, target.headers)
+		require.Equalf(t, target.expectedStatus, resp.Code, "%s measured status", target.name)
+	}
+	elapsed := time.Since(start)
+	if elapsed <= 0 {
+		elapsed = time.Nanosecond
+	}
+
+	return float64(throughputRequestCount) / elapsed.Seconds()
+}
