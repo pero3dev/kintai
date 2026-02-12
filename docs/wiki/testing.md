@@ -56,6 +56,14 @@ Playwright config: `frontend/playwright.config.ts`
 - chromium project enabled
 - traces on first retry
 
+## Load Test Setup (k6)
+
+Scenario management: `backend/loadtest/k6`
+
+- `scenarios/load-profile.js`: normal -> peak -> spike
+- `scenarios/high-concurrency.js`: many concurrent users/sessions
+- `scenarios/soak-endurance.js`: long-running endurance
+
 ## CI Pipeline Coverage
 
 Workflow: `.github/workflows/ci.yml`
@@ -85,6 +93,9 @@ go test ./... -v -race -coverprofile=coverage.out -covermode=atomic
 make backend-test
 make frontend-test
 make frontend-e2e
+make loadtest-k6-load-profile
+make loadtest-k6-high-concurrency
+make loadtest-k6-soak
 ```
 
 ## Test Authoring Guidelines
