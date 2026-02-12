@@ -32,6 +32,7 @@
 実装項目一覧:
 
 - `docs/wiki/ja/backend-integration-test-checklist.md`
+- `docs/wiki/ja/non-functional-test-checklist.md`
 
 代表例:
 
