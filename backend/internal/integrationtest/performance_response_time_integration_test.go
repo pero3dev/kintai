@@ -1,6 +1,7 @@
 package integrationtest
 
 import (
+	"encoding/json"
 	"fmt"
 	"math"
 	"net/http"
@@ -259,6 +260,69 @@ func TestPerformanceEndpointRegressionBaseline(t *testing.T) {
 	}
 }
 
+func TestPerformanceLargeDatasetQuerySLO(t *testing.T) {
+	env := NewTestEnv(t, nil)
+	require.NoError(t, env.ResetDB())
+
+	email := fmt.Sprintf("it-large-dataset-%s@example.com", uuid.NewString())
+	user := createTestUser(t, env, model.RoleEmployee, email, "password123")
+	employeeHeaders := map[string]string{
+		"Authorization": env.MustBearerToken(t, user.ID, model.RoleEmployee),
+	}
+
+	noiseEmail := fmt.Sprintf("it-large-dataset-noise-%s@example.com", uuid.NewString())
+	noiseUser := createTestUser(t, env, model.RoleEmployee, noiseEmail, "password123")
+
+	startDate := time.Date(2020, 1, 1, 0, 0, 0, 0, time.Local)
+	recordCountPerUser := 1500
+	seedAttendanceRowsInBatches(t, env, user.ID, startDate, recordCountPerUser)
+	seedAttendanceRowsInBatches(t, env, noiseUser.ID, startDate, recordCountPerUser)
+
+	path := "/api/v1/attendance?start_date=2020-01-01&end_date=2030-12-31&page=1&page_size=100"
+
+	verificationResp := env.DoJSON(t, http.MethodGet, path, nil, employeeHeaders)
+	require.Equal(t, http.StatusOK, verificationResp.Code)
+
+	var verification attendanceListResponse
+	require.NoError(t, json.Unmarshal(verificationResp.Body.Bytes(), &verification))
+	require.Equal(t, int64(recordCountPerUser), verification.Total)
+	require.Len(t, verification.Data, 100)
+
+	latencies := measureEndpointLatencies(t, env, responseTimeTarget{
+		name:           "attendance_list_large_dataset",
+		method:         http.MethodGet,
+		path:           path,
+		headers:        employeeHeaders,
+		expectedStatus: http.StatusOK,
+	})
+	p95 := percentileDuration(latencies, 95)
+	p99 := percentileDuration(latencies, 99)
+
+	rps := measureEndpointRPS(t, env, throughputTarget{
+		name:           "attendance_list_large_dataset",
+		method:         http.MethodGet,
+		path:           path,
+		headers:        employeeHeaders,
+		expectedStatus: http.StatusOK,
+	})
+
+	// Thresholds are intentionally conservative for stable CI execution.
+	maxP95 := 250 * time.Millisecond
+	maxP99 := 500 * time.Millisecond
+	minRPS := 80.0
+
+	t.Logf(
+		"large_dataset_query_slo target=attendance_list p95=%s p99=%s rps=%.2f",
+		p95,
+		p99,
+		rps,
+	)
+
+	require.LessOrEqual(t, p95, maxP95, "attendance list p95 exceeded large-dataset threshold")
+	require.LessOrEqual(t, p99, maxP99, "attendance list p99 exceeded large-dataset threshold")
+	require.GreaterOrEqual(t, rps, minRPS, "attendance list RPS dropped below large-dataset threshold")
+}
+
 func measureEndpointLatencies(t testing.TB, env *TestEnv, target responseTimeTarget) []time.Duration {
 	t.Helper()
 
@@ -316,4 +380,22 @@ func measureEndpointRPS(t testing.TB, env *TestEnv, target throughputTarget) flo
 	}
 
 	return float64(throughputRequestCount) / elapsed.Seconds()
+}
+
+func seedAttendanceRowsInBatches(t testing.TB, env *TestEnv, userID uuid.UUID, startDate time.Time, days int) {
+	t.Helper()
+
+	rows := make([]model.Attendance, 0, days)
+	for i := 0; i < days; i++ {
+		day := startDate.AddDate(0, 0, i)
+		rows = append(rows, model.Attendance{
+			UserID:          userID,
+			Date:            day,
+			Status:          model.AttendanceStatusPresent,
+			WorkMinutes:     480,
+			OvertimeMinutes: 30,
+		})
+	}
+
+	require.NoError(t, env.DB.CreateInBatches(rows, 500).Error)
 }
