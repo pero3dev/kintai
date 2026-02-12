@@ -81,6 +81,12 @@ Playwright設定: `frontend/playwright.config.ts`
 - frontend Playwright E2E
 - mainブランチでdocker build
 
+定期負荷試験ワークフロー: `.github/workflows/load-test.yml`
+
+- 実行トリガー: `schedule`（毎週）/ `workflow_dispatch`
+- 実行内容: k6 `load-profile` / `high-concurrency` / `soak-endurance`
+- 結果: k6 summary JSON と backendログを artifact 保存
+
 ## 実行コマンド
 
 ```sh
