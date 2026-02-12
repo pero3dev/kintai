@@ -52,4 +52,67 @@
 ## 完了条件
 - [x] 4観点の全チェック項目が実行可能なテストとして実装済み
 - [x] 主要項目がCIまたは定期実行で自動検証される
-- [ ] 性能/可用性の判定基準（SLO/SLA）がドキュメント化されている
+- [x] 性能/可用性の判定基準（SLO/SLA）がドキュメント化されている
+
+## SLO/SLA判定基準（運用ドキュメント）
+
+### 1) 性能（レスポンス時間 / スループット）
+- 対象: `/health`
+  - SLO: p50 <= 30ms, p95 <= 80ms, p99 <= 150ms, RPS >= 300
+- 対象: `/api/v1/users/me`
+  - SLO: p50 <= 80ms, p95 <= 160ms, p99 <= 250ms, RPS >= 150
+- 対象: 大規模データセットでの `/api/v1/attendance` クエリ
+  - SLO: p95 <= 250ms, p99 <= 500ms, RPS >= 80
+- 検証テスト:
+  - `backend/internal/integrationtest/performance_response_time_integration_test.go`
+  - `backend/internal/integrationtest/performance_benchmark_test.go`
+
+### 2) 負荷/耐久（同時アクセス / 長時間）
+- 通常負荷:
+  - SLO: error_rate <= 1%, p95 <= 80ms, RPS >= 500
+- ピーク負荷:
+  - SLO: error_rate <= 1%, p95 <= 150ms, RPS >= 700
+- スパイク負荷:
+  - SLO: error_rate <= 2%, p95 <= 350ms, RPS >= 800
+- 高並列同時アクセス（80ユーザー×20リクエスト）:
+  - SLO: session_mismatch = 0, error_rate <= 1%, p95 <= 500ms, RPS >= 700
+- Soak（12秒連続）:
+  - SLO: error_rate <= 1%, p95 <= 350ms, RPS >= 350, 終盤p95劣化 <= 200ms
+- 検証テスト:
+  - `backend/internal/integrationtest/load_profile_integration_test.go`
+  - `backend/internal/integrationtest/high_concurrency_access_integration_test.go`
+  - `backend/internal/integrationtest/soak_endurance_integration_test.go`
+
+### 3) 可用性（障害復旧）
+- DB接続強制切断後の復旧:
+  - SLO: 12試行×150ms以内（最大1.8秒）で `/api/v1/users/me` が200に復帰
+- Redis一時停止/切断後の復旧:
+  - SLO: pause復帰後（約1.3秒後）に `PING` 正常化
+- readiness/liveness:
+  - SLO: 依存断時 `/ready` は503、`/live` は200を維持
+- バックアップ/リストア:
+  - SLO: RPO <= 1分, RTO <= 5秒
+- ネットワーク分断/タイムアウト:
+  - SLO: タイムアウトイベント後、最大1秒（10試行×100ms）でAPI復帰
+- 検証テスト:
+  - `backend/internal/integrationtest/db_recovery_integration_test.go`
+  - `backend/internal/integrationtest/redis_recovery_integration_test.go`
+  - `backend/internal/integrationtest/readiness_liveness_integration_test.go`
+  - `backend/internal/integrationtest/backup_restore_integration_test.go`
+  - `backend/internal/integrationtest/network_timeout_recovery_integration_test.go`
+  - `backend/internal/integrationtest/app_restart_continuity_integration_test.go`
+  - `backend/internal/integrationtest/failover_integration_test.go`
+
+### 4) 互換性（ブラウザ/端末差）
+- 対象ブラウザ:
+  - Chromium, Firefox, WebKit(Safari), Edge
+- 対象端末エミュレーション:
+  - Android（Pixel 7）, iOS（iPhone 14）, Tablet（iPad Pro 11）
+- SLO:
+  - 互換性スモーク（`compatibility.spec.ts`）が各プロジェクトで全件成功
+- CI/SLA:
+  - `.github/workflows/ci.yml` の `frontend-e2e` マトリクス全ジョブ成功をリリース判定条件とする
+- 検証テスト:
+  - `frontend/e2e/compatibility.spec.ts`
+  - `frontend/playwright.config.ts`
+  - `.github/workflows/ci.yml`
