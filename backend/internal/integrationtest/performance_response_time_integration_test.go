@@ -50,6 +50,22 @@ type throughputTarget struct {
 	slo            throughputSLO
 }
 
+type endpointPerformanceBaseline struct {
+	maxP95 time.Duration
+	maxP99 time.Duration
+	minRPS float64
+}
+
+type endpointRegressionTarget struct {
+	name           string
+	method         string
+	path           string
+	body           any
+	headers        map[string]string
+	expectedStatus int
+	baseline       endpointPerformanceBaseline
+}
+
 func TestPerformanceResponseTimeSLO(t *testing.T) {
 	env := NewTestEnv(t, nil)
 	require.NoError(t, env.ResetDB())
@@ -148,6 +164,97 @@ func TestPerformanceThroughputSLO(t *testing.T) {
 			rps := measureEndpointRPS(t, env, target)
 			t.Logf("throughput_slo target=%s rps=%.2f", target.name, rps)
 			require.GreaterOrEqualf(t, rps, target.slo.minRPS, "%s throughput dropped below SLO", target.name)
+		})
+	}
+}
+
+func TestPerformanceEndpointRegressionBaseline(t *testing.T) {
+	env := NewTestEnv(t, nil)
+	require.NoError(t, env.ResetDB())
+
+	email := fmt.Sprintf("it-regression-%s@example.com", uuid.NewString())
+	user := createTestUser(t, env, model.RoleEmployee, email, "password123")
+	employeeHeaders := map[string]string{
+		"Authorization": env.MustBearerToken(t, user.ID, model.RoleEmployee),
+	}
+
+	// Baseline thresholds are conservative values for httptest-based API execution.
+	// Update them only with measured evidence when handlers/repositories are intentionally changed.
+	targets := []endpointRegressionTarget{
+		{
+			name:           "health",
+			method:         http.MethodGet,
+			path:           "/health",
+			expectedStatus: http.StatusOK,
+			baseline: endpointPerformanceBaseline{
+				maxP95: 10 * time.Millisecond,
+				maxP99: 25 * time.Millisecond,
+				minRPS: 20000,
+			},
+		},
+		{
+			name:           "users_me",
+			method:         http.MethodGet,
+			path:           "/api/v1/users/me",
+			headers:        employeeHeaders,
+			expectedStatus: http.StatusOK,
+			baseline: endpointPerformanceBaseline{
+				maxP95: 15 * time.Millisecond,
+				maxP99: 30 * time.Millisecond,
+				minRPS: 3000,
+			},
+		},
+		{
+			name:           "attendance_today",
+			method:         http.MethodGet,
+			path:           "/api/v1/attendance/today",
+			headers:        employeeHeaders,
+			expectedStatus: http.StatusOK,
+			baseline: endpointPerformanceBaseline{
+				maxP95: 20 * time.Millisecond,
+				maxP99: 40 * time.Millisecond,
+				minRPS: 1500,
+			},
+		},
+	}
+
+	for _, target := range targets {
+		target := target
+		t.Run(target.name, func(t *testing.T) {
+			latencies := measureEndpointLatencies(t, env, responseTimeTarget{
+				name:           target.name,
+				method:         target.method,
+				path:           target.path,
+				body:           target.body,
+				headers:        target.headers,
+				expectedStatus: target.expectedStatus,
+			})
+			p95 := percentileDuration(latencies, 95)
+			p99 := percentileDuration(latencies, 99)
+
+			rps := measureEndpointRPS(t, env, throughputTarget{
+				name:           target.name,
+				method:         target.method,
+				path:           target.path,
+				body:           target.body,
+				headers:        target.headers,
+				expectedStatus: target.expectedStatus,
+			})
+
+			t.Logf(
+				"endpoint_regression target=%s p95=%s baseline_p95=%s p99=%s baseline_p99=%s rps=%.2f baseline_rps=%.2f",
+				target.name,
+				p95,
+				target.baseline.maxP95,
+				p99,
+				target.baseline.maxP99,
+				rps,
+				target.baseline.minRPS,
+			)
+
+			require.LessOrEqualf(t, p95, target.baseline.maxP95, "%s p95 exceeded regression baseline", target.name)
+			require.LessOrEqualf(t, p99, target.baseline.maxP99, "%s p99 exceeded regression baseline", target.name)
+			require.GreaterOrEqualf(t, rps, target.baseline.minRPS, "%s RPS dropped below regression baseline", target.name)
 		})
 	}
 }
