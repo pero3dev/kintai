@@ -95,4 +95,19 @@ test.describe('Login Page', () => {
     await expect(page).toHaveURL('/login');
     await expect(page.getByText('invalid credentials')).toBeVisible();
   });
+
+  test('should redirect to login when unauthenticated user opens protected route', async ({ page }) => {
+    await page.route('**/api/v1/**', async (route) => {
+      await route.fulfill({
+        status: 401,
+        contentType: 'application/json',
+        body: JSON.stringify({ message: 'unauthorized' }),
+      });
+    });
+
+    await page.goto('/attendance');
+
+    await expect(page).toHaveURL('/login');
+    await expect(page.locator('form')).toBeVisible();
+  });
 });
