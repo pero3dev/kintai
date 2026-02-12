@@ -1,4 +1,4 @@
-.PHONY: help up down build logs backend-test frontend-test lint migrate
+.PHONY: help up down build logs backend-test frontend-test lint migrate loadtest-k6-load-profile loadtest-k6-high-concurrency loadtest-k6-soak
 
 # ========================================
 # Kintai - Makefile
@@ -85,3 +85,13 @@ generate-api-client: ## Generate frontend API client from OpenAPI
 
 generate-mocks: ## Generate Go mocks
 	cd backend && go generate ./...
+
+# ---- Load Test (k6) ----
+loadtest-k6-load-profile: ## Run k6 load-profile scenario
+	cd backend/loadtest/k6 && K6_BASE_URL=$${K6_BASE_URL:-http://localhost:8080} k6 run scenarios/load-profile.js
+
+loadtest-k6-high-concurrency: ## Run k6 high-concurrency scenario
+	cd backend/loadtest/k6 && K6_BASE_URL=$${K6_BASE_URL:-http://localhost:8080} k6 run scenarios/high-concurrency.js
+
+loadtest-k6-soak: ## Run k6 soak/endurance scenario
+	cd backend/loadtest/k6 && K6_BASE_URL=$${K6_BASE_URL:-http://localhost:8080} k6 run scenarios/soak-endurance.js

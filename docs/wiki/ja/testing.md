@@ -62,6 +62,14 @@ Playwright設定: `frontend/playwright.config.ts`
 - browser project: chromium
 - retry時にtrace収集
 
+## 負荷テスト設定（k6）
+
+シナリオ管理: `backend/loadtest/k6`
+
+- `scenarios/load-profile.js`: 通常負荷→ピーク→スパイク
+- `scenarios/high-concurrency.js`: 多数同時ユーザー/セッション
+- `scenarios/soak-endurance.js`: 長時間耐久
+
 ## CIで実行される検証
 
 ワークフロー: `.github/workflows/ci.yml`
@@ -91,6 +99,9 @@ go test ./... -v -race -coverprofile=coverage.out -covermode=atomic
 make backend-test
 make frontend-test
 make frontend-e2e
+make loadtest-k6-load-profile
+make loadtest-k6-high-concurrency
+make loadtest-k6-soak
 ```
 
 ## テスト作成ガイド
