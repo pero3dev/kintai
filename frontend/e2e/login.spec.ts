@@ -1,5 +1,83 @@
 ﻿import { test, expect } from '@playwright/test';
 
+type UserRole = 'employee' | 'manager' | 'admin';
+
+async function mockLoginAndHomeApis(page: any, role: UserRole) {
+  await page.route('**/api/v1/**', async (route: any) => {
+    const url = route.request().url();
+    const method = route.request().method();
+
+    if (url.endsWith('/auth/login') && method === 'POST') {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          user: {
+            id: `u-${role}`,
+            email: `${role}@example.com`,
+            first_name: 'Role',
+            last_name: role,
+            role,
+            is_active: true,
+          },
+          access_token: `access-token-${role}`,
+          refresh_token: `refresh-token-${role}`,
+        }),
+      });
+      return;
+    }
+
+    if (url.includes('/attendance/today')) {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({}),
+      });
+      return;
+    }
+
+    if (url.includes('/notifications?')) {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ data: [] }),
+      });
+      return;
+    }
+
+    if (url.includes('/notifications/unread-count')) {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ count: 0 }),
+      });
+      return;
+    }
+
+    if (url.includes('/leaves/pending')) {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ data: [] }),
+      });
+      return;
+    }
+
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({}),
+    });
+  });
+}
+
+async function loginWithForm(page: any, email: string) {
+  await page.goto('/login');
+  await page.locator('input[type="email"]').fill(email);
+  await page.locator('input[type="password"]').fill('password123');
+  await page.locator('button[type="submit"]').click();
+  await expect(page).toHaveURL('/');
+}
 test.describe('Login Page', () => {
   test.describe.configure({ mode: 'serial' });
 
@@ -180,6 +258,38 @@ test.describe('Login Page', () => {
     expect(isAuthenticated).toBe(false);
   });
 
+  test('should hide admin links and HR app for employee role', async ({ page }) => {
+    await mockLoginAndHomeApis(page, 'employee');
+    await loginWithForm(page, 'employee@example.com');
+
+    await expect(page.locator('a[href="/dashboard"]')).toHaveCount(0);
+    await expect(page.locator('a[href="/users"]')).toHaveCount(0);
+    await expect(page.locator('a[href="/export"]')).toHaveCount(0);
+    await expect(page.locator('a[href="/approval-flows"]')).toHaveCount(0);
+    await expect(page.locator('a[href="/hr"]')).toHaveCount(0);
+  });
+
+  test('should show admin links and HR app for manager role', async ({ page }) => {
+    await mockLoginAndHomeApis(page, 'manager');
+    await loginWithForm(page, 'manager@example.com');
+
+    await expect(page.locator('a[href="/dashboard"]:visible').first()).toBeVisible();
+    await expect(page.locator('a[href="/users"]:visible').first()).toBeVisible();
+    await expect(page.locator('a[href="/export"]:visible').first()).toBeVisible();
+    await expect(page.locator('a[href="/approval-flows"]:visible').first()).toBeVisible();
+    await expect(page.locator('a[href="/hr"]:visible').first()).toBeVisible();
+  });
+
+  test('should show admin links and HR app for admin role', async ({ page }) => {
+    await mockLoginAndHomeApis(page, 'admin');
+    await loginWithForm(page, 'admin@example.com');
+
+    await expect(page.locator('a[href="/dashboard"]:visible').first()).toBeVisible();
+    await expect(page.locator('a[href="/users"]:visible').first()).toBeVisible();
+    await expect(page.locator('a[href="/export"]:visible').first()).toBeVisible();
+    await expect(page.locator('a[href="/approval-flows"]:visible').first()).toBeVisible();
+    await expect(page.locator('a[href="/hr"]:visible').first()).toBeVisible();
+  });
   test('should redirect to login when unauthenticated user opens protected route', async ({ page }) => {
     await page.route('**/api/v1/**', async (route) => {
       await route.fulfill({
@@ -451,3 +561,5 @@ test.describe('Login Page', () => {
     await expect.poll(() => refreshCalls).toBe(1);
   });
 });
+
+
