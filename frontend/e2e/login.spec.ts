@@ -1,6 +1,8 @@
 ﻿import { test, expect } from '@playwright/test';
 
 test.describe('Login Page', () => {
+  test.describe.configure({ mode: 'serial' });
+
   test('should display login form', async ({ page }) => {
     await page.goto('/login');
 
@@ -94,6 +96,88 @@ test.describe('Login Page', () => {
 
     await expect(page).toHaveURL('/login');
     await expect(page.getByText('invalid credentials')).toBeVisible();
+  });
+
+  test('should logout and redirect to login', async ({ page }) => {
+    await page.route('**/api/v1/**', async (route) => {
+      const url = route.request().url();
+      const method = route.request().method();
+
+      if (url.endsWith('/auth/login') && method === 'POST') {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            user: {
+              id: 'u-logout',
+              email: 'employee@example.com',
+              first_name: 'Hanako',
+              last_name: 'Tanaka',
+              role: 'employee',
+              is_active: true,
+            },
+            access_token: 'access-token',
+            refresh_token: 'refresh-token',
+          }),
+        });
+        return;
+      }
+
+      if (url.includes('/attendance/today')) {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({}),
+        });
+        return;
+      }
+
+      if (url.includes('/notifications?')) {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({ data: [] }),
+        });
+        return;
+      }
+
+      if (url.includes('/notifications/unread-count')) {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({ count: 0 }),
+        });
+        return;
+      }
+
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({}),
+      });
+    });
+
+    await page.goto('/login');
+    await page.locator('input[type="email"]').fill('employee@example.com');
+    await page.locator('input[type="password"]').fill('password123');
+    await page.locator('button[type="submit"]').click();
+    await expect(page).toHaveURL('/');
+
+    await page.locator('button:visible').filter({ hasText: /ログアウト|Logout/ }).first().click();
+
+    await expect(page).toHaveURL('/login');
+    await expect(page.locator('form')).toBeVisible();
+
+    const isAuthenticated = await page.evaluate(() => {
+      const raw = window.localStorage.getItem('kintai-auth');
+      if (!raw) return null;
+      try {
+        return JSON.parse(raw).state?.isAuthenticated ?? null;
+      } catch {
+        return null;
+      }
+    });
+    expect(isAuthenticated).toBe(false);
   });
 
   test('should redirect to login when unauthenticated user opens protected route', async ({ page }) => {
